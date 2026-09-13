@@ -1,65 +1,1578 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ACI | AI Consumption Intelligence</title>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>ACI</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
+type="module"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.min.js"></script>
+
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#07090e;color:#f4f6fa;font-family:Inter,system-ui,sans-serif}
-.wrap{max-width:900px;margin:auto;padding:35px 20px}.brand{font-weight:900;letter-spacing:.08em}.sub{color:#737d8d;font-size:11px;margin-top:3px}
-.hero{text-align:center;padding:90px 0 35px}.eyebrow{color:#9384ff;font-weight:800;letter-spacing:.16em;font-size:10px}.hero h1{font-size:clamp(42px,8vw,72px);letter-spacing:-.06em;margin:12px 0}.hero p{color:#8993a4}
-.card{background:#10141d;border:1px solid #242a35;border-radius:22px;overflow:hidden}.messages{min-height:300px;padding:25px}.empty{text-align:center;color:#798393;padding:90px 10px}.user{background:#181e28;border-radius:15px;padding:15px;margin-bottom:18px;white-space:pre-wrap}.answer{padding:5px 5px 20px;white-space:pre-wrap;line-height:1.7}.trace{font-size:9px;color:#667080;border-top:1px solid #222834;padding-top:12px}.composer{border-top:1px solid #242a35;padding:15px}textarea{width:100%;background:#080b10;color:#fff;border:0;outline:0;border-radius:13px;padding:15px;resize:vertical;min-height:90px}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:#667080;font-size:10px}button{background:#7768ff;color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:800;cursor:pointer}button:disabled{opacity:.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:15px}.chip{background:#0e1219;border:1px solid #242a35;color:#9ba4b2;border-radius:999px;padding:8px 11px;font-size:11px}.status{margin-top:20px;color:#697484;font-size:10px;text-align:center}
+
+:root {
+  --bg: #07080b;
+  --panel: #0d0f14;
+  --panel2: #11141b;
+  --line: #20242d;
+  --text: #f4f5f7;
+  --muted: #7d8492;
+  --muted2: #555c69;
+  --accent: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      #191d27 0,
+      #090a0e 38%,
+      #07080b 70%
+    );
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+
+  height: 68px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding:
+    0 28px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+  background:
+    rgba(7,8,11,.72);
+
+  backdrop-filter:
+    blur(20px);
+
+}
+
+.logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: -.03em;
+
+}
+
+.logo-mark {
+
+  width: 27px;
+
+  height: 27px;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #777
+    );
+
+  box-shadow:
+    0 0 25px rgba(255,255,255,.12);
+
+}
+
+.header-right {
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main {
+
+  width:
+    min(900px, 92%);
+
+  margin:
+    0 auto;
+
+  padding:
+    90px 0 70px;
+
+}
+
+
+.hero {
+
+  text-align:
+    center;
+
+  margin-bottom:
+    42px;
+
+}
+
+.eyebrow {
+
+  color:
+    #8e95a3;
+
+  font-size:
+    12px;
+
+  letter-spacing:
+    .16em;
+
+  text-transform:
+    uppercase;
+
+  margin-bottom:
+    17px;
+
+}
+
+.hero h1 {
+
+  margin:
+    0;
+
+  font-size:
+    clamp(38px, 7vw, 72px);
+
+  letter-spacing:
+    -.065em;
+
+  line-height:
+    .98;
+
+  font-weight:
+    750;
+
+}
+
+.hero p {
+
+  max-width:
+    620px;
+
+  margin:
+    20px auto 0;
+
+  color:
+    var(--muted);
+
+  line-height:
+    1.65;
+
+  font-size:
+    15px;
+
+}
+
+
+/* =====================================================
+   AI WORKSPACE
+===================================================== */
+
+.workspace {
+
+  background:
+    rgba(13,15,20,.88);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  border-radius:
+    24px;
+
+  padding:
+    14px;
+
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.35);
+
+}
+
+
+textarea {
+
+  width:
+    100%;
+
+  min-height:
+    170px;
+
+  resize:
+    vertical;
+
+  border:
+    none;
+
+  outline:
+    none;
+
+  background:
+    transparent;
+
+  color:
+    var(--text);
+
+  font-size:
+    17px;
+
+  line-height:
+    1.65;
+
+  padding:
+    17px;
+
+}
+
+textarea::placeholder {
+
+  color:
+    #4f5662;
+
+}
+
+
+/* =====================================================
+   ATTACHMENT
+===================================================== */
+
+.attachments {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    8px;
+
+  padding:
+    0 12px 10px;
+
+}
+
+
+.file-chip {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  background:
+    #171a21;
+
+  border:
+    1px solid #282d37;
+
+  padding:
+    7px 10px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    12px;
+
+  color:
+    #b8bec9;
+
+}
+
+
+.file-remove {
+
+  cursor:
+    pointer;
+
+  color:
+    #717987;
+
+}
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.toolbar {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    10px 10px 5px;
+
+}
+
+.tools {
+
+  display:
+    flex;
+
+  gap:
+    8px;
+
+}
+
+.icon-button {
+
+  width:
+    40px;
+
+  height:
+    40px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid #252a33;
+
+  border-radius:
+    12px;
+
+  background:
+    #11141a;
+
+  color:
+    #a5acb8;
+
+  cursor:
+    pointer;
+
+  font-size:
+    17px;
+
+}
+
+.icon-button:hover {
+
+  border-color:
+    #4a505c;
+
+  color:
+    white;
+
+}
+
+.send {
+
+  height:
+    42px;
+
+  padding:
+    0 19px;
+
+  border:
+    none;
+
+  border-radius:
+    12px;
+
+  background:
+    white;
+
+  color:
+    black;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+
+}
+
+.send:disabled {
+
+  opacity:
+    .45;
+
+  cursor:
+    default;
+
+}
+
+
+/* =====================================================
+   SUGGESTIONS
+===================================================== */
+
+.suggestions {
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  margin-top:
+    18px;
+
+}
+
+.suggestion {
+
+  background:
+    transparent;
+
+  border:
+    1px solid #252a33;
+
+  color:
+    #7f8794;
+
+  border-radius:
+    20px;
+
+  padding:
+    8px 13px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    12px;
+
+}
+
+.suggestion:hover {
+
+  color:
+    white;
+
+  border-color:
+    #555c68;
+
+}
+
+
+/* =====================================================
+   DROP ZONE
+===================================================== */
+
+.drop-zone {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  display:
+    none;
+
+  place-items:
+    center;
+
+  background:
+    rgba(0,0,0,.72);
+
+  backdrop-filter:
+    blur(8px);
+
+  z-index:
+    100;
+
+}
+
+.drop-zone.active {
+
+  display:
+    grid;
+
+}
+
+.drop-inner {
+
+  width:
+    min(500px, 85%);
+
+  border:
+    1px dashed #707784;
+
+  border-radius:
+    22px;
+
+  padding:
+    60px 30px;
+
+  text-align:
+    center;
+
+  background:
+    #10131a;
+
+}
+
+.drop-inner h2 {
+
+  margin:
+    0 0 10px;
+
+}
+
+.drop-inner p {
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+
+  text-align:
+    center;
+
+  color:
+    #626a77;
+
+  font-size:
+    11px;
+
+  min-height:
+    20px;
+
+  margin-top:
+    20px;
+
+}
+
+.pulse {
+
+  display:
+    inline-block;
+
+  width:
+    6px;
+
+  height:
+    6px;
+
+  border-radius:
+    50%;
+
+  background:
+    #aaa;
+
+  margin-right:
+    7px;
+
+  animation:
+    pulse 1.1s infinite;
+
+}
+
+@keyframes pulse {
+
+  0%,100% {
+    opacity: .25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSE
+===================================================== */
+
+.response {
+
+  margin-top:
+    30px;
+
+  background:
+    rgba(13,15,20,.92);
+
+  border:
+    1px solid #20242d;
+
+  border-radius:
+    20px;
+
+  padding:
+    28px;
+
+  line-height:
+    1.75;
+
+  white-space:
+    pre-wrap;
+
+  color:
+    #e5e7eb;
+
+  display:
+    none;
+
+}
+
+.trace {
+
+  margin-top:
+    17px;
+
+  color:
+    #555d6b;
+
+  font-size:
+    10px;
+
+  text-align:
+    center;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+
+  text-align:
+    center;
+
+  color:
+    #454b56;
+
+  font-size:
+    10px;
+
+  margin-top:
+    50px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px) {
+
+  main {
+
+    padding-top:
+      55px;
+
+  }
+
+  header {
+
+    padding:
+      0 16px;
+
+  }
+
+  .header-right {
+
+    display:
+      none;
+
+  }
+
+  .workspace {
+
+    border-radius:
+      18px;
+
+  }
+
+  textarea {
+
+    min-height:
+      200px;
+
+    font-size:
+      16px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
+
 <body>
-<div class="wrap">
-  <div class="brand">ACI<div class="sub">AI Consumption Intelligence</div></div>
-  <section class="hero">
-    <div class="eyebrow">ENTERPRISE AI WORKSPACE</div>
-    <h1>How can I help?</h1>
-    <p>Ask for the outcome. ACI handles the AI complexity behind the scenes.</p>
-  </section>
 
-  <section class="card">
-    <div id="messages" class="messages">
-      <div class="empty">Ask ACI to draft, analyze, summarize, code or research something.</div>
-    </div>
-    <div class="composer">
-      <textarea id="prompt" placeholder="Ask ACI anything..."></textarea>
-      <div class="bottom"><span id="status">Real AI backend connected</span><button id="send">Send →</button></div>
-    </div>
-  </section>
 
-  <div class="chips">
-    <button class="chip" data-p="Draft a professional email to my manager asking for two days of leave next week.">Draft an email</button>
-    <button class="chip" data-p="Summarize this conversation and identify the key action items.">Summarize</button>
-    <button class="chip" data-p="Explain this Python TypeError and show how to fix it.">Debug code</button>
-    <button class="chip" data-p="Analyze whether a small company should use a monolith or microservices.">Analyze</button>
+<header>
+
+  <div class="logo">
+
+    <div class="logo-mark"></div>
+
+    <span>ACI</span>
+
   </div>
-  <div class="status">ACI intelligence and traceability run on the server. The API key is never sent to the browser.</div>
+
+  <div class="header-right">
+    AI Consumption Intelligence
+  </div>
+
+</header>
+
+
+<main>
+
+
+<section class="hero">
+
+  <div class="eyebrow">
+    Enterprise AI Workspace
+  </div>
+
+  <h1>
+    What should we<br>
+    work on?
+  </h1>
+
+  <p id="heroText">
+    Ask for an outcome. ACI handles the intelligence behind it.
+  </p>
+
+</section>
+
+
+<section class="workspace">
+
+
+<textarea
+  id="prompt"
+  autofocus
+  placeholder="Ask anything..."
+></textarea>
+
+
+<div
+  id="attachments"
+  class="attachments"
+></div>
+
+
+<div class="toolbar">
+
+  <div class="tools">
+
+    <button
+      class="icon-button"
+      onclick="document.getElementById('fileInput').click()"
+      title="Attach document"
+    >
+      +
+    </button>
+
+    <input
+      id="fileInput"
+      type="file"
+      hidden
+      multiple
+      accept=".txt,.md,.csv,.json,.html,.xml,.pdf,.docx"
+      onchange="handleFiles(this.files)"
+    >
+
+  </div>
+
+
+  <button
+    id="send"
+    class="send"
+    onclick="sendPrompt()"
+  >
+    Generate
+  </button>
+
 </div>
-<script>
-const promptEl=document.getElementById("prompt"),send=document.getElementById("send"),messages=document.getElementById("messages"),status=document.getElementById("status");
-document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{promptEl.value=b.dataset.p;promptEl.focus()});
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-send.onclick=async()=>{
- const prompt=promptEl.value.trim(); if(!prompt)return;
- send.disabled=true; status.textContent="ACI is working...";
- messages.innerHTML=`<div class="user">${esc(prompt)}</div><div class="answer">Generating...</div>`;
- try{
-   const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
-   const data=await r.json();
-   if(!r.ok) throw new Error(data.error||"Request failed");
-   messages.innerHTML=`<div class="user">${esc(prompt)}</div>
-     <div class="answer">${esc(data.answer)}</div>
-     <div class="trace">ACI trace: ${esc(data.trace.taskType)} · complexity ${data.trace.complexity}/5 · ${esc(data.trace.sensitivity)} sensitivity · ${esc(data.trace.model)} · ${data.trace.latencyMs}ms · ${data.trace.totalTokens??"?"} tokens · outcome ${esc(data.trace.outcome)}</div>`;
-   status.textContent="Response generated successfully";
- }catch(e){
-   messages.innerHTML=`<div class="answer" style="color:#ff8d8d">Unable to generate the response: ${esc(e.message)}</div>`;
-   status.textContent="Backend error";
- }finally{send.disabled=false}
+
+</section>
+
+
+<div
+  id="suggestions"
+  class="suggestions"
+></div>
+
+
+<div
+  id="status"
+  class="status"
+></div>
+
+
+<div
+  id="response"
+  class="response"
+></div>
+
+
+<div
+  id="trace"
+  class="trace"
+></div>
+
+
+<footer>
+  ACI · Secure enterprise AI workspace
+</footer>
+
+</main>
+
+
+<div
+  id="dropZone"
+  class="drop-zone"
+>
+
+  <div class="drop-inner">
+
+    <h2>
+      Drop your document
+    </h2>
+
+    <p>
+      PDF, DOCX, TXT, Markdown, CSV or JSON
+    </p>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   PDF.JS
+===================================================== */
+
+import * as pdfjsLib
+from
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs";
+
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let attachedDocuments = [];
+
+
+/* =====================================================
+   DYNAMIC PROMPTS
+===================================================== */
+
+const promptSets = [
+
+  [
+    "Turn this idea into an execution plan",
+    "Analyze this business opportunity",
+    "Draft a professional response",
+    "Explain this technical problem simply"
+  ],
+
+  [
+    "Review this document and find the risks",
+    "Create a decision memo",
+    "Summarize this for leadership",
+    "Build a practical implementation plan"
+  ],
+
+  [
+    "Compare the available options",
+    "Find the key insights in this data",
+    "Turn this into a presentation outline",
+    "Improve this strategy"
+  ]
+
+];
+
+
+let setIndex =
+  Math.floor(
+    Math.random() *
+    promptSets.length
+  );
+
+
+function renderSuggestions() {
+
+  const container =
+    document.getElementById(
+      "suggestions"
+    );
+
+
+  const prompts =
+    promptSets[setIndex];
+
+
+  container.innerHTML =
+    prompts.map(
+      text =>
+        `<button
+          class="suggestion"
+          onclick="usePrompt(${JSON.stringify(text)})"
+        >
+          ${text}
+        </button>`
+    ).join("");
+
+}
+
+
+renderSuggestions();
+
+
+/* =====================================================
+   RANDOM HERO TEXT
+===================================================== */
+
+const heroTexts = [
+
+  "Ask for an outcome. ACI handles the intelligence behind it.",
+
+  "Give ACI the problem. Keep your focus on the result.",
+
+  "One workspace. Different tasks. Intelligent AI underneath.",
+
+  "From a question to an outcome, without choosing the model.",
+
+  "Work with AI. Let ACI handle the complexity."
+
+];
+
+
+document.getElementById(
+  "heroText"
+).textContent =
+  heroTexts[
+    Math.floor(
+      Math.random() *
+      heroTexts.length
+    )
+  ];
+
+
+/* =====================================================
+   GLOBAL FUNCTIONS
+===================================================== */
+
+window.usePrompt =
+function(text) {
+
+  document.getElementById(
+    "prompt"
+  ).value = text;
+
+  document.getElementById(
+    "prompt"
+  ).focus();
+
 };
-promptEl.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")send.click()});
+
+
+/* =====================================================
+   FILE HANDLING
+===================================================== */
+
+window.handleFiles =
+async function(files) {
+
+  for (
+    const file of Array.from(files)
+  ) {
+
+    try {
+
+      const content =
+        await extractFileText(file);
+
+
+      attachedDocuments.push({
+
+        name:
+          file.name,
+
+        size:
+          file.size,
+
+        content
+
+      });
+
+
+    } catch (error) {
+
+      alert(
+        `Could not read ${file.name}: ${error.message}`
+      );
+
+    }
+
+  }
+
+
+  renderAttachments();
+
+};
+
+
+/* =====================================================
+   DOCUMENT EXTRACTION
+===================================================== */
+
+async function extractFileText(file) {
+
+  const name =
+    file.name.toLowerCase();
+
+
+  /*
+   * Plain text formats
+   */
+
+  if (
+    name.endsWith(".txt") ||
+    name.endsWith(".md") ||
+    name.endsWith(".csv") ||
+    name.endsWith(".json") ||
+    name.endsWith(".html") ||
+    name.endsWith(".xml")
+  ) {
+
+    return await file.text();
+
+  }
+
+
+  /*
+   * PDF
+   */
+
+  if (
+    name.endsWith(".pdf")
+  ) {
+
+    const buffer =
+      await file.arrayBuffer();
+
+
+    const pdf =
+      await pdfjsLib.getDocument({
+        data: buffer
+      }).promise;
+
+
+    let text = "";
+
+
+    for (
+      let i = 1;
+      i <= pdf.numPages;
+      i++
+    ) {
+
+      const page =
+        await pdf.getPage(i);
+
+
+      const content =
+        await page.getTextContent();
+
+
+      text +=
+        content.items
+          .map(
+            item => item.str
+          )
+          .join(" ") +
+        "\n";
+
+    }
+
+
+    return text;
+
+  }
+
+
+  /*
+   * DOCX
+   */
+
+  if (
+    name.endsWith(".docx")
+  ) {
+
+    if (
+      !window.mammoth
+    ) {
+
+      throw new Error(
+        "DOCX reader is still loading. Try again."
+      );
+
+    }
+
+
+    const buffer =
+      await file.arrayBuffer();
+
+
+    const result =
+      await window.mammoth.extractRawText({
+        arrayBuffer: buffer
+      });
+
+
+    return result.value;
+
+  }
+
+
+  throw new Error(
+    "Unsupported document type."
+  );
+
+}
+
+
+/* =====================================================
+   ATTACHMENT UI
+===================================================== */
+
+function renderAttachments() {
+
+  const container =
+    document.getElementById(
+      "attachments"
+    );
+
+
+  container.innerHTML =
+    attachedDocuments.map(
+      (doc, index) => `
+
+        <div class="file-chip">
+
+          <span>📄</span>
+
+          <span>
+            ${escapeHtml(doc.name)}
+          </span>
+
+          <span
+            class="file-remove"
+            onclick="removeDocument(${index})"
+          >
+            ×
+          </span>
+
+        </div>
+
+      `
+    ).join("");
+
+}
+
+
+window.removeDocument =
+function(index) {
+
+  attachedDocuments.splice(
+    index,
+    1
+  );
+
+  renderAttachments();
+
+};
+
+
+/* =====================================================
+   SEND
+===================================================== */
+
+window.sendPrompt =
+async function() {
+
+  const prompt =
+    document.getElementById(
+      "prompt"
+    ).value.trim();
+
+
+  const send =
+    document.getElementById(
+      "send"
+    );
+
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+  const responseBox =
+    document.getElementById(
+      "response"
+    );
+
+  const trace =
+    document.getElementById(
+      "trace"
+    );
+
+
+  if (
+    !prompt &&
+    !attachedDocuments.length
+  ) {
+
+    return;
+
+  }
+
+
+  let finalPrompt =
+    prompt;
+
+
+  /*
+   * Add extracted documents.
+   */
+
+  if (
+    attachedDocuments.length
+  ) {
+
+    finalPrompt +=
+      "\n\n--- ATTACHED DOCUMENTS ---\n";
+
+
+    for (
+      const doc of attachedDocuments
+    ) {
+
+      finalPrompt +=
+        `\n\nFILE: ${doc.name}\n\n` +
+        doc.content +
+        "\n\n--- END FILE ---\n";
+
+    }
+
+  }
+
+
+  send.disabled =
+    true;
+
+  send.textContent =
+    "Working…";
+
+
+  responseBox.style.display =
+    "none";
+
+
+  trace.style.display =
+    "none";
+
+
+  status.innerHTML =
+    `<span class="pulse"></span>ACI is thinking`;
+
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify({
+              prompt:
+                finalPrompt
+            })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok
+    ) {
+
+      throw new Error(
+        data?.error ||
+        "Request failed."
+      );
+
+    }
+
+
+    responseBox.textContent =
+      data.answer || "";
+
+
+    responseBox.style.display =
+      "block";
+
+
+    if (
+      data.trace
+    ) {
+
+      trace.textContent =
+        `ACI · ${data.trace.taskType} · complexity ${data.trace.complexity}/5 · ${data.trace.latencyMs}ms · ${data.trace.totalTokens} tokens · ${data.trace.outcome}`;
+
+      trace.style.display =
+        "block";
+
+    }
+
+
+    status.textContent =
+      "Ready";
+
+
+  } catch (error) {
+
+    status.textContent =
+      "Something went wrong";
+
+    responseBox.textContent =
+      error?.message ||
+      "Request failed.";
+
+    responseBox.style.display =
+      "block";
+
+  }
+
+
+  send.disabled =
+    false;
+
+  send.textContent =
+    "Generate";
+
+};
+
+
+/* =====================================================
+   DRAG & DROP
+===================================================== */
+
+const dropZone =
+  document.getElementById(
+    "dropZone"
+  );
+
+
+let dragCounter = 0;
+
+
+document.addEventListener(
+  "dragenter",
+  event => {
+
+    event.preventDefault();
+
+    dragCounter++;
+
+    dropZone.classList.add(
+      "active"
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "dragleave",
+  event => {
+
+    event.preventDefault();
+
+    dragCounter--;
+
+    if (
+      dragCounter <= 0
+    ) {
+
+      dropZone.classList.remove(
+        "active"
+      );
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "dragover",
+  event => {
+
+    event.preventDefault();
+
+  }
+);
+
+
+document.addEventListener(
+  "drop",
+  event => {
+
+    event.preventDefault();
+
+    dragCounter = 0;
+
+    dropZone.classList.remove(
+      "active"
+    );
+
+    if (
+      event.dataTransfer?.files
+    ) {
+
+      handleFiles(
+        event.dataTransfer.files
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
 </script>
+
+
 </body>
+
 </html>
