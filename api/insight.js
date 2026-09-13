@@ -1,423 +1,200 @@
-/* =========================================================
-   ACI DYNAMIC AI / TECHNOLOGY INSIGHT
-   =========================================================
+/* ============================================================
+   ACI — LIVE INTELLIGENCE SIGNAL
+   api/insight.js
 
    Purpose:
+   Turn current AI / technology developments into
+   short, original editorial signals for the ACI workspace.
 
-   Employee opens a new conversation
-          ↓
-   /api/insight
-          ↓
-   Fresh technology / AI signal
-          ↓
-   Short original thought
-          ↓
-   Employee UI
+   Output:
+   {
+     text: "...",
+     theme: "...",
+     source: "live",
+     timestamp: "..."
+   }
 
-   This endpoint does NOT expose API keys.
-========================================================= */
+   The frontend limits display to 10 words as a final safeguard,
+   but the editorial prompt itself also enforces the limit.
+============================================================ */
 
 
-const FALLBACKS = [
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+
+const NEWS_FEEDS = [
 
   {
-    category: "AI economics",
-    title:
-      "AI is becoming cheaper to use. That does not mean companies are becoming better at using it."
+    theme: "AI infrastructure",
+    url:
+      "https://news.google.com/rss/search?q=AI+infrastructure+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "Enterprise AI",
-    title:
-      "The next enterprise AI problem may not be model capability. It may be knowing where every AI request is going."
+    theme: "Enterprise AI",
+    url:
+      "https://news.google.com/rss/search?q=enterprise+AI+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "AI infrastructure",
-    title:
-      "Every AI answer has an infrastructure bill hiding behind it."
+    theme: "AI agents",
+    url:
+      "https://news.google.com/rss/search?q=AI+agents+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "AI agents",
-    title:
-      "When AI agents start acting instead of answering, the economics of every decision become much more important."
+    theme: "AI economics",
+    url:
+      "https://news.google.com/rss/search?q=AI+inference+cost+model+economics+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "AI strategy",
-    title:
-      "Giving employees more AI does not automatically create more productivity. The workflow around the AI matters."
+    theme: "AI chips",
+    url:
+      "https://news.google.com/rss/search?q=AI+chips+data+centers+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "Model economics",
-    title:
-      "If two models can solve the same task, why should the company always pay for the more expensive one?"
+    theme: "AI productivity",
+    url:
+      "https://news.google.com/rss/search?q=AI+productivity+business+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   },
 
   {
-    category: "Enterprise software",
-    title:
-      "AI is quietly turning software from a license expense into a consumption expense."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "The interesting question is no longer whether employees use AI. It is what happens after they start using it everywhere."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Inference happens one request at a time. Enterprise AI economics happen millions of requests later."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "Every new AI model creates more capability. It also creates another routing decision."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "The fastest AI answer is not always the most valuable one. The cheapest useful answer might be."
-  },
-
-  {
-    category: "AI security",
-    title:
-      "The more AI becomes part of everyday work, the harder it becomes to separate convenience from data risk."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "Enterprise AI governance cannot stop at asking which models employees are allowed to use."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "An AI agent that can execute a task changes the question from 'Can it answer?' to 'Should it act?'"
-  },
-
-  {
-    category: "AI markets",
-    title:
-      "AI competition is moving beyond intelligence. Price, latency, availability and reliability are becoming weapons too."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "A thousand cheap AI requests can matter more financially than one expensive experiment."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "Most companies will eventually need an AI layer between employees and models."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "The model is only one component of an AI system. The economics live across the entire request."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "What happens when choosing an AI model becomes as dynamic as choosing a cloud server?"
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "The winning enterprise AI architecture may be the one that knows when not to use the most powerful model."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "AI adoption becomes a finance problem the moment experimentation becomes habitual."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "If AI becomes infrastructure, someone eventually has to build the meter."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "GPU capacity is physical. AI demand is behavioral. The economics sit between the two."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "Saving ten minutes per employee sounds small until thousands of employees start doing it every day."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "The future enterprise AI stack may have an economic control plane sitting above the models."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "A policy that says 'use approved AI' answers who can use AI. It does not answer how efficiently they use it."
-  },
-
-  {
-    category: "Model economics",
-    title:
-      "Model prices are falling. The number of things companies want models to do is rising."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "An AI agent can multiply productivity. It can also multiply consumption."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Latency is a user experience metric. At enterprise scale, it becomes an economic metric too."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "The model that wins a benchmark is not necessarily the model that wins a company's workload."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "The right AI question may be less 'Which model is smartest?' and more 'Which model is sufficient?'"
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "AI spend becomes difficult to control when employees experience it as free."
-  },
-
-  {
-    category: "AI security",
-    title:
-      "An AI request can carry more information than its final answer reveals."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "Enterprise AI is becoming a portfolio problem: capability, cost, risk, speed and reliability."
-  },
-
-  {
-    category: "AI markets",
-    title:
-      "As model capabilities converge on everyday tasks, economics could become the differentiator."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "The biggest AI transformation may happen quietly inside thousands of ordinary workflows."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "AI consumption has no office building, no electricity meter and no obvious queue. Yet it still creates a bill."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "What if employees never had to know which AI model was answering them?"
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "A good AI system should know when a simple task deserves a simple model."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "Software used to hide hardware complexity. AI may do the same for intelligence itself."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "Once AI can call tools, APIs and other models, routing becomes a system design problem."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "The value of AI is rarely the answer alone. It is the work that disappears after the answer."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "AI governance will eventually need dashboards that finance teams can understand."
-  },
-
-  {
-    category: "Model economics",
-    title:
-      "The cheapest model is not always the right model. The interesting problem is finding the cheapest model that works."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "Companies are buying intelligence before they have built a way to measure its consumption."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Every model request has a price. Every unnecessary request has an opportunity cost."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "AI transformation is becoming less about adding another chatbot and more about redesigning how work moves."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "The interface may hide the model completely. The economics cannot stay hidden forever."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "What would happen if every AI request had to justify its own cost?"
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "The more autonomous AI becomes, the more important failure recovery becomes."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "The next generation of enterprise software may route intelligence the way networks route traffic."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Model availability is becoming part of application reliability."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "AI cost optimization should happen before the bill arrives, not after finance discovers it."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "An enterprise should not need every employee to become an AI infrastructure expert."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "AI is turning the question 'What software should we buy?' into 'What intelligence should we consume?'"
+    theme: "AI governance",
+    url:
+      "https://news.google.com/rss/search?q=AI+governance+enterprise+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
   }
 
 ];
 
 
-/* =========================================================
-   GOOGLE NEWS RSS
-========================================================= */
+/*
+  Fallback signals are deliberately varied.
 
-const FEEDS = [
+  They are NOT intended to imitate live news.
+  They only keep the UI alive when external feeds/API
+  are temporarily unavailable.
+*/
+
+const FALLBACK_SIGNALS = [
 
   {
-    category: "AI / Technology",
-    url:
-      "https://news.google.com/rss/search?q=artificial+intelligence+AI+technology&hl=en-IN&gl=IN&ceid=IN:en"
+    text:
+      "AI infrastructure is becoming another enterprise cost center.",
+    theme:
+      "AI economics"
   },
 
   {
-    category: "AI infrastructure",
-    url:
-      "https://news.google.com/rss/search?q=AI+infrastructure+GPU+inference+data+center&hl=en-IN&gl=IN&ceid=IN:en"
+    text:
+      "Model selection is quietly becoming a finance decision.",
+    theme:
+      "AI economics"
   },
 
   {
-    category: "Enterprise AI",
-    url:
-      "https://news.google.com/rss/search?q=enterprise+AI+business+companies&hl=en-IN&gl=IN&ceid=IN:en"
+    text:
+      "AI agents are becoming another enterprise software layer.",
+    theme:
+      "AI agents"
   },
 
   {
-    category: "AI agents",
-    url:
-      "https://news.google.com/rss/search?q=AI+agents+automation&hl=en-IN&gl=IN&ceid=IN:en"
+    text:
+      "The next AI advantage may come from orchestration.",
+    theme:
+      "AI infrastructure"
+  },
+
+  {
+    text:
+      "Cheap inference is changing what businesses automate.",
+    theme:
+      "AI economics"
+  },
+
+  {
+    text:
+      "AI capability is rising faster than enterprise governance.",
+    theme:
+      "AI governance"
+  },
+
+  {
+    text:
+      "The model is becoming a replaceable enterprise component.",
+    theme:
+      "AI infrastructure"
+  },
+
+  {
+    text:
+      "Inference economics may shape the next wave of AI adoption.",
+    theme:
+      "AI economics"
+  },
+
+  {
+    text:
+      "AI is moving from experiments into operational infrastructure.",
+    theme:
+      "Enterprise AI"
+  },
+
+  {
+    text:
+      "Enterprise AI value depends on what happens after inference.",
+    theme:
+      "Enterprise AI"
+  },
+
+  {
+    text:
+      "AI productivity gains increasingly depend on workflow redesign.",
+    theme:
+      "AI productivity"
+  },
+
+  {
+    text:
+      "AI spending is becoming measurable at the request level.",
+    theme:
+      "AI economics"
+  },
+
+  {
+    text:
+      "More models create more choices and more routing complexity.",
+    theme:
+      "AI infrastructure"
+  },
+
+  {
+    text:
+      "AI governance is becoming an operational discipline.",
+    theme:
+      "AI governance"
+  },
+
+  {
+    text:
+      "Compute availability increasingly shapes AI product strategy.",
+    theme:
+      "AI infrastructure"
   }
 
 ];
 
 
-/* =========================================================
-   RANDOM
-========================================================= */
+/* ============================================================
+   XML / RSS HELPERS
+============================================================ */
 
-function randomItem(
-  array
-) {
-
-  return array[
-    Math.floor(
-      Math.random() *
-      array.length
-    )
-  ];
-
-}
-
-
-/* =========================================================
-   XML HELPERS
-========================================================= */
-
-function decodeEntities(
-  value
-) {
+function decodeEntities(value) {
 
   return String(value || "")
-
-    .replace(
-      /<!\[CDATA\[([\s\S]*?)\]\]>/g,
-      "$1"
-    )
 
     .replace(
       /&amp;/g,
@@ -442,114 +219,175 @@ function decodeEntities(
     .replace(
       /&#39;/g,
       "'"
+    )
+
+    .replace(
+      /&#x27;/gi,
+      "'"
+    )
+
+    .replace(
+      /&nbsp;/g,
+      " "
     );
 
 }
 
 
-function cleanText(
-  value
-) {
+function stripHTML(value) {
 
   return decodeEntities(
-    value
-  )
-    .replace(
-      /<[^>]*>/g,
-      ""
-    )
-    .replace(
-      /\s+/g,
-      " "
-    )
-    .trim();
+    String(value || "")
+      .replace(
+        /<[^>]*>/g,
+        " "
+      )
+      .replace(
+        /\s+/g,
+        " "
+      )
+      .trim()
+  );
 
 }
 
 
-/* =========================================================
-   RSS PARSER
-========================================================= */
+/* ============================================================
+   WORD LIMIT
+============================================================ */
 
-function parseRSS(
-  xml
-) {
+function limitWords(text, maxWords = 10) {
+
+  const clean =
+    String(text || "")
+      .replace(
+        /\s+/g,
+        " "
+      )
+      .trim();
+
+
+  if (!clean) {
+    return "";
+  }
+
+
+  const words =
+    clean.split(" ");
+
+
+  let result =
+    words.slice(
+      0,
+      maxWords
+    ).join(" ");
+
+
+  /*
+    Remove accidental leading bullets,
+    quotation marks and numbering.
+  */
+
+  result =
+    result
+      .replace(
+        /^["'“”‘’•*\-\d.)\s]+/,
+        ""
+      )
+      .trim();
+
+
+  /*
+    Keep punctuation clean.
+  */
+
+  if (
+    result &&
+    !/[.!?]$/.test(result)
+  ) {
+
+    result += ".";
+
+  }
+
+
+  return result;
+
+}
+
+
+/* ============================================================
+   PARSE RSS
+============================================================ */
+
+function parseRSS(xml) {
 
   const items = [];
 
-  const matches =
+  const itemMatches =
     xml.match(
       /<item[\s\S]*?<\/item>/gi
     ) || [];
 
 
   for (
-    const item of matches
+    const item of itemMatches
   ) {
 
     const titleMatch =
       item.match(
-        /<title>([\s\S]*?)<\/title>/i
+        /<title[^>]*>([\s\S]*?)<\/title>/i
       );
 
 
-    const linkMatch =
+    const descriptionMatch =
       item.match(
-        /<link>([\s\S]*?)<\/link>/i
+        /<description[^>]*>([\s\S]*?)<\/description>/i
       );
 
 
-    const dateMatch =
+    const pubDateMatch =
       item.match(
-        /<pubDate>([\s\S]*?)<\/pubDate>/i
+        /<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i
       );
-
-
-    if (
-      !titleMatch
-    ) {
-
-      continue;
-
-    }
 
 
     const title =
-      cleanText(
-        titleMatch[1]
+      stripHTML(
+        titleMatch
+          ? titleMatch[1]
+          : ""
       );
 
 
-    const link =
-      cleanText(
-        linkMatch?.[1] ||
-        ""
+    const description =
+      stripHTML(
+        descriptionMatch
+          ? descriptionMatch[1]
+          : ""
       );
 
 
-    const published =
-      dateMatch?.[1]
-        ? new Date(
-            cleanText(
-              dateMatch[1]
-            )
-          )
-        : null;
+    const pubDate =
+      stripHTML(
+        pubDateMatch
+          ? pubDateMatch[1]
+          : ""
+      );
+
+
+    if (!title) {
+      continue;
+    }
 
 
     items.push({
 
       title,
 
-      link,
+      description,
 
-      published:
-        published &&
-        !Number.isNaN(
-          published.getTime()
-        )
-          ? published
-          : null
+      pubDate
 
     });
 
@@ -561,237 +399,516 @@ function parseRSS(
 }
 
 
-/* =========================================================
-   FETCH FEED
-========================================================= */
+/* ============================================================
+   FETCH ONE NEWS FEED
+============================================================ */
 
-async function fetchFeed(
-  feed
+async function fetchFeed(feed) {
+
+  const controller =
+    new AbortController();
+
+
+  const timeout =
+    setTimeout(
+      () => controller.abort(),
+      4500
+    );
+
+
+  try {
+
+    const response =
+      await fetch(
+        feed.url,
+        {
+          method:
+            "GET",
+
+          headers:{
+            "User-Agent":
+              "ACI-Intelligence/1.0"
+          },
+
+          signal:
+            controller.signal
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        `News feed returned ${response.status}`
+      );
+
+    }
+
+
+    const xml =
+      await response.text();
+
+
+    const items =
+      parseRSS(
+        xml
+      );
+
+
+    return items.map(
+      item => ({
+
+        ...item,
+
+        theme:
+          feed.theme
+
+      })
+    );
+
+
+  } finally {
+
+    clearTimeout(
+      timeout
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   FETCH LIVE NEWS
+============================================================ */
+
+async function collectSignals() {
+
+  /*
+    Fetch several feeds in parallel.
+
+    One failed feed should not kill
+    the entire intelligence layer.
+  */
+
+  const results =
+    await Promise.allSettled(
+
+      NEWS_FEEDS.map(
+        fetchFeed
+      )
+
+    );
+
+
+  const items = [];
+
+
+  results.forEach(
+    result => {
+
+      if (
+        result.status ===
+        "fulfilled"
+      ) {
+
+        items.push(
+          ...result.value
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+    Remove duplicate headlines.
+  */
+
+  const seen =
+    new Set();
+
+
+  const unique =
+    items.filter(
+      item => {
+
+        const key =
+          item.title
+            .toLowerCase()
+            .replace(
+              /[^a-z0-9]+/g,
+              " "
+            )
+            .trim();
+
+
+        if (
+          !key ||
+          seen.has(key)
+        ) {
+
+          return false;
+
+        }
+
+
+        seen.add(key);
+
+        return true;
+
+      }
+    );
+
+
+  /*
+    Keep the feed reasonably small.
+  */
+
+  return unique.slice(
+    0,
+    30
+  );
+
+}
+
+
+/* ============================================================
+   SELECT A SIGNAL
+============================================================ */
+
+function selectSignal(items) {
+
+  if (!items.length) {
+    return null;
+  }
+
+
+  /*
+    Pick from the freshest portion,
+    while introducing some rotation.
+  */
+
+  const pool =
+    items.slice(
+      0,
+      Math.min(
+        items.length,
+        12
+      )
+    );
+
+
+  const index =
+    Math.floor(
+      Math.random() *
+      pool.length
+    );
+
+
+  return pool[index];
+
+}
+
+
+/* ============================================================
+   GEMINI EDITORIAL GENERATION
+============================================================ */
+
+async function generateEditorialSignal(
+  newsItem
 ) {
+
+  if (
+    !process.env.GEMINI_API_KEY
+  ) {
+
+    throw new Error(
+      "GEMINI_API_KEY is not configured."
+    );
+
+  }
+
+
+  const prompt = `
+
+You are the editorial intelligence layer
+for ACI, an enterprise AI consumption intelligence product.
+
+Create ONE original AI/technology insight
+based on the news signal below.
+
+The output will appear as the large opening
+thought inside an enterprise AI workspace.
+
+SOURCE THEME:
+${newsItem.theme}
+
+NEWS SIGNAL:
+${newsItem.title}
+
+CONTEXT:
+${newsItem.description || "No additional context available."}
+
+RULES:
+
+1. Return ONLY ONE sentence.
+2. Maximum 10 words.
+3. Prefer 5 to 9 words.
+4. Make it insightful, not descriptive.
+5. Do NOT copy the headline.
+6. Do NOT mention the publication.
+7. Do NOT use quotation marks.
+8. Do NOT use hashtags.
+9. Do NOT say "breaking news".
+10. Do NOT explain your reasoning.
+11. Focus on the broader implication for AI,
+    enterprise technology, economics,
+    infrastructure, productivity, agents,
+    governance or business.
+12. Avoid generic motivational language.
+13. Make it sound like an intelligent
+    product/editorial observation.
+
+Return ONLY the final sentence.
+
+`;
+
 
   const response =
     await fetch(
-      feed.url,
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
       {
-        headers: {
-          "User-Agent":
-            "ACI-Insight/1.0"
-        }
+
+        method:
+          "POST",
+
+        headers:{
+
+          "Content-Type":
+            "application/json",
+
+          "x-goog-api-key":
+            process.env.GEMINI_API_KEY
+
+        },
+
+        body:
+          JSON.stringify({
+
+            model:
+              "gemini-3.8-flash",
+
+            input:
+              prompt,
+
+            store:
+              false
+
+          })
+
       }
     );
+
+
+  const data =
+    await response.json();
 
 
   if (!response.ok) {
 
     throw new Error(
-      `RSS returned ${response.status}`
+      data?.error?.message ||
+      "Gemini editorial generation failed."
     );
 
   }
 
 
-  const xml =
-    await response.text();
+  /*
+    Gemini Interactions API returns
+    model output inside steps.
+  */
+
+  let text =
+    "";
 
 
-  const items =
-    parseRSS(
-      xml
-    );
-
-
-  return items
-    .slice(
-      0,
-      12
+  if (
+    Array.isArray(
+      data.steps
     )
-    .map(
-      item => ({
-        ...item,
-        category:
-          feed.category
-      })
+  ) {
+
+    for (
+      const step of data.steps
+    ) {
+
+      if (
+        step.type !==
+          "model_output" ||
+        !Array.isArray(
+          step.content
+        )
+      ) {
+
+        continue;
+
+      }
+
+
+      for (
+        const content of step.content
+      ) {
+
+        if (
+          content.type ===
+            "text" &&
+          typeof content.text ===
+            "string"
+        ) {
+
+          text +=
+            content.text;
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  /*
+    Secondary response format.
+  */
+
+  if (
+    !text &&
+    typeof data.output_text ===
+      "string"
+  ) {
+
+    text =
+      data.output_text;
+
+  }
+
+
+  const finalText =
+    limitWords(
+      text,
+      10
     );
+
+
+  if (!finalText) {
+
+    throw new Error(
+      "Gemini returned an empty editorial signal."
+    );
+
+  }
+
+
+  return finalText;
 
 }
 
 
-/* =========================================================
-   CREATE ORIGINAL THOUGHT
-========================================================= */
+/* ============================================================
+   FALLBACK
+============================================================ */
 
-function createThought(
-  headline
-) {
+function fallbackSignal() {
 
-  const title =
-    cleanText(
-      headline
+  /*
+    Use localStorage-like rotation through
+    a server-side time bucket.
+
+    This means successive requests don't
+    always return the first sentence.
+  */
+
+  const minute =
+    Math.floor(
+      Date.now() /
+      60000
     );
 
 
-  /*
-   * We deliberately do NOT copy the headline
-   * into the employee UI.
-   *
-   * We create a short original editorial
-   * observation from the topic.
-   */
+  const index =
+    minute %
+    FALLBACK_SIGNALS.length;
 
-
-  const lower =
-    title.toLowerCase();
-
-
-  if (
-    lower.includes("agent")
-  ) {
-
-    return {
-      title:
-        "AI agents are moving from answering questions toward doing work. That makes reliability, permissions and consumption part of the same problem.",
-      category:
-        "AI agents"
-    };
-
-  }
-
-
-  if (
-    lower.includes("gpu") ||
-    lower.includes("data center") ||
-    lower.includes("datacenter") ||
-    lower.includes("infrastructure")
-  ) {
-
-    return {
-      title:
-        "AI demand eventually becomes an infrastructure problem. Behind every prompt is hardware, electricity, networking and inference capacity.",
-      category:
-        "AI infrastructure"
-    };
-
-  }
-
-
-  if (
-    lower.includes("enterprise") ||
-    lower.includes("company") ||
-    lower.includes("business")
-  ) {
-
-    return {
-      title:
-        "Enterprise AI is moving beyond experimentation. The harder question is how companies control thousands of AI decisions without slowing employees down.",
-      category:
-        "Enterprise AI"
-    };
-
-  }
-
-
-  if (
-    lower.includes("model") ||
-    lower.includes("llm")
-  ) {
-
-    return {
-      title:
-        "Every new AI model adds capability and another economic choice. The interesting system is the one that knows which capability a task actually needs.",
-      category:
-        "Model economics"
-    };
-
-  }
-
-
-  if (
-    lower.includes("cost") ||
-    lower.includes("price") ||
-    lower.includes("pricing")
-  ) {
-
-    return {
-      title:
-        "AI pricing is changing quickly. For companies, the bigger question is how those prices behave across millions of real requests.",
-      category:
-        "AI economics"
-    };
-
-  }
-
-
-  if (
-    lower.includes("security") ||
-    lower.includes("cyber")
-  ) {
-
-    return {
-      title:
-        "AI adoption is also expanding the security boundary. More useful AI means more decisions about what information can safely enter the system.",
-      category:
-        "AI security"
-    };
-
-  }
-
-
-  /*
-   * Generic AI signal
-   */
 
   return {
 
-    title:
-      "AI keeps moving into new parts of the technology stack. The next challenge is turning that capability into something useful, measurable and economically sensible.",
+    text:
+      FALLBACK_SIGNALS[index].text,
 
-    category:
-      "AI / Technology"
+    theme:
+      FALLBACK_SIGNALS[index].theme,
+
+    source:
+      "fallback"
 
   };
 
 }
 
 
-/* =========================================================
-   RECENTLY USED TITLES
-========================================================= */
+/* ============================================================
+   RESPONSE
+============================================================ */
 
-function recentlyUsed(
-  title
+function sendJSON(
+  res,
+  status,
+  payload
 ) {
 
-  /*
-   * This is intentionally kept server-local.
-   *
-   * Vercel instances are ephemeral, so this is
-   * only an additional anti-repeat mechanism.
-   */
-
-  return false;
+  res
+    .status(status)
+    .setHeader(
+      "Cache-Control",
+      "no-store, max-age=0"
+    )
+    .json(
+      payload
+    );
 
 }
 
 
-/* =========================================================
-   MAIN HANDLER
-========================================================= */
+/* ============================================================
+   API HANDLER
+============================================================ */
 
 export default async function handler(
   req,
   res
 ) {
 
+  /*
+    GET only.
+  */
+
   if (
-    req.method !== "GET"
+    req.method !==
+    "GET"
   ) {
 
-    return res
-      .status(405)
-      .json({
+    return sendJSON(
+      res,
+      405,
+      {
         error:
           "GET only"
-      });
+      }
+    );
 
   }
 
@@ -799,187 +916,107 @@ export default async function handler(
   try {
 
     /*
-     * Fetch several feeds concurrently.
-     */
+      Collect current AI signals.
+    */
 
-    const results =
-      await Promise.allSettled(
-
-        FEEDS.map(
-          feed =>
-            fetchFeed(
-              feed
-            )
-        )
-
-      );
+    const items =
+      await collectSignals();
 
 
-    let allItems = [];
+    /*
+      If the news layer works,
+      create an editorial interpretation.
+    */
+
+    if (items.length) {
+
+      const selected =
+        selectSignal(
+          items
+        );
 
 
-    results.forEach(
-      result => {
+      if (selected) {
 
-        if (
-          result.status ===
-          "fulfilled"
+        try {
+
+          const editorial =
+            await generateEditorialSignal(
+              selected
+            );
+
+
+          return sendJSON(
+            res,
+            200,
+            {
+
+              text:
+                editorial,
+
+              theme:
+                selected.theme,
+
+              source:
+                "live",
+
+              timestamp:
+                new Date()
+                  .toISOString()
+
+            }
+          );
+
+
+        } catch (
+          editorialError
         ) {
 
-          allItems =
-            allItems.concat(
-              result.value
-            );
+          console.error(
+            "ACI editorial generation failed:",
+            editorialError?.message
+          );
+
+          /*
+            Do not fail the UI simply because
+            the editorial model is unavailable.
+          */
 
         }
 
       }
-    );
-
-
-    /*
-     * Remove empty / duplicate headlines.
-     */
-
-    const unique =
-      Array.from(
-        new Map(
-          allItems.map(
-            item => [
-              item.title,
-              item
-            ]
-          )
-        ).values()
-      );
-
-
-    /*
-     * Prefer recent items.
-     */
-
-    const now =
-      Date.now();
-
-
-    const recent =
-      unique.filter(
-        item => {
-
-          if (
-            !item.published
-          ) {
-
-            return true;
-
-          }
-
-
-          const age =
-            now -
-            item.published.getTime();
-
-
-          return (
-            age >= 0 &&
-            age <=
-              7 *
-              24 *
-              60 *
-              60 *
-              1000
-          );
-
-        }
-      );
-
-
-    const candidates =
-      recent.length
-        ? recent
-        : unique;
-
-
-    if (
-      candidates.length
-    ) {
-
-      const selected =
-        randomItem(
-          candidates
-        );
-
-
-      const thought =
-        createThought(
-          selected.title
-        );
-
-
-      return res
-        .status(200)
-        .json({
-
-          title:
-            thought.title,
-
-          category:
-            thought.category,
-
-          sourceName:
-            "Google News",
-
-          sourceUrl:
-            selected.link || null,
-
-          published:
-            selected.published
-              ? selected.published
-                  .toISOString()
-              : null,
-
-          live:
-            true
-
-        });
 
     }
 
 
     /*
-     * Internet source unavailable.
-     * Use original internal thought.
-     */
+      Fallback.
+    */
 
     const fallback =
-      randomItem(
-        FALLBACKS
-      );
+      fallbackSignal();
 
 
-    return res
-      .status(200)
-      .json({
+    return sendJSON(
+      res,
+      200,
+      {
 
-        title:
-          fallback.title,
+        text:
+          fallback.text,
 
-        category:
-          fallback.category,
+        theme:
+          fallback.theme,
 
-        sourceName:
-          null,
+        source:
+          fallback.source,
 
-        sourceUrl:
-          null,
+        timestamp:
+          new Date()
+            .toISOString()
 
-        published:
-          null,
-
-        live:
-          false
-
-      });
+      }
+    );
 
 
   } catch (error) {
@@ -990,35 +1027,36 @@ export default async function handler(
     );
 
 
+    /*
+      Even if everything external fails,
+      return a valid response so the frontend
+      never breaks.
+    */
+
     const fallback =
-      randomItem(
-        FALLBACKS
-      );
+      fallbackSignal();
 
 
-    return res
-      .status(200)
-      .json({
+    return sendJSON(
+      res,
+      200,
+      {
 
-        title:
-          fallback.title,
+        text:
+          fallback.text,
 
-        category:
-          fallback.category,
+        theme:
+          fallback.theme,
 
-        sourceName:
-          null,
+        source:
+          fallback.source,
 
-        sourceUrl:
-          null,
+        timestamp:
+          new Date()
+            .toISOString()
 
-        published:
-          null,
-
-        live:
-          false
-
-      });
+      }
+    );
 
   }
 
