@@ -10,37 +10,38 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>ACI · AI Consumption Intelligence</title>
+<meta
+  name="theme-color"
+  content="#050505"
+>
 
+<title>ACI · AI Consumption Intelligence</title>
 
 <style>
 
 /* =========================================================
-   ACI
-   EMPLOYEE AI WORKSPACE
-========================================================= */
+   ACI EMPLOYEE WORKSPACE
+   ========================================================= */
 
 :root {
 
   --bg: #050505;
-  --bg-soft: #090909;
+  --bg2: #080808;
 
-  --surface: #0d0d0f;
-  --surface-2: #111114;
-  --surface-3: #161619;
+  --panel: #0c0c0e;
+  --panel2: #101012;
+  --panel3: #141416;
 
-  --line: #242429;
-  --line-light: #333339;
+  --border: #25252a;
+  --border2: #34343a;
 
   --text: #f5f5f5;
-  --muted: #85858d;
-  --muted-2: #5d5d65;
-
-  --accent: #ffffff;
-  --accent-soft: #d9d9ff;
+  --text2: #c7c7cc;
+  --muted: #77777f;
+  --muted2: #55555c;
 
   --green: #72efad;
-  --red: #ff6b72;
+  --red: #ff7078;
 
   --radius: 18px;
 
@@ -48,34 +49,30 @@
 
 
 * {
-
-  box-sizing:
-    border-box;
-
+  box-sizing: border-box;
 }
 
 
 html {
-
-  scroll-behavior:
-    smooth;
-
+  scroll-behavior: smooth;
 }
 
 
 body {
 
-  margin:
-    0;
+  margin: 0;
 
-  min-height:
-    100vh;
+  min-height: 100vh;
 
   background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255,255,255,.045),
+      transparent 32%
+    ),
     var(--bg);
 
-  color:
-    var(--text);
+  color: var(--text);
 
   font-family:
     Inter,
@@ -86,43 +83,7 @@ body {
     "Segoe UI",
     sans-serif;
 
-  overflow-x:
-    hidden;
-
-}
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-body::before {
-
-  content:
-    "";
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  pointer-events:
-    none;
-
-  background:
-
-    radial-gradient(
-      circle at 50% 8%,
-      rgba(255,255,255,.055),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      circle at 85% 70%,
-      rgba(111,111,255,.035),
-      transparent 30%
-    );
+  overflow-x: hidden;
 
 }
 
@@ -131,450 +92,370 @@ button,
 textarea,
 input {
 
-  font:
-    inherit;
+  font: inherit;
 
 }
 
 
 /* =========================================================
    APP
-========================================================= */
+   ========================================================= */
 
 .app {
 
-  min-height:
-    100vh;
-
-  display:
-    flex;
+  min-height: 100vh;
 
 }
 
 
 /* =========================================================
    SIDEBAR
-========================================================= */
+   ========================================================= */
 
 .sidebar {
 
-  position:
-    fixed;
+  position: fixed;
 
-  left:
-    0;
+  inset:
+    0 auto 0 0;
 
-  top:
-    0;
+  width: 255px;
 
-  bottom:
-    0;
-
-  width:
-    260px;
-
-  padding:
-    18px;
+  padding: 18px;
 
   border-right:
-    1px solid var(--line);
+    1px solid rgba(255,255,255,.06);
 
   background:
-    rgba(7,7,8,.92);
+    rgba(7,7,8,.94);
 
   backdrop-filter:
-    blur(20px);
+    blur(22px);
 
-  z-index:
-    20;
+  z-index: 100;
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
+
+  transition:
+    transform .25s ease;
 
 }
 
 
 .brand {
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    10px;
+  gap: 10px;
 
-  padding:
-    5px 4px 20px;
+  margin-bottom: 20px;
 
 }
 
 
 .logo {
 
-  width:
-    31px;
+  width: 31px;
 
-  height:
-    31px;
+  height: 31px;
 
-  border-radius:
-    10px;
+  border-radius: 10px;
 
   background:
-    linear-gradient(
-      135deg,
-      #fff,
-      #73737a
+    radial-gradient(
+      circle at 30% 25%,
+      #ffffff,
+      #bdbdc1 28%,
+      #56565b 60%,
+      #161619 100%
     );
 
   box-shadow:
-    0 0 30px
-    rgba(255,255,255,.09);
+    0 0 30px rgba(255,255,255,.08);
 
 }
 
 
 .brand-name {
 
-  font-size:
-    17px;
+  font-size: 17px;
 
-  font-weight:
-    800;
+  font-weight: 850;
 
-  letter-spacing:
-    -.05em;
+  letter-spacing: -.05em;
 
 }
 
 
-.brand-tag {
+.brand-caption {
 
-  color:
-    var(--muted-2);
+  margin-top: 1px;
 
-  font-size:
-    9px;
+  color: var(--muted2);
 
-  letter-spacing:
-    .12em;
+  font-size: 8px;
 
-  text-transform:
-    uppercase;
+  letter-spacing: .16em;
+
+  text-transform: uppercase;
 
 }
 
-
-/* New chat */
 
 .new-chat {
 
-  width:
-    100%;
+  width: 100%;
+
+  padding: 11px 13px;
 
   border:
-    1px solid var(--line-light);
+    1px solid var(--border2);
 
-  background:
-    #f4f4f4;
+  border-radius: 11px;
 
-  color:
-    #080808;
+  background: #f4f4f4;
 
-  border-radius:
-    12px;
+  color: #050505;
 
-  padding:
-    12px 14px;
+  cursor: pointer;
 
-  font-weight:
-    750;
+  font-weight: 800;
 
-  cursor:
-    pointer;
+  text-align: left;
 
-  transition:
-    .2s;
+  transition: .18s;
 
 }
 
 
 .new-chat:hover {
 
-  transform:
-    translateY(-1px);
+  background: white;
 
-  background:
-    white;
+  transform: translateY(-1px);
 
 }
 
-
-.new-chat span {
-
-  margin-right:
-    6px;
-
-}
-
-
-/* Sidebar headings */
 
 .side-label {
 
   margin:
-    25px 8px 9px;
+    25px 8px 8px;
 
-  color:
-    var(--muted-2);
+  color: var(--muted2);
 
-  font-size:
-    9px;
+  font-size: 9px;
 
-  font-weight:
-    700;
+  font-weight: 750;
 
-  text-transform:
-    uppercase;
+  letter-spacing: .16em;
 
-  letter-spacing:
-    .15em;
+  text-transform: uppercase;
 
 }
 
 
 .chat-list {
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  gap:
-    3px;
+  gap: 3px;
 
-  overflow-y:
-    auto;
+  overflow-y: auto;
 
 }
 
 
 .chat-item {
 
-  width:
-    100%;
+  width: 100%;
+
+  padding: 9px 10px;
 
   border:
     1px solid transparent;
 
-  background:
-    transparent;
+  border-radius: 10px;
 
-  color:
-    #a7a7ad;
+  background: transparent;
 
-  text-align:
-    left;
+  color: #99999f;
 
-  padding:
-    10px;
+  text-align: left;
 
-  border-radius:
-    10px;
+  cursor: pointer;
 
-  cursor:
-    pointer;
+  white-space: nowrap;
 
-  white-space:
-    nowrap;
+  overflow: hidden;
 
-  overflow:
-    hidden;
+  text-overflow: ellipsis;
 
-  text-overflow:
-    ellipsis;
+  font-size: 11px;
 
-  font-size:
-    12px;
+  transition: .16s;
 
 }
 
 
 .chat-item:hover {
 
-  background:
-    #111113;
+  background: #111113;
 
-  color:
-    white;
+  color: white;
 
 }
 
 
 .chat-item.active {
 
-  background:
-    #151518;
+  background: #151518;
 
-  border-color:
-    #29292e;
+  border-color: #29292e;
 
-  color:
-    white;
+  color: white;
 
 }
 
 
 .sidebar-bottom {
 
-  margin-top:
-    auto;
+  margin-top: auto;
+
+  padding-top: 15px;
 
   border-top:
-    1px solid var(--line);
-
-  padding-top:
-    15px;
+    1px solid var(--border);
 
 }
 
 
-.status {
+.system-status {
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    7px;
+  gap: 7px;
 
-  color:
-    #707078;
+  color: #64646c;
 
-  font-size:
-    10px;
+  font-size: 9px;
 
 }
 
 
 .status-dot {
 
-  width:
-    6px;
+  width: 6px;
 
-  height:
-    6px;
+  height: 6px;
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
-  background:
-    var(--green);
+  background: var(--green);
 
   box-shadow:
-    0 0 9px
-    rgba(114,239,173,.5);
+    0 0 10px rgba(114,239,173,.5);
 
 }
 
 
 /* =========================================================
    MAIN
-========================================================= */
+   ========================================================= */
 
 .main {
 
-  width:
-    calc(100% - 260px);
+  min-height: 100vh;
 
-  margin-left:
-    260px;
-
-  min-height:
-    100vh;
+  margin-left: 255px;
 
 }
 
 
 /* =========================================================
-   TOP BAR
-========================================================= */
+   TOPBAR
+   ========================================================= */
 
 .topbar {
 
-  height:
-    65px;
+  position: sticky;
 
-  padding:
-    0 30px;
+  top: 0;
 
-  display:
-    flex;
+  z-index: 50;
 
-  align-items:
-    center;
+  height: 62px;
 
-  justify-content:
-    space-between;
+  padding: 0 28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
 
   border-bottom:
-    1px solid rgba(255,255,255,.05);
-
-  position:
-    sticky;
-
-  top:
-    0;
-
-  z-index:
-    10;
+    1px solid rgba(255,255,255,.045);
 
   background:
     rgba(5,5,5,.76);
 
   backdrop-filter:
-    blur(18px);
+    blur(20px);
 
 }
 
 
-.topbar-left {
+.top-left {
 
-  color:
-    var(--muted);
+  display: flex;
 
-  font-size:
-    11px;
+  align-items: center;
 
-}
+  gap: 10px;
 
+  color: #686870;
 
-.topbar-left strong {
-
-  color:
-    #d7d7db;
+  font-size: 10px;
 
 }
 
 
-.top-actions {
+.mobile-menu {
 
-  display:
-    flex;
+  display: none;
 
-  align-items:
-    center;
+  width: 33px;
 
-  gap:
-    8px;
+  height: 33px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 9px;
+
+  background: #101012;
+
+  color: white;
+
+  cursor: pointer;
+
+}
+
+
+.top-right {
+
+  display: flex;
+
+  gap: 7px;
 
 }
 
@@ -582,572 +463,269 @@ input {
 .top-button {
 
   border:
-    1px solid var(--line);
+    1px solid var(--border);
 
-  background:
-    #0d0d0f;
+  border-radius: 9px;
 
-  color:
-    #b5b5bb;
+  background: #0c0c0e;
 
-  border-radius:
-    9px;
+  color: #929299;
 
-  padding:
-    8px 11px;
+  padding: 8px 11px;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
 }
 
 
 .top-button:hover {
 
-  color:
-    white;
+  color: white;
 
-  border-color:
-    #414149;
+  border-color: var(--border2);
 
 }
 
 
 /* =========================================================
    WORKSPACE
-========================================================= */
+   ========================================================= */
 
 .workspace {
 
   width:
-    min(1050px, 92%);
+    min(1040px, 91%);
 
   margin:
-    auto;
+    0 auto;
 
   padding:
-    70px 0 120px;
+    62px 0 100px;
 
 }
 
 
 /* =========================================================
-   HERO
-========================================================= */
+   DYNAMIC SIGNAL
+   ========================================================= */
 
-.hero {
+.signal {
 
-  text-align:
-    center;
+  text-align: center;
 
-  margin-bottom:
-    48px;
+  min-height: 315px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
 
 }
 
 
-.eyebrow {
+.signal-category {
 
-  color:
-    #72727a;
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 23px;
+
+  color: #67676f;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: .18em;
+
+}
+
+
+.signal-dot {
+
+  width: 5px;
+
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #8d8d95;
+
+}
+
+
+.signal-title {
+
+  max-width: 900px;
+
+  margin: 0;
 
   font-size:
-    10px;
+    clamp(48px, 7vw, 94px);
 
-  text-transform:
-    uppercase;
+  line-height: .91;
 
-  letter-spacing:
-    .2em;
+  letter-spacing: -.075em;
 
-  margin-bottom:
-    20px;
+  font-weight: 850;
 
 }
 
 
-.hero-title {
+.signal-title .line {
 
-  margin:
-    0;
-
-  font-size:
-    clamp(55px, 9vw, 125px);
-
-  line-height:
-    .82;
-
-  letter-spacing:
-    -.085em;
-
-  font-weight:
-    850;
+  display: block;
 
 }
 
 
-.hero-title span {
+.signal-title .faded {
 
-  display:
-    block;
-
-}
-
-
-.hero-title .outline {
-
-  color:
-    transparent;
-
-  -webkit-text-stroke:
-    1px #77777c;
+  color: #68686f;
 
 }
 
 
-.hero-subtitle {
+.signal-source {
 
-  margin:
-    28px auto 0;
+  margin-top: 23px;
 
-  max-width:
-    570px;
+  max-width: 650px;
 
-  color:
-    #777780;
+  color: #66666e;
 
-  font-size:
-    14px;
+  font-size: 10px;
 
-  line-height:
-    1.6;
+  line-height: 1.5;
+
+}
+
+
+.signal-source a {
+
+  color: #8c8c94;
+
+  text-decoration: none;
+
+}
+
+
+.signal-source a:hover {
+
+  color: white;
+
+  text-decoration: underline;
+
+}
+
+
+/* signal animation */
+
+.signal-changing {
+
+  animation:
+    signalIn .5s ease;
+
+}
+
+
+@keyframes signalIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
 
 }
 
 
 /* =========================================================
    ORB
-========================================================= */
-
-.orb-wrap {
-
-  height:
-    95px;
-
-  display:
-    flex;
-
-  justify-content:
-    center;
-
-  align-items:
-    center;
-
-  margin:
-    12px 0 28px;
-
-}
-
+   ========================================================= */
 
 .orb {
 
-  width:
-    46px;
+  width: 42px;
 
-  height:
-    46px;
+  height: 42px;
 
-  border-radius:
-    50%;
+  margin:
+    5px 0 32px;
+
+  border-radius: 50%;
 
   background:
-
     radial-gradient(
-      circle at 35% 30%,
-      #fff,
-      #aaa 25%,
-      #4a4a4e 58%,
-      #121216 100%
+      circle at 30% 25%,
+      white,
+      #c9c9cd 22%,
+      #67676d 52%,
+      #141417 100%
     );
 
   box-shadow:
-
-    0 0 30px
-    rgba(255,255,255,.12),
-
-    0 0 80px
-    rgba(255,255,255,.045);
+    0 0 35px rgba(255,255,255,.12);
 
   animation:
-    breathe 4s ease-in-out infinite;
+    pulse 4s ease-in-out infinite;
 
 }
 
 
-@keyframes breathe {
+@keyframes pulse {
 
   0%,
   100% {
 
-    transform:
-      scale(.92);
+    transform: scale(.92);
 
-    opacity:
-      .82;
+    opacity: .82;
 
   }
 
   50% {
 
-    transform:
-      scale(1.08);
+    transform: scale(1.08);
 
-    opacity:
-      1;
+    opacity: 1;
 
   }
-
-}
-
-
-/* =========================================================
-   COMPOSER
-========================================================= */
-
-.composer-shell {
-
-  position:
-    relative;
-
-  border:
-    1px solid #2a2a30;
-
-  background:
-    linear-gradient(
-      145deg,
-      #101012,
-      #0a0a0c
-    );
-
-  border-radius:
-    22px;
-
-  box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.35);
-
-  transition:
-    .2s;
-
-}
-
-
-.composer-shell:focus-within {
-
-  border-color:
-    #46464d;
-
-  box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.5),
-    0 0 0 1px
-    rgba(255,255,255,.025);
-
-}
-
-
-textarea {
-
-  width:
-    100%;
-
-  min-height:
-    155px;
-
-  resize:
-    vertical;
-
-  border:
-    0;
-
-  outline:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    white;
-
-  padding:
-    24px 25px 10px;
-
-  font-size:
-    16px;
-
-  line-height:
-    1.6;
-
-}
-
-
-textarea::placeholder {
-
-  color:
-    #57575e;
-
-}
-
-
-.composer-footer {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    10px 12px 12px 14px;
-
-}
-
-
-.composer-tools {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    7px;
-
-}
-
-
-.icon-button {
-
-  width:
-    36px;
-
-  height:
-    36px;
-
-  border:
-    1px solid #29292e;
-
-  background:
-    #111114;
-
-  color:
-    #a4a4ab;
-
-  border-radius:
-    10px;
-
-  cursor:
-    pointer;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-}
-
-
-.icon-button:hover {
-
-  color:
-    white;
-
-  border-color:
-    #44444b;
-
-}
-
-
-.file-name {
-
-  max-width:
-    190px;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
-
-  white-space:
-    nowrap;
-
-  color:
-    #74747c;
-
-  font-size:
-    10px;
-
-}
-
-
-.generate {
-
-  border:
-    0;
-
-  background:
-    #f4f4f4;
-
-  color:
-    #080808;
-
-  padding:
-    12px 18px;
-
-  border-radius:
-    11px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
-  transition:
-    .2s;
-
-}
-
-
-.generate:hover {
-
-  transform:
-    translateY(-1px);
-
-  background:
-    white;
-
-}
-
-
-.generate:disabled {
-
-  opacity:
-    .5;
-
-  cursor:
-    wait;
-
-  transform:
-    none;
-
-}
-
-
-/* =========================================================
-   SUGGESTIONS
-========================================================= */
-
-.suggestions {
-
-  display:
-    flex;
-
-  gap:
-    8px;
-
-  overflow-x:
-    auto;
-
-  padding:
-    13px 0;
-
-  scrollbar-width:
-    none;
-
-}
-
-
-.suggestions::-webkit-scrollbar {
-
-  display:
-    none;
-
-}
-
-
-.suggestion {
-
-  flex:
-    0 0 auto;
-
-  border:
-    1px solid #29292f;
-
-  background:
-    #0c0c0f;
-
-  color:
-    #92929a;
-
-  padding:
-    9px 13px;
-
-  border-radius:
-    999px;
-
-  cursor:
-    pointer;
-
-  font-size:
-    10px;
-
-  transition:
-    .18s;
-
-}
-
-
-.suggestion:hover {
-
-  color:
-    white;
-
-  border-color:
-    #515159;
-
-  background:
-    #151519;
 
 }
 
 
 /* =========================================================
    CONVERSATION
-========================================================= */
+   ========================================================= */
 
 .conversation {
+
+  width:
+    min(820px, 100%);
+
+  margin:
+    0 auto 30px;
 
   display:
     flex;
@@ -1155,182 +733,169 @@ textarea::placeholder {
   flex-direction:
     column;
 
-  gap:
-    24px;
-
-  margin-bottom:
-    35px;
+  gap: 28px;
 
 }
 
 
 .message {
 
-  display:
-    flex;
+  max-width: 86%;
 
-  flex-direction:
-    column;
+  animation:
+    messageIn .28s ease;
 
-  max-width:
-    82%;
+}
+
+
+@keyframes messageIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(8px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
 
 }
 
 
 .message.user {
 
-  align-self:
-    flex-end;
-
-  align-items:
-    flex-end;
+  margin-left: auto;
 
 }
 
 
 .message.ai {
 
-  align-self:
-    flex-start;
-
-  align-items:
-    flex-start;
+  margin-right: auto;
 
 }
 
 
 .message-label {
 
-  color:
-    #5d5d65;
+  margin-bottom: 7px;
 
-  font-size:
-    9px;
+  color: #5e5e66;
 
-  text-transform:
-    uppercase;
+  font-size: 8px;
 
-  letter-spacing:
-    .13em;
+  font-weight: 750;
 
-  margin-bottom:
-    7px;
+  text-transform: uppercase;
+
+  letter-spacing: .16em;
 
 }
 
 
 .message-body {
 
-  white-space:
-    pre-wrap;
+  color: #d8d8dc;
 
-  word-break:
-    break-word;
+  font-size: 14px;
 
-  line-height:
-    1.7;
+  line-height: 1.75;
 
-  font-size:
-    14px;
+  white-space: pre-wrap;
+
+  word-break: break-word;
 
 }
 
 
-.message.user
-.message-body {
-
-  background:
-    #151518;
-
-  border:
-    1px solid #28282e;
+.message.user .message-body {
 
   padding:
-    13px 16px;
+    12px 15px;
+
+  border:
+    1px solid #29292e;
 
   border-radius:
-    17px 17px 4px 17px;
+    16px 16px 4px 16px;
 
-  color:
-    #e5e5e8;
+  background:
+    #141417;
+
+  color: #e7e7ea;
 
 }
 
 
-.message.ai
-.message-body {
+.message.ai .message-body {
 
-  color:
-    #d7d7db;
+  padding:
+    0;
 
 }
 
 
 .message-meta {
 
-  margin-top:
-    9px;
+  margin-top: 7px;
 
-  color:
-    #515159;
+  color: #4f4f56;
 
-  font-size:
-    9px;
+  font-size: 8px;
 
 }
 
 
 /* =========================================================
-   LOADING
-========================================================= */
+   TYPING
+   ========================================================= */
 
 .typing {
 
-  display:
-    flex;
+  display: flex;
 
-  gap:
-    5px;
+  gap: 5px;
 
-  padding:
-    7px 0;
+  padding: 8px 0;
 
 }
 
 
 .typing span {
 
-  width:
-    5px;
+  width: 5px;
 
-  height:
-    5px;
+  height: 5px;
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
-  background:
-    #77777e;
+  background: #77777e;
 
   animation:
-    typing 1.1s infinite;
+    typing 1s infinite;
 
 }
 
 
 .typing span:nth-child(2) {
 
-  animation-delay:
-    .15s;
+  animation-delay: .15s;
 
 }
 
 
 .typing span:nth-child(3) {
 
-  animation-delay:
-    .3s;
+  animation-delay: .30s;
 
 }
 
@@ -1341,8 +906,7 @@ textarea::placeholder {
   60%,
   100% {
 
-    opacity:
-      .25;
+    opacity: .25;
 
     transform:
       translateY(0);
@@ -1351,8 +915,7 @@ textarea::placeholder {
 
   30% {
 
-    opacity:
-      1;
+    opacity: 1;
 
     transform:
       translateY(-3px);
@@ -1363,93 +926,372 @@ textarea::placeholder {
 
 
 /* =========================================================
-   EMPTY STATE
-========================================================= */
+   COMPOSER
+   ========================================================= */
 
-.empty-state {
+.composer {
 
-  text-align:
-    center;
+  width:
+    min(820px, 100%);
 
   margin:
-    35px 0 15px;
+    0 auto;
 
-  color:
-    #56565d;
+}
 
-  font-size:
-    11px;
+
+.composer-box {
+
+  border:
+    1px solid #29292f;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #101012,
+      #0a0a0c
+    );
+
+  transition: .2s;
+
+}
+
+
+.composer-box:focus-within {
+
+  border-color: #424249;
+
+  box-shadow:
+    0 20px 80px rgba(0,0,0,.35);
+
+}
+
+
+.prompt {
+
+  width: 100%;
+
+  min-height: 135px;
+
+  max-height: 400px;
+
+  resize: vertical;
+
+  padding:
+    21px 23px 10px;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+}
+
+
+.prompt::placeholder {
+
+  color: #55555d;
+
+}
+
+
+.composer-bottom {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding:
+    9px 11px 11px 13px;
+
+}
+
+
+.tools {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+}
+
+
+.attach {
+
+  width: 35px;
+
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid #29292f;
+
+  border-radius: 10px;
+
+  background: #111114;
+
+  color: #9a9aa1;
+
+  cursor: pointer;
+
+}
+
+
+.attach:hover {
+
+  color: white;
+
+  border-color: #44444b;
+
+}
+
+
+.file-chip {
+
+  display: none;
+
+  align-items: center;
+
+  gap: 6px;
+
+  max-width: 260px;
+
+  padding:
+    7px 9px;
+
+  border:
+    1px solid #29292f;
+
+  border-radius: 8px;
+
+  background: #111114;
+
+  color: #9c9ca3;
+
+  font-size: 9px;
+
+}
+
+
+.file-chip.visible {
+
+  display: flex;
+
+}
+
+
+.file-chip-name {
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+
+.file-remove {
+
+  border: 0;
+
+  background: transparent;
+
+  color: #6e6e75;
+
+  cursor: pointer;
+
+  padding: 0;
+
+}
+
+
+.file-remove:hover {
+
+  color: white;
+
+}
+
+
+.generate {
+
+  border: 0;
+
+  border-radius: 11px;
+
+  padding:
+    11px 17px;
+
+  background: #f2f2f2;
+
+  color: #050505;
+
+  font-weight: 800;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition: .18s;
+
+}
+
+
+.generate:hover {
+
+  background: white;
+
+  transform: translateY(-1px);
+
+}
+
+
+.generate:disabled {
+
+  opacity: .5;
+
+  cursor: wait;
+
+  transform: none;
 
 }
 
 
 /* =========================================================
-   INFO STRIP
-========================================================= */
+   SUGGESTIONS
+   ========================================================= */
 
-.info-strip {
+.suggestions {
 
-  display:
-    flex;
+  width:
+    min(900px, 100%);
 
-  justify-content:
-    center;
+  margin:
+    14px auto 0;
 
-  gap:
-    20px;
+  display: flex;
 
-  color:
-    #45454c;
+  gap: 7px;
 
-  font-size:
-    9px;
+  overflow-x: auto;
 
-  margin-top:
-    15px;
+  padding-bottom: 5px;
+
+  scrollbar-width: none;
 
 }
 
 
-.info-strip span::before {
+.suggestions::-webkit-scrollbar {
 
-  content:
-    "·";
-
-  margin-right:
-    7px;
+  display: none;
 
 }
 
 
-.info-strip span:first-child::before {
+.suggestion {
 
-  display:
-    none;
+  flex:
+    0 0 auto;
+
+  padding:
+    9px 12px;
+
+  border:
+    1px solid #29292f;
+
+  border-radius: 999px;
+
+  background: #0b0b0d;
+
+  color: #77777f;
+
+  cursor: pointer;
+
+  font-size: 9px;
+
+  transition: .18s;
+
+}
+
+
+.suggestion:hover {
+
+  color: white;
+
+  background: #141417;
+
+  border-color: #45454c;
+
+}
+
+
+/* =========================================================
+   FOOTER INFO
+   ========================================================= */
+
+.info {
+
+  text-align: center;
+
+  margin-top: 17px;
+
+  color: #414149;
+
+  font-size: 8px;
+
+}
+
+
+.info span {
+
+  margin:
+    0 5px;
+
+}
+
+
+.info span + span::before {
+
+  content: "·";
+
+  margin-right: 10px;
 
 }
 
 
 /* =========================================================
    MOBILE
-========================================================= */
+   ========================================================= */
 
-.mobile-menu {
-
-  display:
-    none;
-
-}
-
-
-@media(max-width:850px) {
+@media(max-width: 850px) {
 
   .sidebar {
 
     transform:
       translateX(-100%);
-
-    transition:
-      .25s;
 
   }
 
@@ -1464,51 +1306,87 @@ textarea::placeholder {
 
   .main {
 
-    width:
-      100%;
-
-    margin-left:
-      0;
+    margin-left: 0;
 
   }
 
 
   .mobile-menu {
 
-    display:
-      flex;
+    display: flex;
 
-    align-items:
-      center;
+    align-items: center;
 
-    justify-content:
-      center;
-
-    width:
-      32px;
-
-    height:
-      32px;
-
-    border:
-      1px solid var(--line);
-
-    border-radius:
-      9px;
-
-    background:
-      #101013;
-
-    color:
-      white;
-
-    cursor:
-      pointer;
+    justify-content: center;
 
   }
 
 
+  .top-left {
+
+    gap: 8px;
+
+  }
+
+
+  .workspace {
+
+    width: 92%;
+
+    padding-top: 40px;
+
+  }
+
+
+  .signal {
+
+    min-height: 285px;
+
+  }
+
+
+  .signal-title {
+
+    font-size:
+      clamp(45px, 13vw, 75px);
+
+  }
+
+}
+
+
+@media(max-width: 520px) {
+
   .topbar {
+
+    padding: 0 14px;
+
+  }
+
+
+  .top-right .top-button {
+
+    display: none;
+
+  }
+
+
+  .workspace {
+
+    width: 94%;
+
+  }
+
+
+  .signal-title {
+
+    font-size:
+      clamp(43px, 14vw, 65px);
+
+  }
+
+
+  .signal-source {
 
     padding:
       0 15px;
@@ -1516,65 +1394,24 @@ textarea::placeholder {
   }
 
 
-  .workspace {
-
-    width:
-      92%;
-
-    padding-top:
-      45px;
-
-  }
-
-
-  .hero-title {
-
-    font-size:
-      clamp(55px, 17vw, 95px);
-
-  }
-
-
   .message {
 
-    max-width:
-      94%;
-
-  }
-
-}
-
-
-@media(max-width:520px) {
-
-  .topbar-left {
-
-    display:
-      none;
+    max-width: 94%;
 
   }
 
 
-  .hero-subtitle {
+  .prompt {
 
-    font-size:
-      12px;
-
-  }
-
-
-  textarea {
-
-    min-height:
-      130px;
+    min-height: 120px;
 
     padding:
-      19px;
+      18px;
 
   }
 
 
-  .composer-footer {
+  .composer-bottom {
 
     align-items:
       flex-end;
@@ -1582,21 +1419,9 @@ textarea::placeholder {
   }
 
 
-  .file-name {
+  .file-chip {
 
-    max-width:
-      100px;
-
-  }
-
-
-  .info-strip {
-
-    flex-direction:
-      column;
-
-    gap:
-      4px;
+    max-width: 150px;
 
   }
 
@@ -1633,7 +1458,7 @@ textarea::placeholder {
       ACI
     </div>
 
-    <div class="brand-tag">
+    <div class="brand-caption">
       Intelligence
     </div>
 
@@ -1647,10 +1472,7 @@ textarea::placeholder {
   class="new-chat"
   type="button"
 >
-
-  <span>＋</span>
-  New chat
-
+  ＋ New chat
 </button>
 
 
@@ -1678,17 +1500,16 @@ textarea::placeholder {
 
 <div class="sidebar-bottom">
 
-  <div class="status">
+  <div class="system-status">
 
     <span class="status-dot"></span>
 
-    <span>
-      ACI systems operational
-    </span>
+    ACI systems operational
 
   </div>
 
 </div>
+
 
 </aside>
 
@@ -1697,18 +1518,19 @@ textarea::placeholder {
      MAIN
 ======================================================= -->
 
-<section class="main">
+<main class="main">
 
 
 <header class="topbar">
 
 
-<div class="topbar-left">
+<div class="top-left">
 
   <button
     id="mobileMenu"
     class="mobile-menu"
     type="button"
+    aria-label="Open menu"
   >
     ☰
   </button>
@@ -1720,7 +1542,7 @@ textarea::placeholder {
 </div>
 
 
-<div class="top-actions">
+<div class="top-right">
 
   <button
     id="newChatTop"
@@ -1732,54 +1554,58 @@ textarea::placeholder {
 
 </div>
 
+
 </header>
 
 
-<main class="workspace">
+<div class="workspace">
 
 
 <!-- =====================================================
-     HERO
+     DYNAMIC AI SIGNAL
 ===================================================== -->
 
 <section
-  id="hero"
-  class="hero"
+  id="signal"
+  class="signal"
 >
 
 
-<div class="eyebrow">
-  AI Consumption Intelligence
+<div
+  id="signalCategory"
+  class="signal-category"
+>
+
+  <span class="signal-dot"></span>
+
+  <span id="signalCategoryText">
+    AI / Technology
+  </span>
+
 </div>
 
 
-<h1 class="hero-title">
+<h1
+  id="signalTitle"
+  class="signal-title"
+>
 
-  <span id="heroLine1">
-    WHAT ARE WE
-  </span>
-
-  <span
-    id="heroLine2"
-    class="outline"
-  >
-    WORKING ON?
-  </span>
+  What's happening
+  in AI right now?
 
 </h1>
 
 
-<div class="orb-wrap">
+<div class="orb"></div>
 
-  <div class="orb"></div>
 
+<div
+  id="signalSource"
+  class="signal-source"
+>
+  A fresh AI signal will appear here.
 </div>
 
-
-<p class="hero-subtitle">
-  Ask for an outcome.
-  ACI handles the intelligence behind it.
-</p>
 
 </section>
 
@@ -1800,28 +1626,33 @@ textarea::placeholder {
 
 <section
   id="composer"
-  class="composer-shell"
+  class="composer"
 >
+
+
+<div class="composer-box">
 
 
 <textarea
   id="prompt"
+  class="prompt"
   placeholder="Ask ACI anything..."
-  autocomplete="off"
+  aria-label="Ask ACI anything"
 ></textarea>
 
 
-<div class="composer-footer">
+<div class="composer-bottom">
 
 
-<div class="composer-tools">
+<div class="tools">
 
 
 <button
-  id="attachButton"
-  class="icon-button"
+  id="attach"
+  class="attach"
   type="button"
-  title="Attach a document"
+  aria-label="Attach document"
+  title="Attach document"
 >
   ＋
 </button>
@@ -1831,14 +1662,66 @@ textarea::placeholder {
   id="fileInput"
   type="file"
   hidden
-  accept=".txt,.md,.csv,.json,.html,.js,.py,.sql,.xml,.log,.doc,.docx,.pdf"
+  accept="
+    .txt,
+    .md,
+    .csv,
+    .json,
+    .html,
+    .htm,
+    .js,
+    .jsx,
+    .ts,
+    .tsx,
+    .py,
+    .java,
+    .c,
+    .cpp,
+    .cs,
+    .sql,
+    .xml,
+    .yaml,
+    .yml,
+    .log,
+    .css,
+    .scss,
+    .sh,
+    .bash,
+    .pdf,
+    .doc,
+    .docx
+  "
 >
 
 
+<div
+  id="fileChip"
+  class="file-chip"
+>
+
+
+<span>
+  📎
+</span>
+
+
 <span
-  id="fileName"
-  class="file-name"
+  id="fileChipName"
+  class="file-chip-name"
 ></span>
+
+
+<button
+  id="removeFile"
+  class="file-remove"
+  type="button"
+  aria-label="Remove attachment"
+>
+  ×
+</button>
+
+
+</div>
 
 
 </div>
@@ -1849,23 +1732,15 @@ textarea::placeholder {
   class="generate"
   type="button"
 >
-
-  Generate
-
-  <span>
-    ↗
-  </span>
-
+  Generate ↗
 </button>
+
 
 </div>
 
-</section>
 
+</div>
 
-<!-- =====================================================
-     SUGGESTIONS
-===================================================== -->
 
 <div
   id="suggestions"
@@ -1873,15 +1748,7 @@ textarea::placeholder {
 ></div>
 
 
-<div
-  id="emptyState"
-  class="empty-state"
->
-  Your conversation will appear here.
-</div>
-
-
-<div class="info-strip">
+<div class="info">
 
   <span>
     Intelligence runs server-side
@@ -1898,9 +1765,14 @@ textarea::placeholder {
 </div>
 
 
+</section>
+
+
+</div>
+
+
 </main>
 
-</section>
 
 </div>
 
@@ -1908,182 +1780,787 @@ textarea::placeholder {
 <script>
 
 /* =========================================================
-   ACI EMPLOYEE CLIENT
+   ACI EMPLOYEE FRONTEND
+   ========================================================= */
+
+
+/* =========================================================
+   ELEMENTS
 ========================================================= */
 
+const sidebar =
+  document.getElementById(
+    "sidebar"
+  );
 
-/*
- * =========================================================
- * RANDOM HERO COPY
- * =========================================================
- */
 
-const heroSets = [
+const promptInput =
+  document.getElementById(
+    "prompt"
+  );
 
-  [
-    "WHAT ARE WE",
-    "WORKING ON?"
-  ],
 
-  [
-    "WHAT SHOULD WE",
-    "FIGURE OUT?"
-  ],
+const generateButton =
+  document.getElementById(
+    "generate"
+  );
 
-  [
-    "WHAT CAN WE",
-    "BUILD TODAY?"
-  ],
 
-  [
-    "WHAT NEEDS",
-    "THINKING?"
-  ],
+const conversationElement =
+  document.getElementById(
+    "conversation"
+  );
 
-  [
-    "WHAT'S THE",
-    "NEXT MOVE?"
-  ],
 
-  [
-    "GIVE A PROBLEM.",
-    "GET A PATH."
-  ],
+const signalElement =
+  document.getElementById(
+    "signal"
+  );
 
-  [
-    "START WITH",
-    "THE OUTCOME."
-  ]
+
+const signalTitle =
+  document.getElementById(
+    "signalTitle"
+  );
+
+
+const signalCategoryText =
+  document.getElementById(
+    "signalCategoryText"
+  );
+
+
+const signalSource =
+  document.getElementById(
+    "signalSource"
+  );
+
+
+const suggestionsElement =
+  document.getElementById(
+    "suggestions"
+  );
+
+
+const fileInput =
+  document.getElementById(
+    "fileInput"
+  );
+
+
+const fileChip =
+  document.getElementById(
+    "fileChip"
+  );
+
+
+const fileChipName =
+  document.getElementById(
+    "fileChipName"
+  );
+
+
+/* =========================================================
+   CHAT STATE
+========================================================= */
+
+let conversations = [];
+
+let currentChatId = null;
+
+let attachedFile = null;
+
+let attachedText = "";
+
+
+/* =========================================================
+   LARGE FALLBACK THOUGHT LIBRARY
+========================================================= */
+
+const fallbackThoughts = [
+
+  {
+    category: "AI economics",
+    title:
+      "AI is becoming cheaper to use. That does not mean companies are becoming better at using it."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "The next enterprise AI problem may not be model capability. It may be knowing where every AI request is going."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "Every AI answer has an infrastructure bill hiding behind it."
+  },
+
+  {
+    category: "AI agents",
+    title:
+      "When AI agents start acting instead of answering, the economics of every decision become much more important."
+  },
+
+  {
+    category: "AI strategy",
+    title:
+      "Giving employees more AI does not automatically create more productivity. The workflow around the AI matters."
+  },
+
+  {
+    category: "Model economics",
+    title:
+      "If two models can solve the same task, why should the company always pay for the more expensive one?"
+  },
+
+  {
+    category: "Enterprise software",
+    title:
+      "AI is quietly turning software from a license expense into a consumption expense."
+  },
+
+  {
+    category: "AI adoption",
+    title:
+      "The interesting question is no longer whether employees use AI. It is what happens after they start using it everywhere."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "Inference happens one request at a time. Enterprise AI economics happen millions of requests later."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "Every new AI model creates more capability. It also creates another routing decision."
+  },
+
+  {
+    category: "AI productivity",
+    title:
+      "The fastest AI answer is not always the most valuable one. The cheapest useful answer might be."
+  },
+
+  {
+    category: "AI security",
+    title:
+      "The more AI becomes part of everyday work, the harder it becomes to separate convenience from data risk."
+  },
+
+  {
+    category: "AI governance",
+    title:
+      "Enterprise AI governance cannot stop at asking which models employees are allowed to use."
+  },
+
+  {
+    category: "AI agents",
+    title:
+      "An AI agent that can execute a task changes the question from 'Can it answer?' to 'Should it act?'"
+  },
+
+  {
+    category: "AI markets",
+    title:
+      "AI competition is moving beyond intelligence. Price, latency, availability and reliability are becoming weapons too."
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "A thousand cheap AI requests can matter more financially than one expensive experiment."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "Most companies will eventually need an AI layer between employees and models."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "The model is only one component of an AI system. The economics live across the entire request."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "What happens when choosing an AI model becomes as dynamic as choosing a cloud server?"
+  },
+
+  {
+    category: "AI strategy",
+    title:
+      "The winning enterprise AI architecture may be the one that knows when not to use the most powerful model."
+  },
+
+  {
+    category: "AI adoption",
+    title:
+      "AI adoption becomes a finance problem the moment experimentation becomes habitual."
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "If AI becomes infrastructure, someone eventually has to build the meter."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "GPU capacity is physical. AI demand is behavioral. The economics sit between the two."
+  },
+
+  {
+    category: "AI productivity",
+    title:
+      "Saving ten minutes per employee sounds small until thousands of employees start doing it every day."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "The future enterprise AI stack may have an economic control plane sitting above the models."
+  },
+
+  {
+    category: "AI governance",
+    title:
+      "A policy that says 'use approved AI' answers who can use AI. It does not answer how efficiently they use it."
+  },
+
+  {
+    category: "Model economics",
+    title:
+      "Model prices are falling. The number of things companies want models to do is rising."
+  },
+
+  {
+    category: "AI agents",
+    title:
+      "An AI agent can multiply productivity. It can also multiply consumption."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "Latency is a user experience metric. At enterprise scale, it becomes an economic metric too."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "The model that wins a benchmark is not necessarily the model that wins a company's workload."
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "The right AI question may be less 'Which model is smartest?' and more 'Which model is sufficient?'"
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "AI spend becomes difficult to control when employees experience it as free."
+  },
+
+  {
+    category: "AI security",
+    title:
+      "An AI request can carry more information than its final answer reveals."
+  },
+
+  {
+    category: "AI strategy",
+    title:
+      "Enterprise AI is becoming a portfolio problem: capability, cost, risk, speed and reliability."
+  },
+
+  {
+    category: "AI markets",
+    title:
+      "As model capabilities converge on everyday tasks, economics could become the differentiator."
+  },
+
+  {
+    category: "AI adoption",
+    title:
+      "The biggest AI transformation may happen quietly inside thousands of ordinary workflows."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "AI consumption has no office building, no electricity meter and no obvious queue. Yet it still creates a bill."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "What if employees never had to know which AI model was answering them?"
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "A good AI system should know when a simple task deserves a simple model."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "Software used to hide hardware complexity. AI may do the same for intelligence itself."
+  },
+
+  {
+    category: "AI agents",
+    title:
+      "Once AI can call tools, APIs and other models, routing becomes a system design problem."
+  },
+
+  {
+    category: "AI productivity",
+    title:
+      "The value of AI is rarely the answer alone. It is the work that disappears after the answer."
+  },
+
+  {
+    category: "AI governance",
+    title:
+      "AI governance will eventually need dashboards that finance teams can understand."
+  },
+
+  {
+    category: "Model economics",
+    title:
+      "The cheapest model is not always the right model. The interesting problem is finding the cheapest model that works."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "Companies are buying intelligence before they have built a way to measure its consumption."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "Every model request has a price. Every unnecessary request has an opportunity cost."
+  },
+
+  {
+    category: "AI strategy",
+    title:
+      "AI transformation is becoming less about adding another chatbot and more about redesigning how work moves."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "The interface may hide the model completely. The economics cannot stay hidden forever."
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "What would happen if every AI request had to justify its own cost?"
+  },
+
+  {
+    category: "AI agents",
+    title:
+      "The more autonomous AI becomes, the more important failure recovery becomes."
+  },
+
+  {
+    category: "Enterprise AI",
+    title:
+      "The next generation of enterprise software may route intelligence the way networks route traffic."
+  },
+
+  {
+    category: "AI infrastructure",
+    title:
+      "Model availability is becoming part of application reliability."
+  },
+
+  {
+    category: "AI economics",
+    title:
+      "AI cost optimization should happen before the bill arrives, not after finance discovers it."
+  },
+
+  {
+    category: "AI strategy",
+    title:
+      "An enterprise should not need every employee to become an AI infrastructure expert."
+  },
+
+  {
+    category: "Technology",
+    title:
+      "AI is turning the question 'What software should we buy?' into 'What intelligence should we consume?'"
+  }
 
 ];
 
 
-function randomHero() {
+/* =========================================================
+   RANDOM HELPERS
+========================================================= */
 
-  const set =
-    heroSets[
-      Math.floor(
-        Math.random() *
-        heroSets.length
-      )
-    ];
+function randomItem(
+  array
+) {
 
-
-  document
-    .getElementById(
-      "heroLine1"
+  return array[
+    Math.floor(
+      Math.random() *
+      array.length
     )
-    .textContent =
-      set[0];
-
-
-  document
-    .getElementById(
-      "heroLine2"
-    )
-    .textContent =
-      set[1];
+  ];
 
 }
 
 
-randomHero();
+function randomThought() {
+
+  const last =
+    localStorage.getItem(
+      "aci_last_thought"
+    );
+
+
+  let available =
+    fallbackThoughts.filter(
+      thought =>
+        thought.title !== last
+    );
+
+
+  if (!available.length) {
+
+    available =
+      fallbackThoughts;
+
+  }
+
+
+  const selected =
+    randomItem(
+      available
+    );
+
+
+  localStorage.setItem(
+    "aci_last_thought",
+    selected.title
+  );
+
+
+  return selected;
+
+}
 
 
 /* =========================================================
-   SUGGESTION LIBRARY
+   DYNAMIC INTERNET SIGNAL
 ========================================================= */
 
-const suggestionSets = [
+async function loadDynamicThought() {
 
-  [
-    "Turn this idea into an execution plan",
-    "Analyze this business opportunity",
-    "Draft a professional response",
-    "Explain this technical problem simply",
-    "Find the risks in this idea"
-  ],
+  signalElement.classList.remove(
+    "signal-changing"
+  );
 
-  [
-    "Summarize this for leadership",
-    "Turn this into five key actions",
-    "Challenge this strategy",
-    "Create a decision framework",
-    "Make this easier to understand"
-  ],
 
-  [
-    "Write a concise executive summary",
-    "Find the hidden assumptions",
-    "Compare the possible approaches",
-    "Create a 30-day plan",
-    "What would you do first?"
-  ],
+  signalTitle.textContent =
+    "Finding a fresh AI signal...";
 
-  [
-    "Debug this problem",
-    "Design a better architecture",
-    "Review this code",
-    "Explain why this fails",
-    "Suggest a simpler solution"
-  ],
 
-  [
-    "Draft an email for this",
-    "Make this sound more professional",
-    "Turn these notes into a message",
-    "Create talking points",
-    "Make this executive-friendly"
-  ],
+  signalCategoryText.textContent =
+    "AI / Technology";
 
-  [
-    "Analyze the market opportunity",
-    "Find the unit economics",
-    "Build a simple business model",
-    "Identify the biggest risks",
-    "Estimate what matters first"
-  ]
+
+  signalSource.textContent =
+    "Looking for something worth thinking about.";
+
+
+  try {
+
+    const response =
+      await fetch(
+        `/api/insight?t=${Date.now()}`,
+        {
+          cache: "no-store"
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Insight service unavailable"
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !data ||
+      !data.title
+    ) {
+
+      throw new Error(
+        "Invalid insight"
+      );
+
+    }
+
+
+    signalTitle.textContent =
+      data.title;
+
+
+    signalCategoryText.textContent =
+      data.category ||
+      "AI / Technology";
+
+
+    if (
+      data.sourceUrl &&
+      data.sourceName
+    ) {
+
+      signalSource.innerHTML =
+        `
+          <a
+            href="${escapeAttribute(data.sourceUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ${escapeHTML(data.sourceName)}
+          </a>
+          · fresh technology signal
+        `;
+
+    } else {
+
+      signalSource.textContent =
+        "Fresh ACI thought";
+
+    }
+
+
+  } catch (error) {
+
+    console.warn(
+      "Dynamic insight failed:",
+      error
+    );
+
+
+    const fallback =
+      randomThought();
+
+
+    signalTitle.textContent =
+      fallback.title;
+
+
+    signalCategoryText.textContent =
+      fallback.category;
+
+
+    signalSource.textContent =
+      "ACI thought · generated for this session";
+
+  }
+
+
+  signalElement.classList.add(
+    "signal-changing"
+  );
+
+}
+
+
+/* =========================================================
+   SAFE HTML HELPERS
+========================================================= */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(
+  value
+) {
+
+  return escapeHTML(
+    value
+  );
+
+}
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+const suggestionLibrary = [
+
+  "Turn this idea into an execution plan",
+
+  "Challenge the assumptions behind this",
+
+  "Analyze the business opportunity",
+
+  "Find the biggest risks",
+
+  "Explain this simply",
+
+  "Make this executive-ready",
+
+  "Compare the possible approaches",
+
+  "Create a 30-day plan",
+
+  "What would you do first?",
+
+  "Find the hidden problems",
+
+  "Turn this into a professional email",
+
+  "Review this technical approach",
+
+  "Stress-test this strategy",
+
+  "Make this dramatically simpler",
+
+  "Build a decision framework",
+
+  "Summarize this for leadership",
+
+  "Identify what information is missing",
+
+  "Find the cheapest sensible approach",
+
+  "Turn these notes into action items",
+
+  "Prepare talking points for a meeting",
+
+  "Explain the trade-offs",
+
+  "Find the likely failure points",
+
+  "Review this code",
+
+  "Design a better architecture",
+
+  "Create an executive summary",
+
+  "What could go wrong?",
+
+  "Give me three alternative approaches",
+
+  "Turn this into a product idea",
+
+  "Analyze the unit economics",
+
+  "Help me make this decision",
+
+  "Find the strongest argument against this",
+
+  "Convert this into a presentation outline",
+
+  "Make this more concise",
+
+  "Make this more persuasive",
+
+  "Find the opportunity nobody is seeing",
+
+  "Break this into practical steps",
+
+  "Explain the technical implications",
+
+  "Create a risk matrix",
+
+  "Turn this research into decisions",
+
+  "What should happen next?"
 
 ];
 
 
-let suggestionIndex =
-  Math.floor(
-    Math.random() *
-    suggestionSets.length
-  );
+function shuffle(
+  array
+) {
 
+  return [...array]
+    .sort(
+      () =>
+        Math.random() -
+        .5
+    );
 
-/*
- * IMPORTANT:
- *
- * Buttons are created with DOM APIs instead
- * of inline onclick handlers.
- *
- * This fixes the issue where clicking the
- * suggestion previously failed to insert
- * the text into the textarea.
- */
+}
+
 
 function renderSuggestions() {
 
-  const container =
-    document.getElementById(
-      "suggestions"
-    );
-
-
-  container.innerHTML =
+  suggestionsElement.innerHTML =
     "";
 
 
-  const suggestions =
-    suggestionSets[
-      suggestionIndex
-    ];
+  const selected =
+    shuffle(
+      suggestionLibrary
+    ).slice(
+      0,
+      7
+    );
 
 
-  suggestions.forEach(
+  selected.forEach(
     text => {
 
       const button =
@@ -2108,29 +2585,23 @@ function renderSuggestions() {
         "click",
         () => {
 
-          const prompt =
-            document.getElementById(
-              "prompt"
-            );
-
-
-          prompt.value =
+          promptInput.value =
             text;
 
 
-          prompt.focus();
+          promptInput.focus();
 
 
-          prompt.setSelectionRange(
-            prompt.value.length,
-            prompt.value.length
+          promptInput.setSelectionRange(
+            promptInput.value.length,
+            promptInput.value.length
           );
 
         }
       );
 
 
-      container.appendChild(
+      suggestionsElement.appendChild(
         button
       );
 
@@ -2140,59 +2611,82 @@ function renderSuggestions() {
 }
 
 
-renderSuggestions();
-
-
 /* =========================================================
-   CHAT STATE
+   CHAT STORAGE
 ========================================================= */
 
-let conversations =
-  [];
+function saveConversations() {
+
+  try {
+
+    localStorage.setItem(
+      "aci_conversations",
+      JSON.stringify(
+        conversations
+      )
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Conversation storage unavailable:",
+      error
+    );
+
+  }
+
+}
 
 
-let currentChatId =
-  null;
+function loadConversations() {
+
+  try {
+
+    const stored =
+      localStorage.getItem(
+        "aci_conversations"
+      );
 
 
-let attachedFile =
-  null;
+    if (!stored) {
+
+      return;
+
+    }
 
 
-let attachedText =
-  "";
+    const parsed =
+      JSON.parse(
+        stored
+      );
+
+
+    if (
+      Array.isArray(parsed)
+    ) {
+
+      conversations =
+        parsed.slice(
+          0,
+          30
+        );
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Could not load conversations:",
+      error
+    );
+
+  }
+
+}
 
 
 /* =========================================================
-   ELEMENTS
-========================================================= */
-
-const promptInput =
-  document.getElementById(
-    "prompt"
-  );
-
-
-const generateButton =
-  document.getElementById(
-    "generate"
-  );
-
-
-const conversationElement =
-  document.getElementById(
-    "conversation"
-  );
-
-
-const emptyState =
-  document.getElementById(
-    "emptyState"
-  );
-
-
-/* =========================================================
-   NEW CHAT
+   CREATE CHAT
 ========================================================= */
 
 function createChat() {
@@ -2200,8 +2694,7 @@ function createChat() {
   const chat = {
 
     id:
-      Date.now()
-      .toString(),
+      Date.now().toString(),
 
     title:
       "New conversation",
@@ -2224,16 +2717,6 @@ function createChat() {
     chat.id;
 
 
-  renderSidebar();
-
-
-  renderConversation();
-
-
-  promptInput.value =
-    "";
-
-
   attachedFile =
     null;
 
@@ -2242,28 +2725,28 @@ function createChat() {
     "";
 
 
-  document
-    .getElementById(
-      "fileName"
-    )
-    .textContent =
+  clearAttachment();
+
+
+  promptInput.value =
     "";
 
 
-  randomHero();
+  renderSidebar();
 
-
-  suggestionIndex =
-    Math.floor(
-      Math.random() *
-      suggestionSets.length
-    );
-
+  renderConversation();
 
   renderSuggestions();
 
+  loadDynamicThought();
+
 
   promptInput.focus();
+
+
+  closeSidebar();
+
+  saveConversations();
 
 }
 
@@ -2306,7 +2789,10 @@ function renderSidebar() {
 
 
   conversations.forEach(
-    (chat, index) => {
+    (
+      chat,
+      index
+    ) => {
 
       const button =
         document.createElement(
@@ -2345,13 +2831,15 @@ function renderSidebar() {
 
           renderConversation();
 
-          closeMobileSidebar();
+          closeSidebar();
 
         }
       );
 
 
-      if (index < 6) {
+      if (
+        index < 6
+      ) {
 
         today.appendChild(
           button
@@ -2372,17 +2860,17 @@ function renderSidebar() {
 
 
 /* =========================================================
-   CONVERSATION RENDERING
+   CONVERSATION
 ========================================================= */
 
 function renderConversation() {
 
-  const chat =
-    getCurrentChat();
-
-
   conversationElement.innerHTML =
     "";
+
+
+  const chat =
+    getCurrentChat();
 
 
   if (
@@ -2390,15 +2878,17 @@ function renderConversation() {
     !chat.messages.length
   ) {
 
-    emptyState.style.display =
-      "block";
-
     return;
 
   }
 
 
-  emptyState.style.display =
+  /*
+   * Once a conversation exists,
+   * hide the large landing signal.
+   */
+
+  signalElement.style.display =
     "none";
 
 
@@ -2415,7 +2905,7 @@ function renderConversation() {
   );
 
 
-  scrollToBottom();
+  scrollBottom();
 
 }
 
@@ -2506,11 +2996,7 @@ function addMessageToDOM(
 }
 
 
-/* =========================================================
-   LOADING MESSAGE
-========================================================= */
-
-function addTypingMessage() {
+function addTyping() {
 
   const message =
     document.createElement(
@@ -2548,12 +3034,12 @@ function addTypingMessage() {
   );
 
 
-  scrollToBottom();
+  scrollBottom();
 
 }
 
 
-function removeTypingMessage() {
+function removeTyping() {
 
   const element =
     document.getElementById(
@@ -2571,16 +3057,19 @@ function removeTypingMessage() {
 
 
 /* =========================================================
-   SEND
+   SEND REQUEST
 ========================================================= */
 
 async function sendPrompt() {
 
-  let prompt =
+  const typedPrompt =
     promptInput.value.trim();
 
 
-  if (!prompt) {
+  if (
+    !typedPrompt &&
+    !attachedFile
+  ) {
 
     promptInput.focus();
 
@@ -2588,11 +3077,6 @@ async function sendPrompt() {
 
   }
 
-
-  /*
-   * If no conversation exists,
-   * automatically create one.
-   */
 
   if (!currentChatId) {
 
@@ -2606,43 +3090,91 @@ async function sendPrompt() {
 
 
   if (!chat) {
+
     return;
-  }
-
-
-  /*
-   * Attach extracted text
-   * from supported local files.
-   */
-
-  if (attachedText) {
-
-    prompt =
-      `${prompt}\n\n[Attached document: ${attachedFile?.name || "document"}]\n\n${attachedText}`;
 
   }
 
 
+  let requestPrompt =
+    typedPrompt ||
+    "Analyze the attached document.";
+
+
   /*
-   * Set title from first prompt.
+   * Text-readable attachments
    */
 
   if (
-    chat.messages.length ===
-    0
+    attachedFile &&
+    attachedText
+  ) {
+
+    requestPrompt +=
+
+      `\n\n[ATTACHED DOCUMENT]
+Filename: ${attachedFile.name}
+
+${attachedText}
+
+[END ATTACHED DOCUMENT]`;
+
+  }
+
+
+  /*
+   * PDF/DOC/DOCX currently cannot be
+   * extracted by the browser.
+   *
+   * Keep the attachment information visible
+   * instead of pretending the content was read.
+   */
+
+  else if (
+    attachedFile
+  ) {
+
+    requestPrompt +=
+
+      `\n\n[ATTACHED FILE]
+Filename: ${attachedFile.name}
+Type: ${attachedFile.type || "unknown"}
+Size: ${attachedFile.size} bytes
+
+[END ATTACHED FILE]`;
+
+  }
+
+
+  /*
+   * Conversation title
+   */
+
+  if (
+    chat.messages.length === 0
   ) {
 
     chat.title =
-      createChatTitle(
-        prompt
+      createTitle(
+        typedPrompt ||
+        attachedFile?.name ||
+        "Document analysis"
       );
 
   }
 
 
   /*
-   * Save user message.
+   * User-facing message
    */
+
+  const displayMessage =
+    attachedFile
+
+      ? `${typedPrompt || "Analyze this document."}\n\n📎 ${attachedFile.name}`
+
+      : typedPrompt;
+
 
   chat.messages.push({
 
@@ -2650,54 +3182,38 @@ async function sendPrompt() {
       "user",
 
     content:
-      prompt,
+      displayMessage,
 
     meta:
       attachedFile
-        ? `Attached · ${attachedFile.name}`
+        ? `Attachment · ${attachedFile.name}`
         : ""
 
   });
 
 
-  /*
-   * Clear composer.
-   */
-
   promptInput.value =
     "";
 
 
-  attachedText =
-    "";
-
-
-  attachedFile =
-    null;
-
-
-  document
-    .getElementById(
-      "fileName"
-    )
-    .textContent =
-    "";
-
+  /*
+   * Preserve attachment on failure.
+   * Clear only after successful generation.
+   */
 
   renderSidebar();
 
   renderConversation();
 
-
-  addTypingMessage();
+  addTyping();
 
 
   generateButton.disabled =
     true;
 
 
-  generateButton.innerHTML =
-    `Thinking <span>•</span>`;
+  generateButton.textContent =
+    "Thinking...";
 
 
   const started =
@@ -2723,7 +3239,10 @@ async function sendPrompt() {
 
           body:
             JSON.stringify({
-              prompt
+
+              prompt:
+                requestPrompt
+
             })
 
         }
@@ -2767,18 +3286,7 @@ async function sendPrompt() {
       started;
 
 
-    /*
-     * Employee-facing metadata deliberately
-     * does NOT expose model or AI cost.
-     *
-     * The admin console receives those details.
-     */
-
-    const meta =
-      `Generated in ${formatLatency(elapsed)}`;
-
-
-    removeTypingMessage();
+    removeTyping();
 
 
     chat.messages.push({
@@ -2789,37 +3297,36 @@ async function sendPrompt() {
       content:
         answer,
 
-      meta
+      meta:
+        `Completed · ${formatLatency(elapsed)}`
 
     });
 
 
+    clearAttachment();
+
+
+    attachedFile =
+      null;
+
+
+    attachedText =
+      "";
+
+
     renderConversation();
 
-
-    /*
-     * Give the employee fresh suggestions
-     * after every completed interaction.
-     */
-
-    suggestionIndex =
-      Math.floor(
-        Math.random() *
-        suggestionSets.length
-      );
-
+    renderSidebar();
 
     renderSuggestions();
 
 
+    saveConversations();
+
+
   } catch (error) {
 
-    removeTypingMessage();
-
-
-    const message =
-      error?.message ||
-      "Something went wrong while generating the response.";
+    removeTyping();
 
 
     chat.messages.push({
@@ -2828,7 +3335,7 @@ async function sendPrompt() {
         "ai",
 
       content:
-        `I couldn't complete that request.\n\n${message}`,
+        `I couldn't complete that request.\n\n${error?.message || "Please try again."}`,
 
       meta:
         "Request failed"
@@ -2838,19 +3345,20 @@ async function sendPrompt() {
 
     renderConversation();
 
+
+    saveConversations();
+
   } finally {
 
     generateButton.disabled =
       false;
 
 
-    generateButton.innerHTML =
-      `Generate <span>↗</span>`;
+    generateButton.textContent =
+      "Generate ↗";
 
 
-    renderSidebar();
-
-    scrollToBottom();
+    scrollBottom();
 
   }
 
@@ -2861,12 +3369,14 @@ async function sendPrompt() {
    TITLE
 ========================================================= */
 
-function createChatTitle(
+function createTitle(
   text
 ) {
 
-  const clean =
-    text
+  const cleaned =
+    String(
+      text
+    )
       .replace(
         /\s+/g,
         " "
@@ -2875,18 +3385,18 @@ function createChatTitle(
 
 
   if (
-    clean.length <= 38
+    cleaned.length <= 42
   ) {
 
-    return clean;
+    return cleaned;
 
   }
 
 
   return (
-    clean.slice(
+    cleaned.slice(
       0,
-      38
+      42
     ) +
     "…"
   );
@@ -2902,77 +3412,41 @@ function formatLatency(
   ms
 ) {
 
-  if (ms < 1000) {
+  if (
+    ms < 1000
+  ) {
 
-    return `${ms} ms`;
+    return `${ms}ms`;
 
   }
 
 
   return `${(
-    ms /
-    1000
+    ms / 1000
   ).toFixed(1)}s`;
 
 }
 
 
 /* =========================================================
-   SCROLL
+   ATTACHMENTS
 ========================================================= */
 
-function scrollToBottom() {
-
-  setTimeout(
+document
+  .getElementById(
+    "attach"
+  )
+  .addEventListener(
+    "click",
     () => {
 
-      window.scrollTo({
+      fileInput.value =
+        "";
 
-        top:
-          document.body.scrollHeight,
+      fileInput.click();
 
-        behavior:
-          "smooth"
-
-      });
-
-    },
-    50
+    }
   );
-
-}
-
-
-/* =========================================================
-   FILE UPLOAD
-========================================================= */
-
-const attachButton =
-  document.getElementById(
-    "attachButton"
-  );
-
-
-const fileInput =
-  document.getElementById(
-    "fileInput"
-  );
-
-
-const fileName =
-  document.getElementById(
-    "fileName"
-  );
-
-
-attachButton.addEventListener(
-  "click",
-  () => {
-
-    fileInput.click();
-
-  }
-);
 
 
 fileInput.addEventListener(
@@ -2984,7 +3458,29 @@ fileInput.addEventListener(
 
 
     if (!file) {
+
       return;
+
+    }
+
+
+    const MAX_SIZE =
+      5 * 1024 * 1024;
+
+
+    if (
+      file.size >
+      MAX_SIZE
+    ) {
+
+      alert(
+        "Please select a file smaller than 5 MB."
+      );
+
+      clearAttachment();
+
+      return;
+
     }
 
 
@@ -2992,30 +3488,17 @@ fileInput.addEventListener(
       file;
 
 
-    fileName.textContent =
+    attachedText =
+      "";
+
+
+    fileChipName.textContent =
       file.name;
 
 
-    /*
-     * Browser-readable document types.
-     *
-     * PDF/DOCX are displayed as attached
-     * but aren't extracted here because
-     * the current /api/chat endpoint accepts
-     * text only.
-     */
-
-    const textTypes = [
-
-      "text/plain",
-      "text/markdown",
-      "text/csv",
-      "application/json",
-      "text/html",
-      "application/javascript",
-      "text/javascript"
-
-    ];
+    fileChip.classList.add(
+      "visible"
+    );
 
 
     const extension =
@@ -3025,30 +3508,40 @@ fileInput.addEventListener(
         ?.toLowerCase();
 
 
-    const readableExtensions = [
+    const readable =
+      [
 
-      "txt",
-      "md",
-      "csv",
-      "json",
-      "html",
-      "js",
-      "py",
-      "sql",
-      "xml",
-      "log"
+        "txt",
+        "md",
+        "csv",
+        "json",
+        "html",
+        "htm",
+        "js",
+        "jsx",
+        "ts",
+        "tsx",
+        "py",
+        "java",
+        "c",
+        "cpp",
+        "cs",
+        "sql",
+        "xml",
+        "yaml",
+        "yml",
+        "log",
+        "css",
+        "scss",
+        "sh",
+        "bash"
 
-    ];
-
-
-    if (
-      textTypes.includes(
-        file.type
-      ) ||
-      readableExtensions.includes(
+      ].includes(
         extension
-      )
-    ) {
+      );
+
+
+    if (readable) {
 
       try {
 
@@ -3062,15 +3555,41 @@ fileInput.addEventListener(
 
       }
 
-    } else {
-
-      attachedText =
-        "";
-
     }
 
   }
 );
+
+
+document
+  .getElementById(
+    "removeFile"
+  )
+  .addEventListener(
+    "click",
+    clearAttachment
+  );
+
+
+function clearAttachment() {
+
+  attachedFile =
+    null;
+
+  attachedText =
+    "";
+
+  fileInput.value =
+    "";
+
+  fileChipName.textContent =
+    "";
+
+  fileChip.classList.remove(
+    "visible"
+  );
+
+}
 
 
 /* =========================================================
@@ -3080,12 +3599,6 @@ fileInput.addEventListener(
 promptInput.addEventListener(
   "keydown",
   event => {
-
-    /*
-     * Enter = send
-     *
-     * Shift + Enter = newline
-     */
 
     if (
       event.key === "Enter" &&
@@ -3103,7 +3616,7 @@ promptInput.addEventListener(
 
 
 /* =========================================================
-   BUTTONS
+   BUTTON EVENTS
 ========================================================= */
 
 generateButton.addEventListener(
@@ -3133,7 +3646,7 @@ document
 
 
 /* =========================================================
-   MOBILE SIDEBAR
+   MOBILE MENU
 ========================================================= */
 
 document
@@ -3144,39 +3657,81 @@ document
     "click",
     () => {
 
-      document
-        .getElementById(
-          "sidebar"
-        )
-        .classList.toggle(
-          "open"
-        );
+      sidebar.classList.toggle(
+        "open"
+      );
 
     }
   );
 
 
-function closeMobileSidebar() {
+function closeSidebar() {
 
-  document
-    .getElementById(
-      "sidebar"
-    )
-    .classList.remove(
-      "open"
-    );
+  sidebar.classList.remove(
+    "open"
+  );
 
 }
 
 
 /* =========================================================
-   START
+   SCROLL
 ========================================================= */
 
-createChat();
+function scrollBottom() {
+
+  setTimeout(
+    () => {
+
+      window.scrollTo({
+
+        top:
+          document.body.scrollHeight,
+
+        behavior:
+          "smooth"
+
+      });
+
+    },
+    40
+  );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+loadConversations();
+
+
+if (
+  conversations.length
+) {
+
+  /*
+   * Don't automatically open the
+   * previous conversation.
+   *
+   * Employee lands on a fresh workspace.
+   */
+
+  currentChatId =
+    null;
+
+}
+
+
+renderSidebar();
+
+renderSuggestions();
+
+loadDynamicThought();
+
 
 </script>
-
 
 </body>
 
