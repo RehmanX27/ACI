@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACI | AI Consumption Intelligence</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07090e;color:#f4f6fa;font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:35px 20px}.brand{font-weight:900;letter-spacing:.08em}.sub{color:#737d8d;font-size:11px;margin-top:3px}
+.hero{text-align:center;padding:90px 0 35px}.eyebrow{color:#9384ff;font-weight:800;letter-spacing:.16em;font-size:10px}.hero h1{font-size:clamp(42px,8vw,72px);letter-spacing:-.06em;margin:12px 0}.hero p{color:#8993a4}
+.card{background:#10141d;border:1px solid #242a35;border-radius:22px;overflow:hidden}.messages{min-height:300px;padding:25px}.empty{text-align:center;color:#798393;padding:90px 10px}.user{background:#181e28;border-radius:15px;padding:15px;margin-bottom:18px;white-space:pre-wrap}.answer{padding:5px 5px 20px;white-space:pre-wrap;line-height:1.7}.trace{font-size:9px;color:#667080;border-top:1px solid #222834;padding-top:12px}.composer{border-top:1px solid #242a35;padding:15px}textarea{width:100%;background:#080b10;color:#fff;border:0;outline:0;border-radius:13px;padding:15px;resize:vertical;min-height:90px}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:#667080;font-size:10px}button{background:#7768ff;color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:800;cursor:pointer}button:disabled{opacity:.5}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:15px}.chip{background:#0e1219;border:1px solid #242a35;color:#9ba4b2;border-radius:999px;padding:8px 11px;font-size:11px}.status{margin-top:20px;color:#697484;font-size:10px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">ACI<div class="sub">AI Consumption Intelligence</div></div>
+  <section class="hero">
+    <div class="eyebrow">ENTERPRISE AI WORKSPACE</div>
+    <h1>How can I help?</h1>
+    <p>Ask for the outcome. ACI handles the AI complexity behind the scenes.</p>
+  </section>
+
+  <section class="card">
+    <div id="messages" class="messages">
+      <div class="empty">Ask ACI to draft, analyze, summarize, code or research something.</div>
+    </div>
+    <div class="composer">
+      <textarea id="prompt" placeholder="Ask ACI anything..."></textarea>
+      <div class="bottom"><span id="status">Real AI backend connected</span><button id="send">Send →</button></div>
+    </div>
+  </section>
+
+  <div class="chips">
+    <button class="chip" data-p="Draft a professional email to my manager asking for two days of leave next week.">Draft an email</button>
+    <button class="chip" data-p="Summarize this conversation and identify the key action items.">Summarize</button>
+    <button class="chip" data-p="Explain this Python TypeError and show how to fix it.">Debug code</button>
+    <button class="chip" data-p="Analyze whether a small company should use a monolith or microservices.">Analyze</button>
+  </div>
+  <div class="status">ACI intelligence and traceability run on the server. The API key is never sent to the browser.</div>
+</div>
+<script>
+const promptEl=document.getElementById("prompt"),send=document.getElementById("send"),messages=document.getElementById("messages"),status=document.getElementById("status");
+document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{promptEl.value=b.dataset.p;promptEl.focus()});
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+send.onclick=async()=>{
+ const prompt=promptEl.value.trim(); if(!prompt)return;
+ send.disabled=true; status.textContent="ACI is working...";
+ messages.innerHTML=`<div class="user">${esc(prompt)}</div><div class="answer">Generating...</div>`;
+ try{
+   const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+   const data=await r.json();
+   if(!r.ok) throw new Error(data.error||"Request failed");
+   messages.innerHTML=`<div class="user">${esc(prompt)}</div>
+     <div class="answer">${esc(data.answer)}</div>
+     <div class="trace">ACI trace: ${esc(data.trace.taskType)} · complexity ${data.trace.complexity}/5 · ${esc(data.trace.sensitivity)} sensitivity · ${esc(data.trace.model)} · ${data.trace.latencyMs}ms · ${data.trace.totalTokens??"?"} tokens · outcome ${esc(data.trace.outcome)}</div>`;
+   status.textContent="Response generated successfully";
+ }catch(e){
+   messages.innerHTML=`<div class="answer" style="color:#ff8d8d">Unable to generate the response: ${esc(e.message)}</div>`;
+   status.textContent="Backend error";
+ }finally{send.disabled=false}
+};
+promptEl.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")send.click()});
+</script>
+</body>
+</html>
