@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -10,23 +11,137 @@
   <title>ACI · AI Consumption Intelligence</title>
 
   <style>
+
+    /* =========================================================
+       THEME VARIABLES
+    ========================================================= */
+
     :root {
+
       --bg: #050505;
-      --panel: #0b0b0b;
-      --panel-2: #101010;
-      --border: #222;
+      --bg-soft: #080808;
+
+      --surface: #0c0c0c;
+      --surface-2: #111111;
+      --surface-3: #161616;
+
+      --border: #242424;
       --border-soft: #181818;
 
-      --text: #f5f5f5;
-      --muted: #777;
-      --muted-2: #555;
+      --text: #f3f3f3;
+      --text-secondary: #b0b0b0;
+      --muted: #666;
+      --muted-2: #444;
 
-      --white: #f5f5f5;
-      --black: #050505;
+      --accent: #ffffff;
+      --accent-soft: rgba(255,255,255,.10);
 
-      --radius: 16px;
-      --sidebar: 292px;
+      --user-bg: #f2f2f2;
+      --user-text: #050505;
+
+      --success: #67f5a0;
+      --danger: #e97878;
+
+      --sidebar-width: 292px;
+
+      --radius: 15px;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.25);
     }
+
+
+    /* =========================================================
+       ACCENT COLORS
+    ========================================================= */
+
+    body[data-accent="blue"] {
+      --accent: #5ea7ff;
+      --accent-soft: rgba(94,167,255,.12);
+    }
+
+    body[data-accent="violet"] {
+      --accent: #a78bfa;
+      --accent-soft: rgba(167,139,250,.12);
+    }
+
+    body[data-accent="green"] {
+      --accent: #55d99a;
+      --accent-soft: rgba(85,217,154,.12);
+    }
+
+    body[data-accent="orange"] {
+      --accent: #ff9d52;
+      --accent-soft: rgba(255,157,82,.12);
+    }
+
+    body[data-accent="pink"] {
+      --accent: #f472b6;
+      --accent-soft: rgba(244,114,182,.12);
+    }
+
+
+    /* =========================================================
+       LIGHT THEME
+    ========================================================= */
+
+    body[data-theme="light"] {
+
+      --bg: #f4f4f2;
+      --bg-soft: #eeeeec;
+
+      --surface: #ffffff;
+      --surface-2: #f7f7f6;
+      --surface-3: #eeeeec;
+
+      --border: #dcdcd8;
+      --border-soft: #e8e8e4;
+
+      --text: #111111;
+      --text-secondary: #555555;
+
+      --muted: #777777;
+      --muted-2: #999999;
+
+      --accent: #111111;
+
+      --user-bg: #111111;
+      --user-text: #ffffff;
+
+      --shadow:
+        0 20px 50px rgba(0,0,0,.08);
+    }
+
+
+    body[data-theme="light"][data-accent="blue"] {
+      --accent: #1769d2;
+      --accent-soft: rgba(23,105,210,.10);
+    }
+
+    body[data-theme="light"][data-accent="violet"] {
+      --accent: #6d42c1;
+      --accent-soft: rgba(109,66,193,.10);
+    }
+
+    body[data-theme="light"][data-accent="green"] {
+      --accent: #168653;
+      --accent-soft: rgba(22,134,83,.10);
+    }
+
+    body[data-theme="light"][data-accent="orange"] {
+      --accent: #c96513;
+      --accent-soft: rgba(201,101,19,.10);
+    }
+
+    body[data-theme="light"][data-accent="pink"] {
+      --accent: #c63b7e;
+      --accent-soft: rgba(198,59,126,.10);
+    }
+
+
+    /* =========================================================
+       RESET
+    ========================================================= */
 
     * {
       box-sizing: border-box;
@@ -34,11 +149,15 @@
 
     html,
     body {
+
       margin: 0;
+
       width: 100%;
       height: 100%;
+
       background: var(--bg);
       color: var(--text);
+
       font-family:
         Inter,
         ui-sans-serif,
@@ -47,6 +166,10 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+
+      transition:
+        background .2s ease,
+        color .2s ease;
     }
 
     body {
@@ -63,57 +186,77 @@
       cursor: pointer;
     }
 
+
     /* =========================================================
        APP
     ========================================================= */
 
     .app {
+
       width: 100%;
       height: 100vh;
+
       display: flex;
+
       background: var(--bg);
     }
+
 
     /* =========================================================
        SIDEBAR
     ========================================================= */
 
     .sidebar {
-      width: var(--sidebar);
+
+      width: var(--sidebar-width);
+
       height: 100vh;
+
       flex-shrink: 0;
 
-      background: #080808;
-      border-right: 1px solid var(--border);
+      background: var(--surface);
+
+      border-right:
+        1px solid var(--border);
 
       display: flex;
+
       flex-direction: column;
 
-      padding: 24px 22px 18px;
+      padding:
+        24px 22px 18px;
     }
 
+
+    /* BRAND */
+
     .brand {
+
       display: flex;
+
       align-items: center;
+
       gap: 12px;
 
-      margin: 0 4px 26px;
+      margin:
+        0 4px 26px;
     }
 
     .brand-mark {
-      width: 34px;
-      height: 34px;
+
+      width: 35px;
+      height: 35px;
 
       border-radius: 10px;
 
       background:
         radial-gradient(
           circle at 30% 25%,
-          #fff 0%,
-          #cfcfcf 18%,
+          #ffffff,
+          #cfcfcf 20%,
           #888 42%,
           #333 70%,
-          #111 100%
+          #111
         );
 
       box-shadow:
@@ -122,233 +265,527 @@
     }
 
     .brand-name {
+
       font-size: 19px;
+
       font-weight: 800;
-      letter-spacing: -0.5px;
+
+      letter-spacing: -.5px;
+
       line-height: 1;
     }
 
     .brand-sub {
+
       margin-top: 4px;
 
       font-size: 8px;
+
       letter-spacing: 2px;
-      color: #5e5e5e;
+
+      color: var(--muted);
+
       text-transform: uppercase;
     }
 
+
+    /* NEW CHAT */
+
     .new-chat {
+
       width: 100%;
+
       min-height: 49px;
 
       border: 0;
+
       border-radius: 12px;
 
-      background: #f2f2f2;
-      color: #080808;
+      background: var(--accent);
+
+      color:
+        var(--bg);
 
       font-size: 16px;
+
       font-weight: 750;
 
       text-align: left;
+
       padding: 0 18px;
 
       transition:
         transform .15s ease,
-        background .15s ease;
+        opacity .15s ease;
+    }
+
+    body[data-theme="light"] .new-chat {
+      color: white;
     }
 
     .new-chat:hover {
-      background: #fff;
-      transform: translateY(-1px);
+
+      transform:
+        translateY(-1px);
+
+      opacity: .88;
     }
 
+
+    /* HISTORY */
+
     .history {
+
       margin-top: 34px;
+
       flex: 1;
+
+      min-height: 0;
+
       overflow-y: auto;
     }
 
     .history-label {
-      margin: 0 9px 13px;
 
-      color: #575757;
+      margin:
+        0 9px 13px;
+
+      color: var(--muted);
+
       font-size: 9px;
+
       font-weight: 700;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
     }
 
     .history-list {
+
       display: flex;
+
       flex-direction: column;
+
       gap: 3px;
     }
 
     .history-item {
-      border: 0;
-      background: transparent;
-
-      color: #898989;
 
       width: 100%;
-      padding: 9px 10px;
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--text-secondary);
+
+      padding:
+        9px 10px;
 
       border-radius: 9px;
 
       text-align: left;
+
       font-size: 12px;
 
       overflow: hidden;
+
       white-space: nowrap;
+
       text-overflow: ellipsis;
     }
 
     .history-item:hover {
-      color: #eee;
-      background: #111;
+
+      background:
+        var(--accent-soft);
+
+      color:
+        var(--text);
     }
 
     .history-empty {
-      color: #444;
+
+      color: var(--muted-2);
+
       font-size: 11px;
-      padding: 8px 10px;
+
+      padding:
+        8px 10px;
     }
 
-    .sidebar-footer {
-      border-top: 1px solid var(--border);
-      padding: 18px 3px 0;
 
-      color: #525252;
+    /* FOOTER */
+
+    .sidebar-footer {
+
+      border-top:
+        1px solid var(--border);
+
+      padding:
+        18px 3px 0;
+
+      color:
+        var(--muted);
+
       font-size: 10px;
     }
 
     .status-dot {
+
       display: inline-block;
+
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
 
-      background: #67f5a0;
+      background:
+        var(--success);
 
       margin-right: 7px;
 
-      box-shadow: 0 0 10px rgba(103,245,160,.5);
+      box-shadow:
+        0 0 10px rgba(103,245,160,.5);
     }
+
 
     /* =========================================================
        MAIN
     ========================================================= */
 
     .main {
+
       min-width: 0;
+
       flex: 1;
+
       height: 100vh;
 
       display: flex;
+
       flex-direction: column;
 
-      background:
-        radial-gradient(
-          circle at 50% -20%,
-          rgba(255,255,255,.045),
-          transparent 42%
-        ),
-        #050505;
+      background: var(--bg);
     }
 
+
+    /* =========================================================
+       TOP BAR
+    ========================================================= */
+
     .topbar {
+
       height: 70px;
+
       flex-shrink: 0;
 
-      border-bottom: 1px solid var(--border-soft);
+      border-bottom:
+        1px solid var(--border-soft);
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
-      padding: 0 24px 0 30px;
+      padding:
+        0 24px 0 30px;
+    }
+
+    .topbar-left {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
     }
 
     .topbar-label {
-      color: #666;
+
+      color:
+        var(--muted);
+
       font-size: 11px;
-      letter-spacing: .2px;
     }
 
-    .topbar-new {
-      border: 1px solid #292929;
-      background: #0b0b0b;
-      color: #aaa;
+
+    /* =========================================================
+       THEME CONTROL
+    ========================================================= */
+
+    .theme-wrapper {
+
+      position: relative;
+    }
+
+    .theme-button {
+
+      height: 35px;
+
+      padding:
+        0 11px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      color:
+        var(--text-secondary);
 
       border-radius: 9px;
 
-      padding: 9px 13px;
-
       font-size: 11px;
     }
 
-    .topbar-new:hover {
-      color: #fff;
-      border-color: #444;
+    .theme-button:hover {
+
+      color:
+        var(--text);
+
+      border-color:
+        var(--muted);
     }
+
+    .theme-menu {
+
+      position: absolute;
+
+      top: 44px;
+
+      right: 0;
+
+      width: 235px;
+
+      padding: 12px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      box-shadow:
+        var(--shadow);
+
+      display: none;
+
+      z-index: 1000;
+    }
+
+    .theme-menu.open {
+      display: block;
+    }
+
+    .menu-title {
+
+      color:
+        var(--muted);
+
+      font-size: 9px;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+
+      margin:
+        4px 5px 9px;
+    }
+
+
+    /* THEME OPTIONS */
+
+    .theme-options {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 6px;
+
+      margin-bottom: 13px;
+    }
+
+    .theme-option {
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text-secondary);
+
+      padding:
+        9px 8px;
+
+      border-radius: 8px;
+
+      font-size: 10px;
+
+      text-align: left;
+    }
+
+    .theme-option:hover,
+    .theme-option.active {
+
+      border-color:
+        var(--accent);
+
+      color:
+        var(--text);
+
+      background:
+        var(--accent-soft);
+    }
+
+
+    /* ACCENTS */
+
+    .accent-options {
+
+      display: flex;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+
+      padding:
+        2px 4px 5px;
+    }
+
+    .accent-dot {
+
+      width: 25px;
+      height: 25px;
+
+      border-radius: 50%;
+
+      border:
+        2px solid transparent;
+
+      padding: 0;
+    }
+
+    .accent-dot.active {
+
+      border-color:
+        var(--text);
+    }
+
+    .accent-neutral {
+      background: #999;
+    }
+
+    .accent-blue {
+      background: #5ea7ff;
+    }
+
+    .accent-violet {
+      background: #a78bfa;
+    }
+
+    .accent-green {
+      background: #55d99a;
+    }
+
+    .accent-orange {
+      background: #ff9d52;
+    }
+
+    .accent-pink {
+      background: #f472b6;
+    }
+
 
     /* =========================================================
        WORKSPACE
+       
+       IMPORTANT FIX:
+       The workspace itself does NOT scroll behind the composer.
+       The conversation has its OWN scroll container.
     ========================================================= */
 
     .workspace {
+
       flex: 1;
+
       min-height: 0;
 
-      overflow-y: auto;
+      overflow: hidden;
 
       position: relative;
-
-      display: flex;
-      flex-direction: column;
     }
 
     .workspace-inner {
-      width: min(1080px, calc(100% - 48px));
-      margin: 0 auto;
 
-      min-height: 100%;
+      width:
+        min(1080px, calc(100% - 48px));
+
+      height: 100%;
+
+      margin:
+        0 auto;
 
       display: flex;
+
       flex-direction: column;
     }
+
 
     /* =========================================================
        AI SIGNAL
     ========================================================= */
 
     .signal-area {
-      padding-top: 62px;
-      padding-bottom: 34px;
 
-      transition:
-        opacity .25s ease,
-        transform .25s ease;
+      flex-shrink: 0;
+
+      padding:
+        42px 0 25px;
     }
 
     .signal-kicker {
+
       display: flex;
+
       align-items: center;
+
       gap: 9px;
 
-      color: #626262;
+      color:
+        var(--muted);
 
       font-size: 10px;
+
       font-weight: 700;
 
-      letter-spacing: 1.6px;
-      text-transform: uppercase;
+      letter-spacing:
+        1.6px;
 
-      margin-bottom: 17px;
+      text-transform:
+        uppercase;
+
+      margin-bottom:
+        14px;
     }
 
     .signal-kicker::before {
+
       content: "";
 
       width: 6px;
@@ -356,156 +793,323 @@
 
       border-radius: 50%;
 
-      background: #eee;
-      box-shadow: 0 0 10px rgba(255,255,255,.3);
+      background:
+        var(--accent);
+
+      box-shadow:
+        0 0 10px var(--accent);
     }
 
-    /*
-      IMPORTANT:
-      This replaces the giant 6-line headline.
-
-      Maximum target:
-      10 words.
-
-      The typography is intentionally editorial,
-      but much smaller so it doesn't dominate the workspace.
-    */
-
     .signal-text {
+
       max-width: 900px;
 
-      font-size: clamp(32px, 4vw, 58px);
+      font-size:
+        clamp(30px, 3.5vw, 51px);
 
-      line-height: .98;
+      line-height:
+        1.02;
 
       font-weight: 850;
 
-      letter-spacing: -2.8px;
+      letter-spacing:
+        -2.4px;
 
-      color: #f2f2f2;
+      color:
+        var(--text);
 
       margin: 0;
 
       text-wrap: balance;
+
+      transition:
+        opacity .2s ease;
     }
 
     .signal-meta {
-      margin-top: 19px;
 
-      color: #4f4f4f;
+      margin-top:
+        14px;
+
+      color:
+        var(--muted-2);
 
       font-size: 10px;
-      letter-spacing: .4px;
     }
 
-    .signal-loading {
-      color: #777;
-    }
 
     /* =========================================================
-       CHAT
+       CONVERSATION SCROLL AREA
+       
+       THIS IS THE MAIN GLITCH FIX.
     ========================================================= */
 
-    .chat-area {
+    .chat-scroll {
+
       flex: 1;
 
-      display: flex;
-      flex-direction: column;
+      min-height: 0;
 
-      min-height: 260px;
+      overflow-y: auto;
+
+      padding:
+        8px 0 24px;
+
+      scrollbar-width:
+        thin;
+
+      scrollbar-color:
+        var(--border)
+        transparent;
+    }
+
+    .chat-scroll::-webkit-scrollbar {
+
+      width: 6px;
+    }
+
+    .chat-scroll::-webkit-scrollbar-thumb {
+
+      background:
+        var(--border);
+
+      border-radius:
+        20px;
     }
 
     .messages {
-      flex: 1;
 
       display: flex;
+
       flex-direction: column;
 
       gap: 22px;
 
-      padding-bottom: 28px;
+      padding-right: 3px;
     }
 
+
+    /* =========================================================
+       MESSAGES
+    ========================================================= */
+
     .message {
+
       display: flex;
+
       width: 100%;
     }
 
     .message.user {
-      justify-content: flex-end;
+
+      justify-content:
+        flex-end;
     }
 
     .message.ai {
-      justify-content: flex-start;
+
+      justify-content:
+        flex-start;
+    }
+
+    .message-inner {
+
+      max-width:
+        min(800px, 88%);
     }
 
     .bubble {
-      max-width: min(760px, 88%);
 
-      border-radius: 15px;
+      border-radius:
+        15px;
 
-      padding: 15px 17px;
+      padding:
+        15px 17px;
 
-      font-size: 14px;
-      line-height: 1.65;
+      font-size:
+        14px;
 
-      white-space: pre-wrap;
-      word-break: break-word;
+      line-height:
+        1.68;
+
+      word-break:
+        break-word;
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.03);
     }
 
     .user .bubble {
-      background: #f2f2f2;
-      color: #090909;
 
-      border-bottom-right-radius: 4px;
+      background:
+        var(--user-bg);
+
+      color:
+        var(--user-text);
+
+      border-bottom-right-radius:
+        4px;
     }
 
     .ai .bubble {
-      background: #0e0e0e;
-      color: #dedede;
 
-      border: 1px solid #202020;
+      background:
+        var(--surface);
 
-      border-bottom-left-radius: 4px;
+      color:
+        var(--text);
+
+      border:
+        1px solid var(--border);
+
+      border-bottom-left-radius:
+        4px;
     }
 
     .message-label {
-      font-size: 9px;
-      color: #555;
 
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
+      font-size:
+        9px;
 
-      margin-bottom: 7px;
+      color:
+        var(--muted);
+
+      letter-spacing:
+        1.3px;
+
+      text-transform:
+        uppercase;
+
+      margin-bottom:
+        7px;
     }
 
+
+    /* =========================================================
+       BASIC MARKDOWN
+    ========================================================= */
+
+    .markdown {
+
+      white-space:
+        normal;
+    }
+
+    .markdown p {
+
+      margin:
+        0 0 12px;
+    }
+
+    .markdown p:last-child {
+
+      margin-bottom:
+        0;
+    }
+
+    .markdown strong {
+
+      font-weight:
+        750;
+
+      color:
+        var(--text);
+    }
+
+    .markdown em {
+
+      opacity:
+        .9;
+    }
+
+    .markdown ul {
+
+      margin:
+        9px 0;
+
+      padding-left:
+        20px;
+    }
+
+    .markdown li {
+
+      margin-bottom:
+        5px;
+    }
+
+    .markdown code {
+
+      background:
+        var(--surface-3);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        5px;
+
+      padding:
+        2px 5px;
+
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        monospace;
+
+      font-size:
+        12px;
+    }
+
+
+    /* =========================================================
+       TYPING
+    ========================================================= */
+
     .typing {
-      display: inline-flex;
-      gap: 4px;
-      align-items: center;
+
+      display:
+        inline-flex;
+
+      gap:
+        4px;
+
+      align-items:
+        center;
     }
 
     .typing span {
-      width: 4px;
-      height: 4px;
 
-      border-radius: 50%;
+      width:
+        4px;
 
-      background: #999;
+      height:
+        4px;
 
-      animation: blink 1s infinite ease-in-out;
+      border-radius:
+        50%;
+
+      background:
+        var(--muted);
+
+      animation:
+        blink 1s infinite ease-in-out;
     }
 
     .typing span:nth-child(2) {
-      animation-delay: .15s;
+      animation-delay:
+        .15s;
     }
 
     .typing span:nth-child(3) {
-      animation-delay: .3s;
+      animation-delay:
+        .30s;
     }
 
     @keyframes blink {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: .2;
       }
 
@@ -514,75 +1118,120 @@
       }
     }
 
+
     /* =========================================================
        TRACE
     ========================================================= */
 
     .trace {
-      margin-top: -4px;
-      margin-bottom: 18px;
 
-      display: none;
+      display:
+        none;
 
-      border: 1px solid #1e1e1e;
-      border-radius: 12px;
+      margin:
+        5px 0 15px;
 
-      background: #090909;
+      border:
+        1px solid var(--border);
 
-      padding: 12px 14px;
+      border-radius:
+        12px;
 
-      font-size: 10px;
-      color: #656565;
+      background:
+        var(--surface);
+
+      padding:
+        12px 14px;
     }
 
     .trace.visible {
-      display: block;
+      display:
+        block;
     }
 
     .trace-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
     }
 
     .trace-pill {
-      border: 1px solid #202020;
-      background: #0d0d0d;
 
-      padding: 6px 8px;
+      border:
+        1px solid var(--border);
 
-      border-radius: 7px;
+      background:
+        var(--surface-2);
+
+      padding:
+        6px 8px;
+
+      border-radius:
+        7px;
+
+      font-size:
+        10px;
+
+      color:
+        var(--muted);
     }
 
     .trace-pill strong {
-      color: #aaa;
-      font-weight: 650;
+
+      color:
+        var(--text-secondary);
+
+      font-weight:
+        650;
     }
+
 
     /* =========================================================
        SUGGESTIONS
     ========================================================= */
 
     .suggestions {
-      display: flex;
-      flex-wrap: wrap;
 
-      gap: 8px;
+      flex-shrink: 0;
 
-      padding-bottom: 12px;
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      padding:
+        8px 0 11px;
     }
 
     .suggestion {
-      border: 1px solid #222;
-      background: #090909;
 
-      color: #747474;
+      border:
+        1px solid var(--border);
 
-      border-radius: 999px;
+      background:
+        var(--surface);
 
-      padding: 8px 12px;
+      color:
+        var(--text-secondary);
 
-      font-size: 10px;
+      border-radius:
+        999px;
+
+      padding:
+        8px 12px;
+
+      font-size:
+        10px;
 
       transition:
         color .15s ease,
@@ -591,322 +1240,533 @@
     }
 
     .suggestion:hover {
-      color: #eee;
-      border-color: #444;
-      background: #101010;
+
+      color:
+        var(--text);
+
+      border-color:
+        var(--accent);
+
+      background:
+        var(--accent-soft);
     }
+
 
     /* =========================================================
        COMPOSER
+       
+       NO STICKY.
+       NO ABSOLUTE.
+       NO OVERLAY.
+       
+       It occupies its own layout space.
     ========================================================= */
 
     .composer-wrap {
-      position: sticky;
-      bottom: 0;
 
-      padding-top: 6px;
-      padding-bottom: 26px;
+      flex-shrink: 0;
+
+      padding:
+        6px 0 22px;
 
       background:
-        linear-gradient(
-          to bottom,
-          transparent,
-          #050505 16%
-        );
+        var(--bg);
     }
 
+
+    /* ATTACHMENT */
+
     .attachment {
-      display: none;
 
-      align-items: center;
-      gap: 9px;
+      display:
+        none;
 
-      width: fit-content;
+      align-items:
+        center;
 
-      margin-bottom: 8px;
+      gap:
+        9px;
 
-      border: 1px solid #252525;
-      background: #0d0d0d;
+      width:
+        fit-content;
 
-      color: #aaa;
+      max-width:
+        100%;
 
-      border-radius: 9px;
+      margin-bottom:
+        8px;
 
-      padding: 7px 10px;
+      border:
+        1px solid var(--border);
 
-      font-size: 10px;
+      background:
+        var(--surface);
+
+      color:
+        var(--text-secondary);
+
+      border-radius:
+        9px;
+
+      padding:
+        7px 10px;
+
+      font-size:
+        10px;
     }
 
     .attachment.visible {
-      display: flex;
+      display:
+        flex;
     }
 
     .attachment-name {
-      max-width: 260px;
 
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      max-width:
+        320px;
+
+      overflow:
+        hidden;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
     }
 
     .remove-file {
-      border: 0;
-      background: transparent;
 
-      color: #666;
+      border:
+        0;
 
-      padding: 0 2px;
-      font-size: 14px;
+      background:
+        transparent;
+
+      color:
+        var(--muted);
+
+      padding:
+        0 2px;
+
+      font-size:
+        14px;
     }
 
     .remove-file:hover {
-      color: #fff;
+
+      color:
+        var(--text);
     }
 
-    .composer {
-      border: 1px solid #292929;
-      background: #0b0b0b;
 
-      border-radius: 17px;
+    /* COMPOSER */
+
+    .composer {
+
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
+      border-radius:
+        17px;
 
       box-shadow:
-        0 15px 45px rgba(0,0,0,.25);
+        var(--shadow);
 
       transition:
-        border-color .15s ease,
-        box-shadow .15s ease;
+        border-color .15s ease;
     }
 
     .composer:focus-within {
-      border-color: #444;
 
-      box-shadow:
-        0 15px 50px rgba(0,0,0,.4);
+      border-color:
+        var(--accent);
     }
 
+
+    /* TEXTAREA */
+
     .textarea {
-      display: block;
 
-      width: 100%;
+      display:
+        block;
 
-      min-height: 72px;
-      max-height: 230px;
+      width:
+        100%;
 
-      resize: none;
+      min-height:
+        67px;
 
-      border: 0;
-      outline: 0;
+      max-height:
+        190px;
 
-      background: transparent;
+      resize:
+        none;
 
-      color: #eee;
+      border:
+        0;
 
-      padding: 17px 17px 10px;
+      outline:
+        0;
 
-      font-size: 14px;
-      line-height: 1.5;
+      background:
+        transparent;
+
+      color:
+        var(--text);
+
+      padding:
+        16px 17px 8px;
+
+      font-size:
+        14px;
+
+      line-height:
+        1.5;
     }
 
     .textarea::placeholder {
-      color: #505050;
+
+      color:
+        var(--muted);
     }
 
-    .composer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
 
-      padding: 7px 9px 9px 12px;
+    /* COMPOSER BOTTOM */
+
+    .composer-bottom {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        6px 9px 9px 12px;
     }
 
     .composer-left {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
     }
 
+
+    /* ICON */
+
     .icon-button {
-      width: 34px;
-      height: 34px;
 
-      border: 1px solid transparent;
-      background: transparent;
+      width:
+        34px;
 
-      color: #666;
+      height:
+        34px;
 
-      border-radius: 9px;
+      border:
+        1px solid transparent;
 
-      display: grid;
-      place-items: center;
+      background:
+        transparent;
 
-      font-size: 16px;
+      color:
+        var(--muted);
+
+      border-radius:
+        9px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      font-size:
+        17px;
     }
 
     .icon-button:hover {
-      color: #eee;
-      background: #151515;
-      border-color: #242424;
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+
+      border-color:
+        var(--border);
     }
 
+
+    /* SEND */
+
     .send-button {
-      width: 38px;
-      height: 38px;
 
-      border: 0;
+      width:
+        38px;
 
-      border-radius: 11px;
+      height:
+        38px;
 
-      background: #f1f1f1;
-      color: #050505;
+      border:
+        0;
 
-      display: grid;
-      place-items: center;
+      border-radius:
+        11px;
 
-      font-size: 17px;
-      font-weight: 800;
+      background:
+        var(--accent);
+
+      color:
+        var(--bg);
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      font-size:
+        17px;
+
+      font-weight:
+        800;
 
       transition:
         transform .15s ease,
-        background .15s ease;
+        opacity .15s ease;
+    }
+
+    body[data-theme="light"] .send-button {
+      color: white;
     }
 
     .send-button:hover {
-      background: #fff;
-      transform: translateY(-1px);
+
+      transform:
+        translateY(-1px);
+
+      opacity:
+        .88;
     }
 
     .send-button:disabled {
-      opacity: .35;
-      cursor: not-allowed;
-      transform: none;
+
+      opacity:
+        .35;
+
+      cursor:
+        not-allowed;
+
+      transform:
+        none;
     }
 
+
+    /* NOTE */
+
     .composer-note {
-      margin-top: 8px;
 
-      text-align: center;
+      margin-top:
+        7px;
 
-      color: #404040;
+      text-align:
+        center;
 
-      font-size: 9px;
+      color:
+        var(--muted-2);
+
+      font-size:
+        9px;
     }
 
     #fileInput {
-      display: none;
+      display:
+        none;
     }
 
+
     /* =========================================================
-       EMPTY / ERROR
+       ERROR
     ========================================================= */
 
     .error-message {
-      color: #d88888;
 
-      border: 1px solid #382020;
-      background: #110909;
+      color:
+        var(--danger);
 
-      border-radius: 10px;
+      border:
+        1px solid rgba(233,120,120,.25);
 
-      padding: 11px 13px;
+      background:
+        rgba(233,120,120,.05);
 
-      font-size: 11px;
+      border-radius:
+        10px;
+
+      padding:
+        11px 13px;
+
+      font-size:
+        11px;
     }
+
 
     /* =========================================================
        MOBILE
     ========================================================= */
 
     @media (max-width: 800px) {
-      body {
-        overflow: auto;
-      }
 
-      .app {
-        min-height: 100vh;
-        height: auto;
+      body {
+        overflow:
+          hidden;
       }
 
       .sidebar {
-        display: none;
-      }
-
-      .main {
-        min-height: 100vh;
-        height: auto;
+        display:
+          none;
       }
 
       .topbar {
-        height: 58px;
-        padding: 0 16px;
+
+        height:
+          58px;
+
+        padding:
+          0 15px;
       }
 
       .workspace-inner {
-        width: calc(100% - 28px);
+
+        width:
+          calc(100% - 28px);
       }
 
       .signal-area {
-        padding-top: 42px;
-        padding-bottom: 28px;
+
+        padding:
+          30px 0 20px;
       }
 
       .signal-text {
-        font-size: clamp(30px, 10vw, 46px);
-        letter-spacing: -1.8px;
+
+        font-size:
+          clamp(29px, 8vw, 43px);
+
+        letter-spacing:
+          -1.8px;
       }
 
-      .chat-area {
-        min-height: 220px;
+      .chat-scroll {
+
+        padding-bottom:
+          12px;
       }
 
-      .composer-wrap {
-        padding-bottom: 16px;
+      .message-inner {
+
+        max-width:
+          94%;
       }
 
       .suggestions {
-        overflow-x: auto;
-        flex-wrap: nowrap;
 
-        scrollbar-width: none;
+        overflow-x:
+          auto;
+
+        flex-wrap:
+          nowrap;
+
+        scrollbar-width:
+          none;
       }
 
       .suggestions::-webkit-scrollbar {
-        display: none;
+        display:
+          none;
       }
 
       .suggestion {
-        white-space: nowrap;
+        white-space:
+          nowrap;
+      }
+
+      .composer-wrap {
+        padding-bottom:
+          13px;
+      }
+
+      .theme-menu {
+        right:
+          -4px;
       }
     }
 
+
     @media (max-width: 480px) {
+
       .topbar-label {
-        font-size: 10px;
+        font-size:
+          10px;
       }
 
-      .topbar-new {
-        display: none;
+      .theme-button {
+        font-size:
+          0;
+      }
+
+      .theme-button span {
+        font-size:
+          15px;
       }
 
       .signal-text {
-        font-size: 31px;
-        line-height: 1.02;
+
+        font-size:
+          30px;
+
+        line-height:
+          1.03;
       }
 
       .bubble {
-        max-width: 94%;
-        font-size: 13px;
+
+        font-size:
+          13px;
       }
 
       .textarea {
-        min-height: 65px;
+
+        min-height:
+          62px;
       }
     }
+
   </style>
 </head>
 
-<body>
+
+<body
+  data-theme="dark"
+  data-accent="neutral"
+>
+
 
 <div class="app">
+
 
   <!-- =======================================================
        SIDEBAR
@@ -914,14 +1774,25 @@
 
   <aside class="sidebar">
 
+
     <div class="brand">
+
       <div class="brand-mark"></div>
 
       <div>
-        <div class="brand-name">ACI</div>
-        <div class="brand-sub">Intelligence</div>
+
+        <div class="brand-name">
+          ACI
+        </div>
+
+        <div class="brand-sub">
+          Intelligence
+        </div>
+
       </div>
+
     </div>
+
 
     <button
       class="new-chat"
@@ -930,6 +1801,7 @@
     >
       + New chat
     </button>
+
 
     <div class="history">
 
@@ -948,12 +1820,18 @@
 
     </div>
 
+
     <div class="sidebar-footer">
+
       <span class="status-dot"></span>
+
       ACI systems operational
+
     </div>
 
+
   </aside>
+
 
 
   <!-- =======================================================
@@ -962,36 +1840,158 @@
 
   <main class="main">
 
+
+    <!-- TOPBAR -->
+
     <header class="topbar">
 
-      <div class="topbar-label">
-        Enterprise AI workspace
+
+      <div class="topbar-left">
+
+        <div class="topbar-label">
+          Enterprise AI workspace
+        </div>
+
       </div>
 
-      <button
-        class="topbar-new"
-        id="topNewChat"
-        type="button"
-      >
-        + New chat
-      </button>
+
+      <!-- THEME CONTROL -->
+
+      <div class="theme-wrapper">
+
+
+        <button
+          class="theme-button"
+          id="themeButton"
+          type="button"
+        >
+          <span>◐</span>
+          <span>Appearance</span>
+        </button>
+
+
+        <div
+          class="theme-menu"
+          id="themeMenu"
+        >
+
+
+          <div class="menu-title">
+            Appearance
+          </div>
+
+
+          <div class="theme-options">
+
+
+            <button
+              class="theme-option"
+              data-theme-choice="dark"
+              type="button"
+            >
+              🌑 Dark
+            </button>
+
+
+            <button
+              class="theme-option"
+              data-theme-choice="light"
+              type="button"
+            >
+              ☀️ Light
+            </button>
+
+
+          </div>
+
+
+          <div class="menu-title">
+            Accent
+          </div>
+
+
+          <div class="accent-options">
+
+
+            <button
+              class="accent-dot accent-neutral"
+              data-accent-choice="neutral"
+              title="Neutral"
+              type="button"
+            ></button>
+
+
+            <button
+              class="accent-dot accent-blue"
+              data-accent-choice="blue"
+              title="Blue"
+              type="button"
+            ></button>
+
+
+            <button
+              class="accent-dot accent-violet"
+              data-accent-choice="violet"
+              title="Violet"
+              type="button"
+            ></button>
+
+
+            <button
+              class="accent-dot accent-green"
+              data-accent-choice="green"
+              title="Green"
+              type="button"
+            ></button>
+
+
+            <button
+              class="accent-dot accent-orange"
+              data-accent-choice="orange"
+              title="Orange"
+              type="button"
+            ></button>
+
+
+            <button
+              class="accent-dot accent-pink"
+              data-accent-choice="pink"
+              title="Pink"
+              type="button"
+            ></button>
+
+
+          </div>
+
+
+        </div>
+
+      </div>
 
     </header>
 
 
+
+    <!-- =====================================================
+         WORKSPACE
+    ====================================================== -->
+
     <section class="workspace">
+
 
       <div class="workspace-inner">
 
+
         <!-- =================================================
-             AI SIGNAL
+             SIGNAL
         ================================================== -->
 
-        <section class="signal-area" id="signalArea">
+        <section class="signal-area">
 
           <div class="signal-kicker">
             AI / Technology signal
           </div>
+
 
           <h1
             class="signal-text"
@@ -999,6 +1999,7 @@
           >
             AI is becoming infrastructure, not just software.
           </h1>
+
 
           <div
             class="signal-meta"
@@ -1010,25 +2011,41 @@
         </section>
 
 
+
         <!-- =================================================
-             CHAT
+             CHAT SCROLL
+             
+             THIS CONTAINER SCROLLS.
+             THE COMPOSER DOES NOT.
         ================================================== -->
 
-        <section class="chat-area">
+        <section
+          class="chat-scroll"
+          id="chatScroll"
+        >
+
 
           <div
             class="messages"
             id="messages"
           ></div>
 
+
           <div
             class="trace"
             id="trace"
           >
-            <div class="trace-grid" id="traceGrid"></div>
+
+            <div
+              class="trace-grid"
+              id="traceGrid"
+            ></div>
+
           </div>
 
+
         </section>
+
 
 
         <!-- =================================================
@@ -1041,11 +2058,15 @@
         ></div>
 
 
+
         <!-- =================================================
              COMPOSER
         ================================================== -->
 
         <div class="composer-wrap">
+
+
+          <!-- ATTACHMENT -->
 
           <div
             class="attachment"
@@ -1071,7 +2092,11 @@
           </div>
 
 
+
+          <!-- COMPOSER -->
+
           <div class="composer">
+
 
             <textarea
               class="textarea"
@@ -1083,6 +2108,7 @@
 
 
             <div class="composer-bottom">
+
 
               <div class="composer-left">
 
@@ -1109,7 +2135,9 @@
                 ↑
               </button>
 
+
             </div>
+
 
           </div>
 
@@ -1118,7 +2146,9 @@
             ACI automatically selects the appropriate approved AI model.
           </div>
 
+
         </div>
+
 
       </div>
 
@@ -1129,6 +2159,9 @@
 </div>
 
 
+
+<!-- FILE INPUT -->
+
 <input
   id="fileInput"
   type="file"
@@ -1136,37 +2169,69 @@
 />
 
 
+
 <script>
+
 /* ============================================================
-   ACI EMPLOYEE WORKSPACE
+   ELEMENTS
 ============================================================ */
 
-const promptInput = document.getElementById("prompt");
-const sendButton = document.getElementById("sendButton");
+const body =
+  document.body;
 
-const attachButton = document.getElementById("attachButton");
-const fileInput = document.getElementById("fileInput");
+const promptInput =
+  document.getElementById("prompt");
 
-const attachment = document.getElementById("attachment");
-const attachmentName = document.getElementById("attachmentName");
-const removeFile = document.getElementById("removeFile");
+const sendButton =
+  document.getElementById("sendButton");
 
-const messages = document.getElementById("messages");
+const attachButton =
+  document.getElementById("attachButton");
 
-const suggestions = document.getElementById("suggestions");
+const fileInput =
+  document.getElementById("fileInput");
 
-const signalText = document.getElementById("signalText");
-const signalMeta = document.getElementById("signalMeta");
+const attachment =
+  document.getElementById("attachment");
 
-const signalArea = document.getElementById("signalArea");
+const attachmentName =
+  document.getElementById("attachmentName");
 
-const trace = document.getElementById("trace");
-const traceGrid = document.getElementById("traceGrid");
+const removeFile =
+  document.getElementById("removeFile");
 
-const historyList = document.getElementById("historyList");
+const messages =
+  document.getElementById("messages");
 
-const newChatButton = document.getElementById("newChatButton");
-const topNewChat = document.getElementById("topNewChat");
+const chatScroll =
+  document.getElementById("chatScroll");
+
+const suggestions =
+  document.getElementById("suggestions");
+
+const signalText =
+  document.getElementById("signalText");
+
+const signalMeta =
+  document.getElementById("signalMeta");
+
+const trace =
+  document.getElementById("trace");
+
+const traceGrid =
+  document.getElementById("traceGrid");
+
+const historyList =
+  document.getElementById("historyList");
+
+const newChatButton =
+  document.getElementById("newChatButton");
+
+const themeButton =
+  document.getElementById("themeButton");
+
+const themeMenu =
+  document.getElementById("themeMenu");
 
 
 /* ============================================================
@@ -1181,26 +2246,175 @@ let isSending = false;
 
 
 /* ============================================================
+   THEME
+============================================================ */
+
+function applyTheme() {
+
+  const theme =
+    localStorage.getItem("aci_theme") ||
+    "dark";
+
+  const accent =
+    localStorage.getItem("aci_accent") ||
+    "neutral";
+
+
+  body.dataset.theme =
+    theme;
+
+  body.dataset.accent =
+    accent;
+
+
+  document
+    .querySelectorAll("[data-theme-choice]")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.themeChoice === theme
+      );
+
+    });
+
+
+  document
+    .querySelectorAll("[data-accent-choice]")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.accentChoice === accent
+      );
+
+    });
+
+}
+
+
+document
+  .querySelectorAll("[data-theme-choice]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const theme =
+          button.dataset.themeChoice;
+
+        localStorage.setItem(
+          "aci_theme",
+          theme
+        );
+
+        applyTheme();
+
+      }
+    );
+
+  });
+
+
+document
+  .querySelectorAll("[data-accent-choice]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const accent =
+          button.dataset.accentChoice;
+
+        localStorage.setItem(
+          "aci_accent",
+          accent
+        );
+
+        applyTheme();
+
+      }
+    );
+
+  });
+
+
+themeButton.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+    themeMenu.classList.toggle(
+      "open"
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if (
+      !themeMenu.contains(event.target) &&
+      !themeButton.contains(event.target)
+    ) {
+
+      themeMenu.classList.remove(
+        "open"
+      );
+
+    }
+
+  }
+);
+
+
+applyTheme();
+
+
+/* ============================================================
    SUGGESTIONS
 ============================================================ */
 
 const suggestionLibrary = [
+
   "Analyze this business idea.",
+
   "Summarize this document.",
+
   "Explain this error.",
+
   "Draft an email to my manager.",
+
   "Compare two technology approaches.",
+
   "Review this code.",
+
   "Create a project plan.",
+
   "Analyze this market.",
+
   "Explain this concept simply.",
+
   "Find the key risks.",
+
   "Turn this into an executive summary.",
+
   "Create a professional response.",
+
   "Review this proposal.",
+
   "Analyze this financial scenario.",
+
   "Prepare meeting action items.",
+
   "Help me solve this problem."
+
 ];
 
 
@@ -1208,144 +2422,192 @@ function renderSuggestions() {
 
   suggestions.innerHTML = "";
 
-  const shuffled = [...suggestionLibrary]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 5);
+  const shuffled =
+    [...suggestionLibrary]
+      .sort(() => Math.random() - .5)
+      .slice(0, 5);
+
 
   shuffled.forEach(text => {
 
-    const button = document.createElement("button");
+    const button =
+      document.createElement("button");
 
-    button.type = "button";
+    button.type =
+      "button";
 
-    button.className = "suggestion";
+    button.className =
+      "suggestion";
 
-    button.textContent = text;
+    button.textContent =
+      text;
 
-    button.addEventListener("click", () => {
 
-      promptInput.value = text;
+    button.addEventListener(
+      "click",
+      () => {
 
-      autoResize();
+        promptInput.value =
+          text;
 
-      promptInput.focus();
+        autoResize();
 
-    });
+        promptInput.focus();
 
-    suggestions.appendChild(button);
+      }
+    );
+
+
+    suggestions.appendChild(
+      button
+    );
 
   });
+
 }
 
 
 /* ============================================================
-   SIGNAL
+   10-WORD AI SIGNAL
 ============================================================ */
-
-/*
-  The backend /api/insight should return a short editorial signal.
-
-  Expected response:
-
-  {
-    "text": "AI agents are moving from experiments into workflows."
-  }
-
-  The frontend also enforces a maximum of 10 words.
-*/
 
 function limitToTenWords(text) {
 
   if (!text) {
-    return "AI is becoming infrastructure, not just software.";
+
+    return:
+      "AI is becoming infrastructure, not just software.";
   }
 
-  const words = text
-    .trim()
-    .split(/\s+/)
-    .slice(0, 10);
 
-  let result = words.join(" ");
+  const words =
+    text
+      .trim()
+      .split(/\s+/)
+      .slice(0, 10);
 
-  /*
-    Avoid awkward cutoff punctuation.
-  */
 
-  if (!/[.!?]$/.test(result)) {
+  let result =
+    words.join(" ");
+
+
+  if (
+    !/[.!?]$/.test(result)
+  ) {
+
     result += ".";
+
   }
+
 
   return result;
+
 }
 
 
 async function loadInsight() {
 
-  signalArea.style.opacity = "0.45";
+  signalText.style.opacity =
+    ".4";
+
 
   try {
 
-    const response = await fetch(
-      "/api/insight",
-      {
-        method: "GET",
-        cache: "no-store"
-      }
-    );
+    const response =
+      await fetch(
+        "/api/insight",
+        {
+          method: "GET",
+          cache: "no-store"
+        }
+      );
+
 
     if (!response.ok) {
-      throw new Error("Insight unavailable");
+
+      throw new Error(
+        "Insight unavailable"
+      );
+
     }
 
-    const data = await response.json();
 
-    const text =
-      data.text ||
-      data.insight ||
-      data.headline ||
-      "";
+    const data =
+      await response.json();
 
-    signalText.textContent = limitToTenWords(text);
+
+    signalText.textContent =
+      limitToTenWords(
+        data.text ||
+        data.insight ||
+        data.headline
+      );
+
 
     signalMeta.textContent =
       "Fresh intelligence signal · " +
-      new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      new Date().toLocaleTimeString(
+        [],
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
 
-  } catch (error) {
+
+  } catch {
 
     const fallbackSignals = [
+
       "AI is becoming infrastructure, not just software.",
-      "Cheap intelligence is changing how businesses operate.",
+
+      "Cheap intelligence is changing business operations.",
+
       "AI agents are moving deeper into workflows.",
+
       "Model choice is becoming an economic decision.",
-      "Enterprise AI is shifting from pilots to production.",
+
+      "Enterprise AI is moving from pilots to production.",
+
       "AI infrastructure is becoming a strategic advantage.",
+
       "The next AI advantage may come from routing.",
+
       "More AI usage means more economics to manage.",
+
       "AI capability is becoming increasingly commoditized.",
+
       "The valuable layer may sit above the models."
+
     ];
+
 
     const random =
       fallbackSignals[
-        Math.floor(Math.random() * fallbackSignals.length)
+        Math.floor(
+          Math.random() *
+          fallbackSignals.length
+        )
       ];
 
-    signalText.textContent = limitToTenWords(random);
+
+    signalText.textContent =
+      limitToTenWords(random);
+
 
     signalMeta.textContent =
       "ACI intelligence signal";
 
-  } finally {
-
-    setTimeout(() => {
-      signalArea.style.opacity = "1";
-    }, 120);
-
   }
+
+
+  setTimeout(() => {
+
+    signalText.style.opacity =
+      "1";
+
+  }, 100);
+
 }
 
 
@@ -1355,10 +2617,16 @@ async function loadInsight() {
 
 function autoResize() {
 
-  promptInput.style.height = "auto";
+  promptInput.style.height =
+    "auto";
+
 
   promptInput.style.height =
-    Math.min(promptInput.scrollHeight, 230) + "px";
+    Math.min(
+      promptInput.scrollHeight,
+      190
+    ) + "px";
+
 }
 
 
@@ -1380,8 +2648,11 @@ promptInput.addEventListener(
       event.preventDefault();
 
       if (!isSending) {
+
         sendPrompt();
+
       }
+
     }
 
   }
@@ -1389,13 +2660,15 @@ promptInput.addEventListener(
 
 
 /* ============================================================
-   FILE ATTACHMENT
+   FILE
 ============================================================ */
 
 attachButton.addEventListener(
   "click",
   () => {
+
     fileInput.click();
+
   }
 );
 
@@ -1404,17 +2677,26 @@ fileInput.addEventListener(
   "change",
   () => {
 
-    const file = fileInput.files?.[0];
+    const file =
+      fileInput.files?.[0];
+
 
     if (!file) {
       return;
     }
 
-    selectedFile = file;
 
-    attachmentName.textContent = file.name;
+    selectedFile =
+      file;
 
-    attachment.classList.add("visible");
+
+    attachmentName.textContent =
+      file.name;
+
+
+    attachment.classList.add(
+      "visible"
+    );
 
   }
 );
@@ -1424,13 +2706,18 @@ removeFile.addEventListener(
   "click",
   () => {
 
-    selectedFile = null;
+    selectedFile =
+      null;
 
-    fileInput.value = "";
+    fileInput.value =
+      "";
 
-    attachment.classList.remove("visible");
+    attachment.classList.remove(
+      "visible"
+    );
 
-    attachmentName.textContent = "";
+    attachmentName.textContent =
+      "";
 
   }
 );
@@ -1442,81 +2729,115 @@ removeFile.addEventListener(
 
 function readFileAsText(file) {
 
-  return new Promise((resolve, reject) => {
+  return new Promise(
+    (resolve, reject) => {
 
-    const reader = new FileReader();
+      const reader =
+        new FileReader();
 
-    reader.onload = () => {
-      resolve(reader.result);
-    };
 
-    reader.onerror = () => {
-      reject(
-        new Error("Could not read the file.")
-      );
-    };
+      reader.onload =
+        () => {
 
-    reader.readAsText(file);
+          resolve(
+            reader.result
+          );
 
-  });
+        };
+
+
+      reader.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "Could not read the file."
+            )
+          );
+
+        };
+
+
+      reader.readAsText(file);
+
+    }
+  );
 
 }
 
 
 function readFileAsBase64(file) {
 
-  return new Promise((resolve, reject) => {
+  return new Promise(
+    (resolve, reject) => {
 
-    const reader = new FileReader();
+      const reader =
+        new FileReader();
 
-    reader.onload = () => {
 
-      const result = reader.result || "";
+      reader.onload =
+        () => {
 
-      const comma =
-        result.indexOf(",");
+          const result =
+            reader.result || "";
 
-      resolve(
-        comma >= 0
-          ? result.slice(comma + 1)
-          : result
-      );
 
-    };
+          const comma =
+            result.indexOf(",");
 
-    reader.onerror = () => {
-      reject(
-        new Error("Could not process the attachment.")
-      );
-    };
 
-    reader.readAsDataURL(file);
+          resolve(
+            comma >= 0
+              ? result.slice(
+                  comma + 1
+                )
+              : result
+          );
 
-  });
+        };
+
+
+      reader.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "Could not process the attachment."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
 
 }
 
 
 /* ============================================================
-   PREPARE FILE FOR GEMINI
+   PREPARE FILE
 ============================================================ */
 
 async function prepareFileForAI(file) {
 
   if (!file) {
+
     return null;
+
   }
 
-  /*
-    Browser → Vercel JSON → Gemini.
 
-    Keep the upload conservative because Base64
-    increases the payload size by roughly 33%.
-  */
+  const MAX_FILE_SIZE =
+    2.8 * 1024 * 1024;
 
-  const MAX_FILE_SIZE = 2.8 * 1024 * 1024;
 
-  if (file.size > MAX_FILE_SIZE) {
+  if (
+    file.size >
+    MAX_FILE_SIZE
+  ) {
 
     throw new Error(
       "For now, attachments must be smaller than 2.8 MB."
@@ -1527,22 +2848,32 @@ async function prepareFileForAI(file) {
 
   /*
     PDF
-
-    Sent as native document data to Gemini.
   */
 
   if (
-    file.type === "application/pdf" ||
-    file.name.toLowerCase().endsWith(".pdf")
+    file.type ===
+      "application/pdf" ||
+    file.name
+      .toLowerCase()
+      .endsWith(".pdf")
   ) {
 
     const base64 =
-      await readFileAsBase64(file);
+      await readFileAsBase64(
+        file
+      );
+
 
     return {
-      name: file.name,
-      mimeType: "application/pdf",
+
+      name:
+        file.name,
+
+      mimeType:
+        "application/pdf",
+
       base64
+
     };
 
   }
@@ -1550,22 +2881,31 @@ async function prepareFileForAI(file) {
 
   /*
     IMAGE
-
-    Sent as native image data to Gemini.
   */
 
   if (
     file.type &&
-    file.type.startsWith("image/")
+    file.type.startsWith(
+      "image/"
+    )
   ) {
 
     const base64 =
-      await readFileAsBase64(file);
+      await readFileAsBase64(
+        file
+      );
+
 
     return {
-      name: file.name,
-      mimeType: file.type,
+
+      name:
+        file.name,
+
+      mimeType:
+        file.type,
+
       base64
+
     };
 
   }
@@ -1573,19 +2913,184 @@ async function prepareFileForAI(file) {
 
   /*
     TEXT / CODE
-
-    Extract in browser and send text to backend.
   */
 
   const text =
-    await readFileAsText(file);
+    await readFileAsText(
+      file
+    );
+
 
   return {
-    name: file.name,
+
+    name:
+      file.name,
+
     mimeType:
-      file.type || "text/plain",
-    extractedText: text
+      file.type ||
+      "text/plain",
+
+    extractedText:
+      text
+
   };
+
+}
+
+
+/* ============================================================
+   BASIC SAFE MARKDOWN
+============================================================ */
+
+function escapeHTML(value) {
+
+  return value
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function renderMarkdown(text) {
+
+  let html =
+    escapeHTML(
+      String(text || "")
+    );
+
+
+  /*
+    Bold
+  */
+
+  html =
+    html.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+
+  /*
+    Italic
+  */
+
+  html =
+    html.replace(
+      /\*(.*?)\*/g,
+      "<em>$1</em>"
+    );
+
+
+  /*
+    Inline code
+  */
+
+  html =
+    html.replace(
+      /`([^`]+)`/g,
+      "<code>$1</code>"
+    );
+
+
+  /*
+    Bullet points
+  */
+
+  const lines =
+    html.split("\n");
+
+
+  let result =
+    "";
+
+  let inList =
+    false;
+
+
+  for (
+    const line of lines
+  ) {
+
+    if (
+      /^\s*[-•]\s+/.test(line)
+    ) {
+
+      if (!inList) {
+
+        result +=
+          "<ul>";
+
+        inList =
+          true;
+
+      }
+
+
+      result +=
+        "<li>" +
+        line
+          .replace(
+            /^\s*[-•]\s+/,
+            ""
+          ) +
+        "</li>";
+
+    } else {
+
+      if (inList) {
+
+        result +=
+          "</ul>";
+
+        inList =
+          false;
+
+      }
+
+
+      if (
+        line.trim()
+      ) {
+
+        result +=
+          "<p>" +
+          line +
+          "</p>";
+
+      }
+
+    }
+
+  }
+
+
+  if (inList) {
+
+    result +=
+      "</ul>";
+
+  }
+
+
+  return result;
 
 }
 
@@ -1600,21 +3105,35 @@ function addMessage(
 ) {
 
   const wrapper =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   wrapper.className =
-    "message " + role;
+    "message " +
+    role;
 
 
   const inner =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
+
+  inner.className =
+    "message-inner";
 
 
   const label =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   label.className =
     "message-label";
+
 
   label.textContent =
     role === "user"
@@ -1623,23 +3142,67 @@ function addMessage(
 
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   bubble.className =
     "bubble";
 
-  bubble.textContent =
-    content;
+
+  if (
+    role === "ai"
+  ) {
+
+    const markdown =
+      document.createElement(
+        "div"
+      );
 
 
-  inner.appendChild(label);
-  inner.appendChild(bubble);
+    markdown.className =
+      "markdown";
 
-  wrapper.appendChild(inner);
 
-  messages.appendChild(wrapper);
+    markdown.innerHTML =
+      renderMarkdown(
+        content
+      );
+
+
+    bubble.appendChild(
+      markdown
+    );
+
+  } else {
+
+    bubble.textContent =
+      content;
+
+  }
+
+
+  inner.appendChild(
+    label
+  );
+
+  inner.appendChild(
+    bubble
+  );
+
+  wrapper.appendChild(
+    inner
+  );
+
+
+  messages.appendChild(
+    wrapper
+  );
+
 
   scrollToBottom();
+
 
   return bubble;
 
@@ -1647,60 +3210,99 @@ function addMessage(
 
 
 /* ============================================================
-   TYPING MESSAGE
+   TYPING
 ============================================================ */
 
 function addTypingMessage() {
 
   const wrapper =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   wrapper.className =
     "message ai";
 
 
   const inner =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
+
+  inner.className =
+    "message-inner";
 
 
   const label =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   label.className =
     "message-label";
+
 
   label.textContent =
     "ACI";
 
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   bubble.className =
     "bubble";
 
 
   const typing =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   typing.className =
     "typing";
 
 
   typing.innerHTML =
-    "<span></span><span></span><span></span>";
+    `
+      <span></span>
+      <span></span>
+      <span></span>
+    `;
 
 
-  bubble.appendChild(typing);
+  bubble.appendChild(
+    typing
+  );
 
-  inner.appendChild(label);
-  inner.appendChild(bubble);
 
-  wrapper.appendChild(inner);
+  inner.appendChild(
+    label
+  );
 
-  messages.appendChild(wrapper);
+  inner.appendChild(
+    bubble
+  );
+
+
+  wrapper.appendChild(
+    inner
+  );
+
+
+  messages.appendChild(
+    wrapper
+  );
+
 
   scrollToBottom();
+
 
   return wrapper;
 
@@ -1714,25 +3316,53 @@ function addTypingMessage() {
 function addError(message) {
 
   const wrapper =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   wrapper.className =
     "message ai";
 
 
+  const inner =
+    document.createElement(
+      "div"
+    );
+
+
+  inner.className =
+    "message-inner";
+
+
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   bubble.className =
     "bubble error-message";
+
 
   bubble.textContent =
     message;
 
 
-  wrapper.appendChild(bubble);
+  inner.appendChild(
+    bubble
+  );
 
-  messages.appendChild(wrapper);
+
+  wrapper.appendChild(
+    inner
+  );
+
+
+  messages.appendChild(
+    wrapper
+  );
+
 
   scrollToBottom();
 
@@ -1745,74 +3375,156 @@ function addError(message) {
 
 function renderTrace(data) {
 
-  traceGrid.innerHTML = "";
+  traceGrid.innerHTML =
+    "";
+
 
   if (!data) {
-    trace.classList.remove("visible");
+
+    trace.classList.remove(
+      "visible"
+    );
+
     return;
+
   }
 
 
   const items = [
-    ["Task", data.taskType],
-    ["Complexity", data.complexity + "/5"],
-    ["Sensitivity", data.sensitivity],
-    ["Quality", data.requiredQuality + "%"],
-    ["Model", data.model],
-    ["Provider", data.provider],
-    ["Tier", data.routingTier],
-    ["Tokens", data.totalTokens],
-    ["Latency", data.latencyMs + "ms"],
-    ["Outcome", data.outcome],
+
+    [
+      "Task",
+      data.taskType
+    ],
+
+    [
+      "Complexity",
+      data.complexity + "/5"
+    ],
+
+    [
+      "Sensitivity",
+      data.sensitivity
+    ],
+
+    [
+      "Quality",
+      data.requiredQuality + "%"
+    ],
+
+    [
+      "Model",
+      data.model
+    ],
+
+    [
+      "Provider",
+      data.provider
+    ],
+
+    [
+      "Tier",
+      data.routingTier
+    ],
+
+    [
+      "Tokens",
+      data.totalTokens
+    ],
+
+    [
+      "Latency",
+      data.latencyMs + "ms"
+    ],
+
+    [
+      "Outcome",
+      data.outcome
+    ],
+
     [
       "Fallback",
-      data.fallbackUsed ? "YES" : "NO"
+      data.fallbackUsed
+        ? "YES"
+        : "NO"
     ]
+
   ];
 
 
-  items.forEach(([label, value]) => {
+  items.forEach(
+    ([label, value]) => {
 
-    if (
-      value === undefined ||
-      value === null
-    ) {
-      return;
+      if (
+        value === undefined ||
+        value === null
+      ) {
+
+        return;
+
+      }
+
+
+      const pill =
+        document.createElement(
+          "div"
+        );
+
+
+      pill.className =
+        "trace-pill";
+
+
+      const strong =
+        document.createElement(
+          "strong"
+        );
+
+
+      strong.textContent =
+        label + ": ";
+
+
+      const span =
+        document.createElement(
+          "span"
+        );
+
+
+      span.textContent =
+        String(value);
+
+
+      pill.appendChild(
+        strong
+      );
+
+
+      pill.appendChild(
+        span
+      );
+
+
+      traceGrid.appendChild(
+        pill
+      );
+
     }
-
-    const pill =
-      document.createElement("div");
-
-    pill.className =
-      "trace-pill";
-
-    const strong =
-      document.createElement("strong");
-
-    strong.textContent =
-      label + ": ";
-
-    const span =
-      document.createElement("span");
-
-    span.textContent =
-      String(value);
-
-    pill.appendChild(strong);
-    pill.appendChild(span);
-
-    traceGrid.appendChild(pill);
-
-  });
+  );
 
 
-  trace.classList.add("visible");
+  trace.classList.add(
+    "visible"
+  );
+
+
+  scrollToBottom();
 
 }
 
 
 /* ============================================================
-   SEND PROMPT
+   SEND
 ============================================================ */
 
 async function sendPrompt() {
@@ -1826,11 +3538,6 @@ async function sendPrompt() {
     promptInput.value.trim();
 
 
-  /*
-    If a file exists and no prompt was typed,
-    give the model an explicit instruction.
-  */
-
   const requestPrompt =
     typedPrompt ||
     (
@@ -1841,29 +3548,28 @@ async function sendPrompt() {
 
 
   if (!requestPrompt) {
+
     promptInput.focus();
+
     return;
+
   }
 
 
-  isSending = true;
+  isSending =
+    true;
 
-  sendButton.disabled = true;
-
-
-  /*
-    Hide suggestions once the actual conversation starts.
-  */
-
-  suggestions.style.display = "none";
+  sendButton.disabled =
+    true;
 
 
-  /*
-    Add user message.
-  */
+  suggestions.style.display =
+    "none";
+
 
   let displayPrompt =
     requestPrompt;
+
 
   if (selectedFile) {
 
@@ -1873,6 +3579,7 @@ async function sendPrompt() {
 
   }
 
+
   addMessage(
     "user",
     displayPrompt
@@ -1880,25 +3587,25 @@ async function sendPrompt() {
 
 
   conversation.push({
-    role: "user",
-    content: requestPrompt
+
+    role:
+      "user",
+
+    content:
+      requestPrompt
+
   });
 
 
-  /*
-    Clear composer immediately.
-  */
-
-  promptInput.value = "";
+  promptInput.value =
+    "";
 
   autoResize();
 
 
-  /*
-    Prepare attachment.
-  */
+  let filePayload =
+    null;
 
-  let filePayload = null;
 
   try {
 
@@ -1918,41 +3625,39 @@ async function sendPrompt() {
       "Unable to process the attachment."
     );
 
-    isSending = false;
 
-    sendButton.disabled = false;
+    isSending =
+      false;
+
+    sendButton.disabled =
+      false;
 
     return;
 
   }
 
 
-  /*
-    Loading state.
-  */
-
   const typing =
     addTypingMessage();
 
 
-  /*
-    Remove attachment after preparation.
-  */
+  selectedFile =
+    null;
 
-  selectedFile = null;
+  fileInput.value =
+    "";
 
-  fileInput.value = "";
+  attachment.classList.remove(
+    "visible"
+  );
 
-  attachment.classList.remove("visible");
+  attachmentName.textContent =
+    "";
 
-  attachmentName.textContent = "";
 
-
-  /*
-    Hide previous trace.
-  */
-
-  trace.classList.remove("visible");
+  trace.classList.remove(
+    "visible"
+  );
 
 
   try {
@@ -1961,27 +3666,31 @@ async function sendPrompt() {
       await fetch(
         "/api/chat",
         {
-          method: "POST",
+
+          method:
+            "POST",
 
           headers: {
+
             "Content-Type":
               "application/json"
+
           },
 
-          body: JSON.stringify({
-            prompt: requestPrompt,
-            file: filePayload
-          })
+          body:
+            JSON.stringify({
+
+              prompt:
+                requestPrompt,
+
+              file:
+                filePayload
+
+            })
+
         }
       );
 
-
-    /*
-      Always parse safely.
-      If Vercel returns HTML instead of JSON,
-      show a useful error rather than throwing
-      "Unexpected token <".
-    */
 
     const contentType =
       response.headers.get(
@@ -2003,15 +3712,10 @@ async function sendPrompt() {
 
     } else {
 
-      const raw =
-        await response.text();
+      await response.text();
 
       throw new Error(
-        response.ok
-          ? "ACI returned an invalid response."
-          : "ACI server error (" +
-            response.status +
-            ")."
+        "ACI server returned an invalid response."
       );
 
     }
@@ -2027,16 +3731,8 @@ async function sendPrompt() {
     }
 
 
-    /*
-      Remove typing.
-    */
-
     typing.remove();
 
-
-    /*
-      AI response.
-    */
 
     const answer =
       data?.answer ||
@@ -2050,23 +3746,20 @@ async function sendPrompt() {
 
 
     conversation.push({
-      role: "assistant",
-      content: answer
+
+      role:
+        "assistant",
+
+      content:
+        answer
+
     });
 
-
-    /*
-      Show economics/routing trace.
-    */
 
     renderTrace(
       data?.trace
     );
 
-
-    /*
-      Add conversation to sidebar.
-    */
 
     saveConversation(
       requestPrompt
@@ -2085,9 +3778,11 @@ async function sendPrompt() {
 
   } finally {
 
-    isSending = false;
+    isSending =
+      false;
 
-    sendButton.disabled = false;
+    sendButton.disabled =
+      false;
 
     promptInput.focus();
 
@@ -2112,19 +3807,26 @@ sendButton.addEventListener(
 
 function newChat() {
 
-  conversation = [];
+  conversation =
+    [];
 
-  messages.innerHTML = "";
+  messages.innerHTML =
+    "";
 
-  trace.classList.remove("visible");
+  trace.classList.remove(
+    "visible"
+  );
 
-  traceGrid.innerHTML = "";
+  traceGrid.innerHTML =
+    "";
 
-  promptInput.value = "";
+  promptInput.value =
+    "";
 
   autoResize();
 
-  suggestions.style.display = "flex";
+  suggestions.style.display =
+    "flex";
 
   renderSuggestions();
 
@@ -2136,12 +3838,6 @@ function newChat() {
 
 
 newChatButton.addEventListener(
-  "click",
-  newChat
-);
-
-
-topNewChat.addEventListener(
   "click",
   newChat
 );
@@ -2188,26 +3884,32 @@ function saveConversation(title) {
     getHistory();
 
 
-  /*
-    Avoid repeated identical entries.
-  */
-
   if (
     history.length &&
     history[0].title === cleanTitle
   ) {
+
     return;
+
   }
 
 
   history.unshift({
-    title: cleanTitle,
-    timestamp: Date.now()
+
+    title:
+      cleanTitle,
+
+    timestamp:
+      Date.now()
+
   });
 
 
   history =
-    history.slice(0, 20);
+    history.slice(
+      0,
+      20
+    );
 
 
   localStorage.setItem(
@@ -2227,67 +3929,78 @@ function renderHistory() {
     getHistory();
 
 
-  historyList.innerHTML = "";
+  historyList.innerHTML =
+    "";
 
 
   if (!history.length) {
 
     const empty =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     empty.className =
       "history-empty";
 
+
     empty.textContent =
       "No conversations yet.";
 
-    historyList.appendChild(empty);
+
+    historyList.appendChild(
+      empty
+    );
+
 
     return;
 
   }
 
 
-  history.forEach(item => {
+  history.forEach(
+    item => {
 
-    const button =
-      document.createElement("button");
-
-    button.type = "button";
-
-    button.className =
-      "history-item";
-
-    button.textContent =
-      item.title;
+      const button =
+        document.createElement(
+          "button"
+        );
 
 
-    /*
-      History is currently intentionally lightweight.
-      Clicking starts a fresh workspace because we
-      aren't storing complete conversations locally.
-    */
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        promptInput.value =
-          item.title;
-
-        autoResize();
-
-        promptInput.focus();
-
-      }
-    );
+      button.type =
+        "button";
 
 
-    historyList.appendChild(
-      button
-    );
+      button.className =
+        "history-item";
 
-  });
+
+      button.textContent =
+        item.title;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          promptInput.value =
+            item.title;
+
+          autoResize();
+
+          promptInput.focus();
+
+        }
+      );
+
+
+      historyList.appendChild(
+        button
+      );
+
+    }
+  );
 
 }
 
@@ -2298,19 +4011,21 @@ function renderHistory() {
 
 function scrollToBottom() {
 
-  const workspace =
-    document.querySelector(
-      ".workspace"
-    );
+  requestAnimationFrame(
+    () => {
 
-  requestAnimationFrame(() => {
+      chatScroll.scrollTo({
 
-    workspace.scrollTo({
-      top: workspace.scrollHeight,
-      behavior: "smooth"
-    });
+        top:
+          chatScroll.scrollHeight,
 
-  });
+        behavior:
+          "smooth"
+
+      });
+
+    }
+  );
 
 }
 
@@ -2331,10 +4046,7 @@ promptInput.focus();
 
 
 /*
-  Refresh the AI signal periodically.
-
-  This keeps the landing signal fresh
-  without refreshing the whole page.
+  Refresh editorial signal every 10 minutes.
 */
 
 setInterval(
