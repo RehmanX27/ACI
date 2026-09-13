@@ -1,17 +1,11 @@
 import OpenAI from "openai";
 
-/*
-===========================================================
-ACI - AI CONSUMPTION INTELLIGENCE
-Multi-model routing + fallback + economics logging
-===========================================================
-*/
-
 /* =========================================================
-   MODEL REGISTRY
-   ========================================================= */
+   ACI MODEL REGISTRY
+========================================================= */
 
 const MODELS = {
+
   gemini_flash: {
     provider: "google",
     id: "gemini-3.8-flash",
@@ -36,11 +30,6 @@ const MODELS = {
     outputPerMillion: 2.50
   },
 
-  /*
-   * OpenAI models are retained for future multi-provider routing.
-   * They are NOT used by default while your OpenAI credits are exhausted.
-   */
-
   openai_luna: {
     provider: "openai",
     id: "gpt-5.6-luna",
@@ -64,15 +53,18 @@ const MODELS = {
     inputPerMillion: 4.00,
     outputPerMillion: 20.00
   }
+
 };
 
 
 /* =========================================================
-   TASK CLASSIFICATION
-   ========================================================= */
+   CLASSIFICATION
+========================================================= */
 
 function classify(text) {
-  const t = text.toLowerCase();
+
+  const t =
+    text.toLowerCase();
 
   if (
     /production|outage|incident|root cause|architecture|critical/.test(t)
@@ -123,23 +115,33 @@ function classify(text) {
   }
 
   return "General Assistance";
+
 }
 
 
 /* =========================================================
-   REQUEST INTELLIGENCE
-   ========================================================= */
+   INTELLIGENCE
+========================================================= */
 
-function intelligence(text) {
-  const taskType = classify(text);
+function intelligence(
+  text
+) {
 
-  let complexity = 1;
+  const taskType =
+    classify(text);
 
-  if (text.length > 500) {
+  let complexity =
+    1;
+
+  if (
+    text.length > 500
+  ) {
     complexity++;
   }
 
-  if (text.length > 1500) {
+  if (
+    text.length > 1500
+  ) {
     complexity++;
   }
 
@@ -159,204 +161,376 @@ function intelligence(text) {
     complexity++;
   }
 
-  complexity = Math.min(5, complexity);
+  complexity =
+    Math.min(
+      5,
+      complexity
+    );
 
 
-  let sensitivity = "Low";
+  let sensitivity =
+    "Low";
+
 
   if (
     /password|credential|secret|api key|token|salary|bank|credit card|medical|patient/i.test(
       text
     )
   ) {
-    sensitivity = "High";
+
+    sensitivity =
+      "High";
+
   } else if (
     /client|customer|employee|internal|company|business|contract|financial/i.test(
       text
     )
   ) {
-    sensitivity = "Medium";
+
+    sensitivity =
+      "Medium";
+
   }
 
 
-  const requiredQuality = Math.min(
-    96,
-    76 +
-      complexity * 3 +
-      (sensitivity === "Medium" ? 2 : 0) +
-      (sensitivity === "High" ? 5 : 0)
-  );
+  const requiredQuality =
+    Math.min(
+      96,
+      76 +
+        complexity * 3 +
+        (
+          sensitivity === "Medium"
+            ? 2
+            : 0
+        ) +
+        (
+          sensitivity === "High"
+            ? 5
+            : 0
+        )
+    );
 
 
   return {
+
     taskType,
+
     complexity,
+
     sensitivity,
+
     requiredQuality
+
   };
+
 }
 
 
 /* =========================================================
-   MODEL ROUTER
-   ========================================================= */
+   ROUTING
+========================================================= */
 
-function chooseModel(profile) {
+function chooseModel(
+  profile
+) {
 
   /*
    * Important:
    *
-   * This is an initial routing policy.
-   * It does NOT claim that one model is objectively better.
+   * We are not pretending the model has a guaranteed
+   * quality percentage.
    *
-   * ACI will eventually replace these heuristics with
-   * measured quality, cost, latency and availability data.
+   * This is a routing policy.
    */
 
 
-  // High complexity
   if (
     profile.complexity >= 4 ||
-    profile.taskType === "Production / Technical"
+    profile.taskType ===
+      "Production / Technical"
   ) {
+
     return {
-      model: MODELS.gemini_flash,
-      reason: "High-complexity task routed to advanced Gemini model"
+
+      model:
+        MODELS.gemini_flash,
+
+      reason:
+        "High-complexity task routed to advanced Gemini model"
+
     };
+
   }
 
 
-  // Medium complexity
   if (
     profile.complexity >= 3 ||
     profile.requiredQuality >= 88
   ) {
+
     return {
-      model: MODELS.gemini_balanced,
-      reason: "Medium-complexity task routed to balanced Gemini model"
+
+      model:
+        MODELS.gemini_balanced,
+
+      reason:
+        "Medium-complexity task routed to balanced Gemini model"
+
     };
+
   }
 
 
-  // Low complexity
   return {
-    model: MODELS.gemini_efficient,
-    reason: "Low-complexity task routed to efficient Gemini model"
+
+    model:
+      MODELS.gemini_efficient,
+
+    reason:
+      "Low-complexity task routed to efficient Gemini model"
+
   };
+
 }
 
 
 /* =========================================================
-   GEMINI API
-   ========================================================= */
+   GEMINI
+========================================================= */
 
-async function callGemini(model, system, prompt) {
+async function callGemini(
+  model,
+  system,
+  prompt,
+  file
+) {
 
-  if (!process.env.GEMINI_API_KEY) {
+  if (
+    !process.env.GEMINI_API_KEY
+  ) {
+
     throw new Error(
       "GEMINI_API_KEY is not configured in Vercel."
     );
+
   }
 
 
-  const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/interactions",
-    {
-      method: "POST",
+  /*
+   * Normal request
+   */
 
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": process.env.GEMINI_API_KEY
-      },
+  let input;
 
-      body: JSON.stringify({
-        model: model.id,
 
-        system_instruction: system,
+  if (
+    file &&
+    file.base64
+  ) {
 
-        input: prompt,
+    /*
+     * Native Gemini document/image input.
+     *
+     * PDF:
+     *   type = document
+     *
+     * Images:
+     *   type = image
+     *
+     * Everything else:
+     *   text extraction is handled by frontend
+     */
 
-        /*
-         * Do not retain the Gemini interaction itself.
-         * ACI controls its own optional logging separately.
-         */
-        store: false
-      })
+    if (
+      file.mimeType ===
+      "application/pdf"
+    ) {
+
+      input = [
+
+        {
+          type: "text",
+          text: prompt
+        },
+
+        {
+          type: "document",
+
+          data:
+            file.base64,
+
+          mime_type:
+            "application/pdf"
+
+        }
+
+      ];
+
+    } else if (
+      file.mimeType.startsWith(
+        "image/"
+      )
+    ) {
+
+      input = [
+
+        {
+          type: "text",
+          text: prompt
+        },
+
+        {
+          type: "image",
+
+          data:
+            file.base64,
+
+          mime_type:
+            file.mimeType
+
+        }
+
+      ];
+
+    } else {
+
+      /*
+       * Non-PDF text files should already have been
+       * extracted in the browser.
+       */
+
+      input = prompt;
+
     }
-  );
+
+  } else {
+
+    input =
+      prompt;
+
+  }
 
 
-  const data = await response.json();
+  const response =
+    await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+
+        method:
+          "POST",
+
+        headers: {
+
+          "Content-Type":
+            "application/json",
+
+          "x-goog-api-key":
+            process.env.GEMINI_API_KEY
+
+        },
+
+        body:
+          JSON.stringify({
+
+            model:
+              model.id,
+
+            system_instruction:
+              system,
+
+            input,
+
+            store:
+              false
+
+          })
+
+      }
+    );
 
 
-  if (!response.ok) {
+  const data =
+    await response.json();
+
+
+  if (
+    !response.ok
+  ) {
 
     throw new Error(
       data?.error?.message ||
-      `Gemini API request failed with status ${response.status}.`
+      "Gemini API request failed."
     );
+
   }
 
 
-  let answer = "";
+  let answer =
+    "";
 
 
-  /*
-   * Current Gemini Interactions API format:
-   *
-   * data.steps[]
-   *    -> type: model_output
-   *    -> content[]
-   *       -> type: text
-   *       -> text
-   */
+  if (
+    Array.isArray(
+      data.steps
+    )
+  ) {
 
-  if (Array.isArray(data.steps)) {
-
-    for (const step of data.steps) {
+    for (
+      const step of data.steps
+    ) {
 
       if (
-        step.type !== "model_output" ||
-        !Array.isArray(step.content)
+        step.type !==
+          "model_output" ||
+        !Array.isArray(
+          step.content
+        )
       ) {
+
         continue;
+
       }
 
 
-      for (const content of step.content) {
+      for (
+        const content of
+          step.content
+      ) {
 
         if (
-          content.type === "text" &&
-          typeof content.text === "string"
+          content.type ===
+            "text" &&
+          typeof content.text ===
+            "string"
         ) {
-          answer += content.text;
+
+          answer +=
+            content.text;
+
         }
+
       }
+
     }
+
   }
 
-
-  /*
-   * Compatibility fallback in case Google returns
-   * output_text in a different response format.
-   */
 
   if (
     !answer &&
-    typeof data.output_text === "string"
+    typeof data.output_text ===
+      "string"
   ) {
-    answer = data.output_text;
+
+    answer =
+      data.output_text;
+
   }
 
 
-  if (!answer) {
-    throw new Error(
-      "Gemini returned no usable text output."
-    );
-  }
-
-
-  const usage = data.usage || {};
+  const usage =
+    data.usage ||
+    {};
 
 
   return {
@@ -366,126 +540,140 @@ async function callGemini(model, system, prompt) {
     usage: {
 
       input_tokens:
-        usage.total_input_tokens || 0,
+        usage.total_input_tokens ||
+        0,
 
       output_tokens:
-        usage.total_output_tokens || 0,
+        usage.total_output_tokens ||
+        0,
 
       total_tokens:
-        usage.total_tokens || 0
+        usage.total_tokens ||
+        0
+
     }
+
   };
+
 }
 
 
 /* =========================================================
-   GEMINI FALLBACK ENGINE
-   ========================================================= */
+   GEMINI FALLBACK
+========================================================= */
 
 async function callGeminiWithFallback(
   primaryModel,
   system,
-  prompt
+  prompt,
+  file
 ) {
 
+  const candidates = [];
+
+
   /*
-   * Primary model comes from the router.
-   *
-   * Fallback chain:
-   *
-   * Primary
-   * ↓
-   * Gemini 3.8 Flash
-   * ↓
-   * Gemini 3.7 Flash
-   * ↓
-   * Gemini 3.5 Flash-Lite
-   *
-   * Duplicate models are removed automatically.
+   * Keep complex requests on stronger models.
+   * Do not blindly downgrade everything to Lite.
    */
 
-  const candidates = [
 
-    primaryModel,
-
-    MODELS.gemini_flash,
-
-    MODELS.gemini_balanced,
-
-    MODELS.gemini_efficient
-
-  ].filter(
-    (model, index, array) =>
-      array.findIndex(
-        x => x.id === model.id
-      ) === index
+  candidates.push(
+    primaryModel
   );
 
 
-  let lastError = null;
+  if (
+    primaryModel.id !==
+    MODELS.gemini_balanced.id
+  ) {
+
+    candidates.push(
+      MODELS.gemini_balanced
+    );
+
+  }
 
 
-  for (const model of candidates) {
+  if (
+    primaryModel.id !==
+    MODELS.gemini_efficient.id
+  ) {
+
+    candidates.push(
+      MODELS.gemini_efficient
+    );
+
+  }
+
+
+  let lastError =
+    null;
+
+
+  for (
+    const candidate of
+      candidates
+  ) {
 
     try {
 
       console.log(
-        `ACI attempting model: ${model.provider}/${model.id}`
+        `ACI trying Gemini model: ${candidate.id}`
       );
 
 
-      const result = await callGemini(
-        model,
-        system,
-        prompt
-      );
-
-
-      const fallbackUsed =
-        model.id !== primaryModel.id;
-
-
-      if (fallbackUsed) {
-
-        console.log(
-          `ACI fallback succeeded: ${primaryModel.id} -> ${model.id}`
+      const result =
+        await callGemini(
+          candidate,
+          system,
+          prompt,
+          file
         );
-      }
 
 
       return {
 
         ...result,
 
-        selectedModel: model,
+        selectedModel:
+          candidate,
 
-        fallbackUsed
+        fallbackUsed:
+          candidate.id !==
+          primaryModel.id
 
       };
 
-    } catch (error) {
+    } catch (
+      error
+    ) {
 
-      lastError = error;
+      lastError =
+        error;
 
 
       console.error(
-        `ACI model failed: ${model.id}`,
+        `ACI model ${candidate.id} failed:`,
         error?.message
       );
+
     }
+
   }
 
 
   throw new Error(
     lastError?.message ||
-    "All approved Gemini models failed."
+    "All Gemini models failed."
   );
+
 }
 
 
 /* =========================================================
-   OPENAI API
-   ========================================================= */
+   OPENAI
+========================================================= */
 
 async function callOpenAI(
   model,
@@ -493,27 +681,37 @@ async function callOpenAI(
   prompt
 ) {
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (
+    !process.env.OPENAI_API_KEY
+  ) {
 
     throw new Error(
       "OPENAI_API_KEY is not configured."
     );
+
   }
 
 
-  const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-  });
+  const client =
+    new OpenAI({
+
+      apiKey:
+        process.env.OPENAI_API_KEY
+
+    });
 
 
   const response =
     await client.responses.create({
 
-      model: model.id,
+      model:
+        model.id,
 
-      instructions: system,
+      instructions:
+        system,
 
-      input: prompt
+      input:
+        prompt
 
     });
 
@@ -521,81 +719,80 @@ async function callOpenAI(
   return {
 
     answer:
-      response.output_text || "",
+      response.output_text ||
+      "",
 
     usage: {
 
       input_tokens:
-        response.usage?.input_tokens || 0,
+        response.usage?.input_tokens ||
+        0,
 
       output_tokens:
-        response.usage?.output_tokens || 0,
+        response.usage?.output_tokens ||
+        0,
 
       total_tokens:
-        response.usage?.total_tokens || 0
+        response.usage?.total_tokens ||
+        0
+
     }
+
   };
+
 }
 
 
 /* =========================================================
-   MODEL EXECUTION
-   ========================================================= */
+   EXECUTE MODEL
+========================================================= */
 
 async function executeModel(
   model,
   system,
-  prompt
+  prompt,
+  file
 ) {
 
-  /*
-   * Gemini is currently the active provider.
-   *
-   * OpenAI remains available in the registry for
-   * future multi-provider routing.
-   */
-
-  if (model.provider === "google") {
+  if (
+    model.provider ===
+    "google"
+  ) {
 
     return await callGeminiWithFallback(
       model,
       system,
-      prompt
+      prompt,
+      file
     );
+
   }
 
 
-  if (model.provider === "openai") {
+  if (
+    model.provider ===
+    "openai"
+  ) {
 
-    const result =
-      await callOpenAI(
-        model,
-        system,
-        prompt
-      );
+    return await callOpenAI(
+      model,
+      system,
+      prompt
+    );
 
-
-    return {
-
-      ...result,
-
-      selectedModel: model,
-
-      fallbackUsed: false
-
-    };
   }
 
 
   throw new Error(
     `Unsupported provider: ${model.provider}`
   );
+
 }
 
 
 /* =========================================================
-   COST CALCULATOR
-   ========================================================= */
+   COST
+========================================================= */
 
 function calculateCost(
   model,
@@ -603,33 +800,47 @@ function calculateCost(
 ) {
 
   const inputTokens =
-    usage?.input_tokens || 0;
+    usage?.input_tokens ||
+    0;
 
   const outputTokens =
-    usage?.output_tokens || 0;
+    usage?.output_tokens ||
+    0;
 
 
   const inputCost =
-    (inputTokens / 1_000_000) *
+    (
+      inputTokens /
+      1_000_000
+    ) *
     model.inputPerMillion;
 
 
   const outputCost =
-    (outputTokens / 1_000_000) *
+    (
+      outputTokens /
+      1_000_000
+    ) *
     model.outputPerMillion;
 
 
   return Number(
-    (inputCost + outputCost).toFixed(8)
+    (
+      inputCost +
+      outputCost
+    ).toFixed(8)
   );
+
 }
 
 
 /* =========================================================
-   SUPABASE LOGGER
-   ========================================================= */
+   SUPABASE LOGGING
+========================================================= */
 
-async function saveLog(record) {
+async function saveLog(
+  record
+) {
 
   const url =
     process.env.SUPABASE_URL;
@@ -640,13 +851,17 @@ async function saveLog(record) {
     process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 
-  if (!url || !key) {
+  if (
+    !url ||
+    !key
+  ) {
 
     console.warn(
       "Supabase logging not configured."
     );
 
     return;
+
   }
 
 
@@ -657,135 +872,204 @@ async function saveLog(record) {
         `${url}/rest/v1/aci_requests`,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
 
             "Content-Type":
               "application/json",
 
-            "apikey":
+            apikey:
               key,
 
-            "Authorization":
+            Authorization:
               `Bearer ${key}`,
 
-            "Prefer":
+            Prefer:
               "return=minimal"
 
           },
 
           body:
-            JSON.stringify(record)
+            JSON.stringify(
+              record
+            )
+
         }
       );
 
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
 
       console.error(
         "Supabase logging failed:",
         await response.text()
       );
+
     }
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
     console.error(
       "Database logging failed:",
       error
     );
+
   }
+
 }
 
 
 /* =========================================================
-   MAIN API HANDLER
-   ========================================================= */
+   HANDLER
+========================================================= */
 
 export default async function handler(
   req,
   res
 ) {
 
-  if (req.method !== "POST") {
+  if (
+    req.method !==
+    "POST"
+  ) {
 
-    return res.status(405).json({
-      error: "POST only"
-    });
+    return res
+      .status(405)
+      .json({
+
+        error:
+          "POST only"
+
+      });
+
   }
 
 
-  let requestId = null;
-
-  let profile = null;
-
-  let routing = null;
-
-  let model = null;
-
-  let started = Date.now();
+  const started =
+    Date.now();
 
 
   try {
 
+    const body =
+      req.body ||
+      {};
+
+
+    const prompt =
+      body.prompt;
+
+
+    const file =
+      body.file ||
+      null;
+
+
     /* -----------------------------------------------------
-       READ REQUEST
-       ----------------------------------------------------- */
-
-    const { prompt } =
-      req.body || {};
-
+       VALIDATION
+    ----------------------------------------------------- */
 
     if (
       !prompt ||
-      typeof prompt !== "string"
+      typeof prompt !==
+        "string"
     ) {
 
-      return res.status(400).json({
-        error: "A prompt is required."
-      });
+      return res
+        .status(400)
+        .json({
+
+          error:
+            "A prompt is required."
+
+        });
+
     }
 
 
-    /* -----------------------------------------------------
-       REQUEST ID
-       ----------------------------------------------------- */
+    if (
+      file &&
+      typeof file !==
+        "object"
+    ) {
 
-    requestId =
+      return res
+        .status(400)
+        .json({
+
+          error:
+            "Invalid file payload."
+
+        });
+
+    }
+
+
+    /*
+     * Protect the API from accidentally huge browser
+     * payloads.
+     *
+     * Keep this conservative for Vercel.
+     */
+
+    if (
+      file?.base64 &&
+      file.base64.length >
+        4_000_000
+    ) {
+
+      return res
+        .status(413)
+        .json({
+
+          error:
+            "File is too large for inline processing. Please use a smaller file."
+
+        });
+
+    }
+
+
+    const profile =
+      intelligence(
+        prompt
+      );
+
+
+    const routing =
+      chooseModel(
+        profile
+      );
+
+
+    const requestedModel =
+      routing.model;
+
+
+    const requestId =
       `ACI-${Date.now()}-${Math.random()
         .toString(36)
         .slice(2, 8)}`;
 
 
-    /* -----------------------------------------------------
-       INTELLIGENCE
-       ----------------------------------------------------- */
-
-    profile =
-      intelligence(prompt);
-
-
-    /* -----------------------------------------------------
-       ROUTING
-       ----------------------------------------------------- */
-
-    routing =
-      chooseModel(profile);
-
-
-    model =
-      routing.model;
-
-
-    /* -----------------------------------------------------
-       SYSTEM INSTRUCTION
-       ----------------------------------------------------- */
-
     const system = `
+
 You are ACI, an enterprise AI assistant.
 
 Return the user's requested result directly.
+
+If a document or image is attached:
+
+- actually inspect it
+- base your answer on its contents
+- do not claim you read something you cannot access
+- mention relevant sections, tables or evidence when useful
 
 Do not mention:
 
@@ -796,7 +1080,7 @@ Do not mention:
 
 unless the user explicitly asks.
 
-Be accurate, concise and professional.
+Be accurate, useful, concise and professional.
 
 Task type:
 ${profile.taskType}
@@ -809,56 +1093,62 @@ ${profile.sensitivity}
 
 Required quality target:
 ${profile.requiredQuality}%
+
 `;
 
 
-    /* -----------------------------------------------------
-       EXECUTE
-       ----------------------------------------------------- */
+    /*
+     * If a text file was extracted by frontend,
+     * append it to the prompt.
+     */
 
-    started =
-      Date.now();
+    let finalPrompt =
+      prompt;
 
+
+    if (
+      file &&
+      file.extractedText
+    ) {
+
+      finalPrompt +=
+        `\n\n[ATTACHED DOCUMENT: ${file.name}]\n\n${file.extractedText}\n\n[END ATTACHED DOCUMENT]`;
+
+    }
+
+
+    /*
+     * Execute
+     */
 
     const result =
       await executeModel(
-        model,
+        requestedModel,
         system,
-        prompt
+        finalPrompt,
+        file
       );
 
 
-    /* -----------------------------------------------------
-       ACTUAL MODEL
-       ----------------------------------------------------- */
-
     const actualModel =
-      result.selectedModel || model;
+      result.selectedModel ||
+      requestedModel;
 
-
-    /* -----------------------------------------------------
-       LATENCY
-       ----------------------------------------------------- */
 
     const latencyMs =
-      Date.now() - started;
+      Date.now() -
+      started;
 
-
-    /* -----------------------------------------------------
-       RESPONSE
-       ----------------------------------------------------- */
 
     const answer =
-      result.answer || "";
+      result.answer ||
+      "";
 
 
     const usage =
-      result.usage || {};
+      result.usage ||
+      {};
 
-
-    /* -----------------------------------------------------
-       COST
-       ----------------------------------------------------- */
 
     const cost =
       calculateCost(
@@ -867,19 +1157,38 @@ ${profile.requiredQuality}%
       );
 
 
-    /* -----------------------------------------------------
-       OUTCOME
-       ----------------------------------------------------- */
-
     const outcome =
-      answer.trim()
+      answer
         ? "PASS"
         : "FAIL";
 
 
-    /* -----------------------------------------------------
-       TRACE
-       ----------------------------------------------------- */
+    /*
+     * Baseline model:
+     *
+     * For ACI economics, we need something against which
+     * we compare the selected model.
+     *
+     * Current baseline = advanced Gemini.
+     *
+     * This is an estimated counterfactual, not a claim
+     * that Gemini 3.8 was actually called.
+     */
+
+    const baselineCost =
+      calculateCost(
+        MODELS.gemini_flash,
+        usage
+      );
+
+
+    const costAvoided =
+      Math.max(
+        0,
+        baselineCost -
+          cost
+      );
+
 
     const trace = {
 
@@ -903,16 +1212,38 @@ ${profile.requiredQuality}%
       routingReason:
         routing.reason,
 
+      provider:
+        actualModel.provider,
+
+      model:
+        actualModel.id,
+
+      fallbackUsed:
+        result.fallbackUsed ||
+        false,
+
       latencyMs,
 
       inputTokens:
-        usage.input_tokens ?? 0,
+        usage.input_tokens ||
+        0,
 
       outputTokens:
-        usage.output_tokens ?? 0,
+        usage.output_tokens ||
+        0,
 
       totalTokens:
-        usage.total_tokens ?? 0,
+        usage.total_tokens ||
+        0,
+
+      estimatedCostUSD:
+        cost,
+
+      baselineCostUSD:
+        baselineCost,
+
+      costAvoidedUSD:
+        costAvoided,
 
       outcome
 
@@ -920,8 +1251,8 @@ ${profile.requiredQuality}%
 
 
     /* -----------------------------------------------------
-       DATABASE LOG
-       ----------------------------------------------------- */
+       SAVE
+    ----------------------------------------------------- */
 
     await saveLog({
 
@@ -959,13 +1290,16 @@ ${profile.requiredQuality}%
         latencyMs,
 
       input_tokens:
-        usage.input_tokens ?? 0,
+        usage.input_tokens ||
+        0,
 
       output_tokens:
-        usage.output_tokens ?? 0,
+        usage.output_tokens ||
+        0,
 
       total_tokens:
-        usage.total_tokens ?? 0,
+        usage.total_tokens ||
+        0,
 
       estimated_cost_usd:
         cost,
@@ -973,52 +1307,46 @@ ${profile.requiredQuality}%
       outcome,
 
       fallback_used:
-        result.fallbackUsed || false,
+        result.fallbackUsed ||
+        false,
 
       /*
-       * Content storage remains controlled by
-       * ACI_STORE_CONTENT.
+       * Store content only if explicitly enabled.
        */
 
       prompt:
-        process.env.ACI_STORE_CONTENT === "true"
+        process.env.ACI_STORE_CONTENT ===
+        "true"
           ? prompt
           : null,
 
       output:
-        process.env.ACI_STORE_CONTENT === "true"
+        process.env.ACI_STORE_CONTENT ===
+        "true"
           ? answer
           : null
+
     });
 
 
     /* -----------------------------------------------------
-       EMPLOYEE RESPONSE
-       ----------------------------------------------------- */
+       RESPONSE
+    ----------------------------------------------------- */
 
-    /*
-     * IMPORTANT:
-     *
-     * Model, provider and cost are deliberately NOT
-     * returned to the employee interface.
-     *
-     * They remain internal ACI economics data.
-     */
+    return res
+      .status(200)
+      .json({
 
-    return res.status(200).json({
+        answer,
 
-      answer,
+        trace
 
-      trace
-
-    });
+      });
 
 
-  } catch (error) {
-
-    /* =====================================================
-       FAILURE HANDLING
-       ===================================================== */
+  } catch (
+    error
+  ) {
 
     console.error(
       "ACI backend error:",
@@ -1026,100 +1354,16 @@ ${profile.requiredQuality}%
     );
 
 
-    /*
-     * Record failed requests too.
-     *
-     * This is important for ACI because availability is
-     * itself an economic/operational metric.
-     */
+    return res
+      .status(500)
+      .json({
 
-    if (requestId) {
+        error:
+          error?.message ||
+          "AI request failed."
 
-      const latencyMs =
-        Date.now() - started;
+      });
 
-
-      try {
-
-        await saveLog({
-
-          request_id:
-            requestId,
-
-          created_at:
-            new Date().toISOString(),
-
-          provider:
-            model?.provider || null,
-
-          task_type:
-            profile?.taskType || null,
-
-          complexity:
-            profile?.complexity || null,
-
-          sensitivity:
-            profile?.sensitivity || null,
-
-          required_quality:
-            profile?.requiredQuality || null,
-
-          routing_tier:
-            model?.tier || null,
-
-          routing_reason:
-            routing?.reason ||
-            null,
-
-          model:
-            model?.id || null,
-
-          latency_ms:
-            latencyMs,
-
-          input_tokens:
-            0,
-
-          output_tokens:
-            0,
-
-          total_tokens:
-            0,
-
-          estimated_cost_usd:
-            0,
-
-          outcome:
-            "FAIL",
-
-          fallback_used:
-            false,
-
-          prompt:
-            process.env.ACI_STORE_CONTENT === "true"
-              ? req.body?.prompt || null
-              : null,
-
-          output:
-            null
-        });
-
-      } catch (logError) {
-
-        console.error(
-          "Failed to record failed request:",
-          logError
-        );
-      }
-    }
-
-
-    return res.status(500).json({
-
-      error:
-        error?.message ||
-        "AI request failed."
-
-    });
   }
+
 }
