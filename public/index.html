@@ -1,2940 +1,1620 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>ACI · AI Consumption Intelligence</title>
+
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #0b0b0b;
+      --panel-2: #101010;
+      --border: #222;
+      --border-soft: #181818;
+
+      --text: #f5f5f5;
+      --muted: #777;
+      --muted-2: #555;
+
+      --white: #f5f5f5;
+      --black: #050505;
+
+      --radius: 16px;
+      --sidebar: 292px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    button,
+    textarea,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       APP
+    ========================================================= */
+
+    .app {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      background: var(--bg);
+    }
+
+    /* =========================================================
+       SIDEBAR
+    ========================================================= */
+
+    .sidebar {
+      width: var(--sidebar);
+      height: 100vh;
+      flex-shrink: 0;
+
+      background: #080808;
+      border-right: 1px solid var(--border);
+
+      display: flex;
+      flex-direction: column;
+
+      padding: 24px 22px 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      margin: 0 4px 26px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+
+      border-radius: 10px;
+
+      background:
+        radial-gradient(
+          circle at 30% 25%,
+          #fff 0%,
+          #cfcfcf 18%,
+          #888 42%,
+          #333 70%,
+          #111 100%
+        );
+
+      box-shadow:
+        0 0 0 1px #333,
+        inset 0 0 12px rgba(255,255,255,.25);
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      margin-top: 4px;
+
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: #5e5e5e;
+      text-transform: uppercase;
+    }
+
+    .new-chat {
+      width: 100%;
+      min-height: 49px;
+
+      border: 0;
+      border-radius: 12px;
+
+      background: #f2f2f2;
+      color: #080808;
+
+      font-size: 16px;
+      font-weight: 750;
+
+      text-align: left;
+      padding: 0 18px;
+
+      transition:
+        transform .15s ease,
+        background .15s ease;
+    }
+
+    .new-chat:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .history {
+      margin-top: 34px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .history-label {
+      margin: 0 9px 13px;
+
+      color: #575757;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .history-item {
+      border: 0;
+      background: transparent;
+
+      color: #898989;
+
+      width: 100%;
+      padding: 9px 10px;
+
+      border-radius: 9px;
+
+      text-align: left;
+      font-size: 12px;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .history-item:hover {
+      color: #eee;
+      background: #111;
+    }
+
+    .history-empty {
+      color: #444;
+      font-size: 11px;
+      padding: 8px 10px;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 18px 3px 0;
+
+      color: #525252;
+      font-size: 10px;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+
+      background: #67f5a0;
+
+      margin-right: 7px;
+
+      box-shadow: 0 0 10px rgba(103,245,160,.5);
+    }
+
+    /* =========================================================
+       MAIN
+    ========================================================= */
+
+    .main {
+      min-width: 0;
+      flex: 1;
+      height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+
+      background:
+        radial-gradient(
+          circle at 50% -20%,
+          rgba(255,255,255,.045),
+          transparent 42%
+        ),
+        #050505;
+    }
 
-<meta charset="UTF-8">
+    .topbar {
+      height: 70px;
+      flex-shrink: 0;
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+      border-bottom: 1px solid var(--border-soft);
 
-<meta
-  name="theme-color"
-  content="#050505"
->
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-<title>ACI · AI Consumption Intelligence</title>
+      padding: 0 24px 0 30px;
+    }
 
-<style>
+    .topbar-label {
+      color: #666;
+      font-size: 11px;
+      letter-spacing: .2px;
+    }
 
-/* =========================================================
-   ACI EMPLOYEE WORKSPACE
-   ========================================================= */
+    .topbar-new {
+      border: 1px solid #292929;
+      background: #0b0b0b;
+      color: #aaa;
 
-:root {
+      border-radius: 9px;
 
-  --bg: #050505;
-  --bg2: #080808;
+      padding: 9px 13px;
 
-  --panel: #0c0c0e;
-  --panel2: #101012;
-  --panel3: #141416;
+      font-size: 11px;
+    }
 
-  --border: #25252a;
-  --border2: #34343a;
+    .topbar-new:hover {
+      color: #fff;
+      border-color: #444;
+    }
 
-  --text: #f5f5f5;
-  --text2: #c7c7cc;
-  --muted: #77777f;
-  --muted2: #55555c;
+    /* =========================================================
+       WORKSPACE
+    ========================================================= */
 
-  --green: #72efad;
-  --red: #ff7078;
+    .workspace {
+      flex: 1;
+      min-height: 0;
 
-  --radius: 18px;
+      overflow-y: auto;
 
-}
+      position: relative;
 
+      display: flex;
+      flex-direction: column;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    .workspace-inner {
+      width: min(1080px, calc(100% - 48px));
+      margin: 0 auto;
 
+      min-height: 100%;
 
-html {
-  scroll-behavior: smooth;
-}
+      display: flex;
+      flex-direction: column;
+    }
 
+    /* =========================================================
+       AI SIGNAL
+    ========================================================= */
 
-body {
+    .signal-area {
+      padding-top: 62px;
+      padding-bottom: 34px;
 
-  margin: 0;
+      transition:
+        opacity .25s ease,
+        transform .25s ease;
+    }
 
-  min-height: 100vh;
+    .signal-kicker {
+      display: flex;
+      align-items: center;
+      gap: 9px;
 
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(255,255,255,.045),
-      transparent 32%
-    ),
-    var(--bg);
+      color: #626262;
 
-  color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
 
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
 
-  overflow-x: hidden;
+      margin-bottom: 17px;
+    }
 
-}
+    .signal-kicker::before {
+      content: "";
 
+      width: 6px;
+      height: 6px;
 
-button,
-textarea,
-input {
+      border-radius: 50%;
 
-  font: inherit;
+      background: #eee;
+      box-shadow: 0 0 10px rgba(255,255,255,.3);
+    }
 
-}
+    /*
+      IMPORTANT:
+      This replaces the giant 6-line headline.
 
+      Maximum target:
+      10 words.
 
-/* =========================================================
-   APP
-   ========================================================= */
+      The typography is intentionally editorial,
+      but much smaller so it doesn't dominate the workspace.
+    */
 
-.app {
+    .signal-text {
+      max-width: 900px;
 
-  min-height: 100vh;
+      font-size: clamp(32px, 4vw, 58px);
 
-}
+      line-height: .98;
 
+      font-weight: 850;
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
+      letter-spacing: -2.8px;
 
-.sidebar {
+      color: #f2f2f2;
 
-  position: fixed;
+      margin: 0;
 
-  inset:
-    0 auto 0 0;
+      text-wrap: balance;
+    }
 
-  width: 255px;
+    .signal-meta {
+      margin-top: 19px;
 
-  padding: 18px;
+      color: #4f4f4f;
 
-  border-right:
-    1px solid rgba(255,255,255,.06);
+      font-size: 10px;
+      letter-spacing: .4px;
+    }
 
-  background:
-    rgba(7,7,8,.94);
+    .signal-loading {
+      color: #777;
+    }
 
-  backdrop-filter:
-    blur(22px);
+    /* =========================================================
+       CHAT
+    ========================================================= */
 
-  z-index: 100;
+    .chat-area {
+      flex: 1;
 
-  display: flex;
+      display: flex;
+      flex-direction: column;
 
-  flex-direction: column;
+      min-height: 260px;
+    }
 
-  transition:
-    transform .25s ease;
+    .messages {
+      flex: 1;
 
-}
+      display: flex;
+      flex-direction: column;
 
+      gap: 22px;
 
-.brand {
+      padding-bottom: 28px;
+    }
 
-  display: flex;
+    .message {
+      display: flex;
+      width: 100%;
+    }
 
-  align-items: center;
+    .message.user {
+      justify-content: flex-end;
+    }
 
-  gap: 10px;
+    .message.ai {
+      justify-content: flex-start;
+    }
 
-  margin-bottom: 20px;
+    .bubble {
+      max-width: min(760px, 88%);
 
-}
+      border-radius: 15px;
 
+      padding: 15px 17px;
 
-.logo {
+      font-size: 14px;
+      line-height: 1.65;
 
-  width: 31px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
-  height: 31px;
+    .user .bubble {
+      background: #f2f2f2;
+      color: #090909;
 
-  border-radius: 10px;
+      border-bottom-right-radius: 4px;
+    }
 
-  background:
-    radial-gradient(
-      circle at 30% 25%,
-      #ffffff,
-      #bdbdc1 28%,
-      #56565b 60%,
-      #161619 100%
-    );
+    .ai .bubble {
+      background: #0e0e0e;
+      color: #dedede;
 
-  box-shadow:
-    0 0 30px rgba(255,255,255,.08);
+      border: 1px solid #202020;
 
-}
+      border-bottom-left-radius: 4px;
+    }
 
+    .message-label {
+      font-size: 9px;
+      color: #555;
 
-.brand-name {
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
 
-  font-size: 17px;
+      margin-bottom: 7px;
+    }
 
-  font-weight: 850;
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
 
-  letter-spacing: -.05em;
+    .typing span {
+      width: 4px;
+      height: 4px;
 
-}
+      border-radius: 50%;
 
+      background: #999;
 
-.brand-caption {
+      animation: blink 1s infinite ease-in-out;
+    }
 
-  margin-top: 1px;
+    .typing span:nth-child(2) {
+      animation-delay: .15s;
+    }
 
-  color: var(--muted2);
+    .typing span:nth-child(3) {
+      animation-delay: .3s;
+    }
 
-  font-size: 8px;
+    @keyframes blink {
+      0%, 100% {
+        opacity: .2;
+      }
 
-  letter-spacing: .16em;
+      50% {
+        opacity: 1;
+      }
+    }
 
-  text-transform: uppercase;
+    /* =========================================================
+       TRACE
+    ========================================================= */
 
-}
+    .trace {
+      margin-top: -4px;
+      margin-bottom: 18px;
 
+      display: none;
 
-.new-chat {
+      border: 1px solid #1e1e1e;
+      border-radius: 12px;
 
-  width: 100%;
+      background: #090909;
 
-  padding: 11px 13px;
+      padding: 12px 14px;
 
-  border:
-    1px solid var(--border2);
+      font-size: 10px;
+      color: #656565;
+    }
 
-  border-radius: 11px;
+    .trace.visible {
+      display: block;
+    }
 
-  background: #f4f4f4;
+    .trace-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
 
-  color: #050505;
+    .trace-pill {
+      border: 1px solid #202020;
+      background: #0d0d0d;
 
-  cursor: pointer;
+      padding: 6px 8px;
 
-  font-weight: 800;
+      border-radius: 7px;
+    }
 
-  text-align: left;
+    .trace-pill strong {
+      color: #aaa;
+      font-weight: 650;
+    }
 
-  transition: .18s;
+    /* =========================================================
+       SUGGESTIONS
+    ========================================================= */
 
-}
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
 
+      gap: 8px;
 
-.new-chat:hover {
+      padding-bottom: 12px;
+    }
 
-  background: white;
+    .suggestion {
+      border: 1px solid #222;
+      background: #090909;
 
-  transform: translateY(-1px);
+      color: #747474;
 
-}
+      border-radius: 999px;
 
+      padding: 8px 12px;
 
-.side-label {
+      font-size: 10px;
 
-  margin:
-    25px 8px 8px;
+      transition:
+        color .15s ease,
+        border-color .15s ease,
+        background .15s ease;
+    }
 
-  color: var(--muted2);
+    .suggestion:hover {
+      color: #eee;
+      border-color: #444;
+      background: #101010;
+    }
 
-  font-size: 9px;
+    /* =========================================================
+       COMPOSER
+    ========================================================= */
 
-  font-weight: 750;
+    .composer-wrap {
+      position: sticky;
+      bottom: 0;
 
-  letter-spacing: .16em;
+      padding-top: 6px;
+      padding-bottom: 26px;
 
-  text-transform: uppercase;
+      background:
+        linear-gradient(
+          to bottom,
+          transparent,
+          #050505 16%
+        );
+    }
 
-}
+    .attachment {
+      display: none;
 
+      align-items: center;
+      gap: 9px;
 
-.chat-list {
+      width: fit-content;
 
-  display: flex;
+      margin-bottom: 8px;
 
-  flex-direction: column;
+      border: 1px solid #252525;
+      background: #0d0d0d;
 
-  gap: 3px;
+      color: #aaa;
 
-  overflow-y: auto;
+      border-radius: 9px;
 
-}
+      padding: 7px 10px;
 
+      font-size: 10px;
+    }
 
-.chat-item {
+    .attachment.visible {
+      display: flex;
+    }
 
-  width: 100%;
+    .attachment-name {
+      max-width: 260px;
 
-  padding: 9px 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-  border:
-    1px solid transparent;
+    .remove-file {
+      border: 0;
+      background: transparent;
 
-  border-radius: 10px;
+      color: #666;
 
-  background: transparent;
+      padding: 0 2px;
+      font-size: 14px;
+    }
 
-  color: #99999f;
+    .remove-file:hover {
+      color: #fff;
+    }
 
-  text-align: left;
+    .composer {
+      border: 1px solid #292929;
+      background: #0b0b0b;
 
-  cursor: pointer;
+      border-radius: 17px;
 
-  white-space: nowrap;
+      box-shadow:
+        0 15px 45px rgba(0,0,0,.25);
 
-  overflow: hidden;
+      transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+    }
 
-  text-overflow: ellipsis;
+    .composer:focus-within {
+      border-color: #444;
 
-  font-size: 11px;
+      box-shadow:
+        0 15px 50px rgba(0,0,0,.4);
+    }
 
-  transition: .16s;
+    .textarea {
+      display: block;
 
-}
+      width: 100%;
 
+      min-height: 72px;
+      max-height: 230px;
 
-.chat-item:hover {
+      resize: none;
 
-  background: #111113;
+      border: 0;
+      outline: 0;
 
-  color: white;
+      background: transparent;
 
-}
+      color: #eee;
 
+      padding: 17px 17px 10px;
 
-.chat-item.active {
+      font-size: 14px;
+      line-height: 1.5;
+    }
 
-  background: #151518;
+    .textarea::placeholder {
+      color: #505050;
+    }
 
-  border-color: #29292e;
+    .composer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-  color: white;
+      padding: 7px 9px 9px 12px;
+    }
 
-}
+    .composer-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
+    .icon-button {
+      width: 34px;
+      height: 34px;
 
-.sidebar-bottom {
+      border: 1px solid transparent;
+      background: transparent;
 
-  margin-top: auto;
+      color: #666;
 
-  padding-top: 15px;
+      border-radius: 9px;
 
-  border-top:
-    1px solid var(--border);
+      display: grid;
+      place-items: center;
 
-}
+      font-size: 16px;
+    }
 
+    .icon-button:hover {
+      color: #eee;
+      background: #151515;
+      border-color: #242424;
+    }
 
-.system-status {
+    .send-button {
+      width: 38px;
+      height: 38px;
 
-  display: flex;
+      border: 0;
 
-  align-items: center;
+      border-radius: 11px;
 
-  gap: 7px;
+      background: #f1f1f1;
+      color: #050505;
 
-  color: #64646c;
+      display: grid;
+      place-items: center;
 
-  font-size: 9px;
+      font-size: 17px;
+      font-weight: 800;
 
-}
+      transition:
+        transform .15s ease,
+        background .15s ease;
+    }
 
+    .send-button:hover {
+      background: #fff;
+      transform: translateY(-1px);
+    }
 
-.status-dot {
+    .send-button:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-  width: 6px;
+    .composer-note {
+      margin-top: 8px;
 
-  height: 6px;
+      text-align: center;
 
-  border-radius: 50%;
+      color: #404040;
 
-  background: var(--green);
+      font-size: 9px;
+    }
 
-  box-shadow:
-    0 0 10px rgba(114,239,173,.5);
+    #fileInput {
+      display: none;
+    }
 
-}
+    /* =========================================================
+       EMPTY / ERROR
+    ========================================================= */
 
+    .error-message {
+      color: #d88888;
 
-/* =========================================================
-   MAIN
-   ========================================================= */
+      border: 1px solid #382020;
+      background: #110909;
 
-.main {
+      border-radius: 10px;
 
-  min-height: 100vh;
+      padding: 11px 13px;
 
-  margin-left: 255px;
+      font-size: 11px;
+    }
 
-}
+    /* =========================================================
+       MOBILE
+    ========================================================= */
 
+    @media (max-width: 800px) {
+      body {
+        overflow: auto;
+      }
 
-/* =========================================================
-   TOPBAR
-   ========================================================= */
+      .app {
+        min-height: 100vh;
+        height: auto;
+      }
 
-.topbar {
+      .sidebar {
+        display: none;
+      }
 
-  position: sticky;
+      .main {
+        min-height: 100vh;
+        height: auto;
+      }
 
-  top: 0;
+      .topbar {
+        height: 58px;
+        padding: 0 16px;
+      }
 
-  z-index: 50;
+      .workspace-inner {
+        width: calc(100% - 28px);
+      }
 
-  height: 62px;
+      .signal-area {
+        padding-top: 42px;
+        padding-bottom: 28px;
+      }
 
-  padding: 0 28px;
+      .signal-text {
+        font-size: clamp(30px, 10vw, 46px);
+        letter-spacing: -1.8px;
+      }
 
-  display: flex;
+      .chat-area {
+        min-height: 220px;
+      }
 
-  align-items: center;
+      .composer-wrap {
+        padding-bottom: 16px;
+      }
 
-  justify-content: space-between;
+      .suggestions {
+        overflow-x: auto;
+        flex-wrap: nowrap;
 
-  border-bottom:
-    1px solid rgba(255,255,255,.045);
+        scrollbar-width: none;
+      }
 
-  background:
-    rgba(5,5,5,.76);
+      .suggestions::-webkit-scrollbar {
+        display: none;
+      }
 
-  backdrop-filter:
-    blur(20px);
+      .suggestion {
+        white-space: nowrap;
+      }
+    }
 
-}
+    @media (max-width: 480px) {
+      .topbar-label {
+        font-size: 10px;
+      }
 
+      .topbar-new {
+        display: none;
+      }
 
-.top-left {
+      .signal-text {
+        font-size: 31px;
+        line-height: 1.02;
+      }
 
-  display: flex;
+      .bubble {
+        max-width: 94%;
+        font-size: 13px;
+      }
 
-  align-items: center;
-
-  gap: 10px;
-
-  color: #686870;
-
-  font-size: 10px;
-
-}
-
-
-.mobile-menu {
-
-  display: none;
-
-  width: 33px;
-
-  height: 33px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius: 9px;
-
-  background: #101012;
-
-  color: white;
-
-  cursor: pointer;
-
-}
-
-
-.top-right {
-
-  display: flex;
-
-  gap: 7px;
-
-}
-
-
-.top-button {
-
-  border:
-    1px solid var(--border);
-
-  border-radius: 9px;
-
-  background: #0c0c0e;
-
-  color: #929299;
-
-  padding: 8px 11px;
-
-  font-size: 10px;
-
-  cursor: pointer;
-
-}
-
-
-.top-button:hover {
-
-  color: white;
-
-  border-color: var(--border2);
-
-}
-
-
-/* =========================================================
-   WORKSPACE
-   ========================================================= */
-
-.workspace {
-
-  width:
-    min(1040px, 91%);
-
-  margin:
-    0 auto;
-
-  padding:
-    62px 0 100px;
-
-}
-
-
-/* =========================================================
-   DYNAMIC SIGNAL
-   ========================================================= */
-
-.signal {
-
-  text-align: center;
-
-  min-height: 315px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-}
-
-
-.signal-category {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  margin-bottom: 23px;
-
-  color: #67676f;
-
-  font-size: 9px;
-
-  text-transform: uppercase;
-
-  letter-spacing: .18em;
-
-}
-
-
-.signal-dot {
-
-  width: 5px;
-
-  height: 5px;
-
-  border-radius: 50%;
-
-  background: #8d8d95;
-
-}
-
-
-.signal-title {
-
-  max-width: 900px;
-
-  margin: 0;
-
-  font-size:
-    clamp(48px, 7vw, 94px);
-
-  line-height: .91;
-
-  letter-spacing: -.075em;
-
-  font-weight: 850;
-
-}
-
-
-.signal-title .line {
-
-  display: block;
-
-}
-
-
-.signal-title .faded {
-
-  color: #68686f;
-
-}
-
-
-.signal-source {
-
-  margin-top: 23px;
-
-  max-width: 650px;
-
-  color: #66666e;
-
-  font-size: 10px;
-
-  line-height: 1.5;
-
-}
-
-
-.signal-source a {
-
-  color: #8c8c94;
-
-  text-decoration: none;
-
-}
-
-
-.signal-source a:hover {
-
-  color: white;
-
-  text-decoration: underline;
-
-}
-
-
-/* signal animation */
-
-.signal-changing {
-
-  animation:
-    signalIn .5s ease;
-
-}
-
-
-@keyframes signalIn {
-
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(10px);
-
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-
-  }
-
-}
-
-
-/* =========================================================
-   ORB
-   ========================================================= */
-
-.orb {
-
-  width: 42px;
-
-  height: 42px;
-
-  margin:
-    5px 0 32px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle at 30% 25%,
-      white,
-      #c9c9cd 22%,
-      #67676d 52%,
-      #141417 100%
-    );
-
-  box-shadow:
-    0 0 35px rgba(255,255,255,.12);
-
-  animation:
-    pulse 4s ease-in-out infinite;
-
-}
-
-
-@keyframes pulse {
-
-  0%,
-  100% {
-
-    transform: scale(.92);
-
-    opacity: .82;
-
-  }
-
-  50% {
-
-    transform: scale(1.08);
-
-    opacity: 1;
-
-  }
-
-}
-
-
-/* =========================================================
-   CONVERSATION
-   ========================================================= */
-
-.conversation {
-
-  width:
-    min(820px, 100%);
-
-  margin:
-    0 auto 30px;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  gap: 28px;
-
-}
-
-
-.message {
-
-  max-width: 86%;
-
-  animation:
-    messageIn .28s ease;
-
-}
-
-
-@keyframes messageIn {
-
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(8px);
-
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-
-  }
-
-}
-
-
-.message.user {
-
-  margin-left: auto;
-
-}
-
-
-.message.ai {
-
-  margin-right: auto;
-
-}
-
-
-.message-label {
-
-  margin-bottom: 7px;
-
-  color: #5e5e66;
-
-  font-size: 8px;
-
-  font-weight: 750;
-
-  text-transform: uppercase;
-
-  letter-spacing: .16em;
-
-}
-
-
-.message-body {
-
-  color: #d8d8dc;
-
-  font-size: 14px;
-
-  line-height: 1.75;
-
-  white-space: pre-wrap;
-
-  word-break: break-word;
-
-}
-
-
-.message.user .message-body {
-
-  padding:
-    12px 15px;
-
-  border:
-    1px solid #29292e;
-
-  border-radius:
-    16px 16px 4px 16px;
-
-  background:
-    #141417;
-
-  color: #e7e7ea;
-
-}
-
-
-.message.ai .message-body {
-
-  padding:
-    0;
-
-}
-
-
-.message-meta {
-
-  margin-top: 7px;
-
-  color: #4f4f56;
-
-  font-size: 8px;
-
-}
-
-
-/* =========================================================
-   TYPING
-   ========================================================= */
-
-.typing {
-
-  display: flex;
-
-  gap: 5px;
-
-  padding: 8px 0;
-
-}
-
-
-.typing span {
-
-  width: 5px;
-
-  height: 5px;
-
-  border-radius: 50%;
-
-  background: #77777e;
-
-  animation:
-    typing 1s infinite;
-
-}
-
-
-.typing span:nth-child(2) {
-
-  animation-delay: .15s;
-
-}
-
-
-.typing span:nth-child(3) {
-
-  animation-delay: .30s;
-
-}
-
-
-@keyframes typing {
-
-  0%,
-  60%,
-  100% {
-
-    opacity: .25;
-
-    transform:
-      translateY(0);
-
-  }
-
-  30% {
-
-    opacity: 1;
-
-    transform:
-      translateY(-3px);
-
-  }
-
-}
-
-
-/* =========================================================
-   COMPOSER
-   ========================================================= */
-
-.composer {
-
-  width:
-    min(820px, 100%);
-
-  margin:
-    0 auto;
-
-}
-
-
-.composer-box {
-
-  border:
-    1px solid #29292f;
-
-  border-radius: 21px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #101012,
-      #0a0a0c
-    );
-
-  transition: .2s;
-
-}
-
-
-.composer-box:focus-within {
-
-  border-color: #424249;
-
-  box-shadow:
-    0 20px 80px rgba(0,0,0,.35);
-
-}
-
-
-.prompt {
-
-  width: 100%;
-
-  min-height: 135px;
-
-  max-height: 400px;
-
-  resize: vertical;
-
-  padding:
-    21px 23px 10px;
-
-  border: 0;
-
-  outline: 0;
-
-  background: transparent;
-
-  color: white;
-
-  font-size: 14px;
-
-  line-height: 1.6;
-
-}
-
-
-.prompt::placeholder {
-
-  color: #55555d;
-
-}
-
-
-.composer-bottom {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 10px;
-
-  padding:
-    9px 11px 11px 13px;
-
-}
-
-
-.tools {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  min-width: 0;
-
-}
-
-
-.attach {
-
-  width: 35px;
-
-  height: 35px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border:
-    1px solid #29292f;
-
-  border-radius: 10px;
-
-  background: #111114;
-
-  color: #9a9aa1;
-
-  cursor: pointer;
-
-}
-
-
-.attach:hover {
-
-  color: white;
-
-  border-color: #44444b;
-
-}
-
-
-.file-chip {
-
-  display: none;
-
-  align-items: center;
-
-  gap: 6px;
-
-  max-width: 260px;
-
-  padding:
-    7px 9px;
-
-  border:
-    1px solid #29292f;
-
-  border-radius: 8px;
-
-  background: #111114;
-
-  color: #9c9ca3;
-
-  font-size: 9px;
-
-}
-
-
-.file-chip.visible {
-
-  display: flex;
-
-}
-
-
-.file-chip-name {
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-
-}
-
-
-.file-remove {
-
-  border: 0;
-
-  background: transparent;
-
-  color: #6e6e75;
-
-  cursor: pointer;
-
-  padding: 0;
-
-}
-
-
-.file-remove:hover {
-
-  color: white;
-
-}
-
-
-.generate {
-
-  border: 0;
-
-  border-radius: 11px;
-
-  padding:
-    11px 17px;
-
-  background: #f2f2f2;
-
-  color: #050505;
-
-  font-weight: 800;
-
-  font-size: 11px;
-
-  cursor: pointer;
-
-  transition: .18s;
-
-}
-
-
-.generate:hover {
-
-  background: white;
-
-  transform: translateY(-1px);
-
-}
-
-
-.generate:disabled {
-
-  opacity: .5;
-
-  cursor: wait;
-
-  transform: none;
-
-}
-
-
-/* =========================================================
-   SUGGESTIONS
-   ========================================================= */
-
-.suggestions {
-
-  width:
-    min(900px, 100%);
-
-  margin:
-    14px auto 0;
-
-  display: flex;
-
-  gap: 7px;
-
-  overflow-x: auto;
-
-  padding-bottom: 5px;
-
-  scrollbar-width: none;
-
-}
-
-
-.suggestions::-webkit-scrollbar {
-
-  display: none;
-
-}
-
-
-.suggestion {
-
-  flex:
-    0 0 auto;
-
-  padding:
-    9px 12px;
-
-  border:
-    1px solid #29292f;
-
-  border-radius: 999px;
-
-  background: #0b0b0d;
-
-  color: #77777f;
-
-  cursor: pointer;
-
-  font-size: 9px;
-
-  transition: .18s;
-
-}
-
-
-.suggestion:hover {
-
-  color: white;
-
-  background: #141417;
-
-  border-color: #45454c;
-
-}
-
-
-/* =========================================================
-   FOOTER INFO
-   ========================================================= */
-
-.info {
-
-  text-align: center;
-
-  margin-top: 17px;
-
-  color: #414149;
-
-  font-size: 8px;
-
-}
-
-
-.info span {
-
-  margin:
-    0 5px;
-
-}
-
-
-.info span + span::before {
-
-  content: "·";
-
-  margin-right: 10px;
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media(max-width: 850px) {
-
-  .sidebar {
-
-    transform:
-      translateX(-100%);
-
-  }
-
-
-  .sidebar.open {
-
-    transform:
-      translateX(0);
-
-  }
-
-
-  .main {
-
-    margin-left: 0;
-
-  }
-
-
-  .mobile-menu {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-  }
-
-
-  .top-left {
-
-    gap: 8px;
-
-  }
-
-
-  .workspace {
-
-    width: 92%;
-
-    padding-top: 40px;
-
-  }
-
-
-  .signal {
-
-    min-height: 285px;
-
-  }
-
-
-  .signal-title {
-
-    font-size:
-      clamp(45px, 13vw, 75px);
-
-  }
-
-}
-
-
-@media(max-width: 520px) {
-
-  .topbar {
-
-    padding: 0 14px;
-
-  }
-
-
-  .top-right .top-button {
-
-    display: none;
-
-  }
-
-
-  .workspace {
-
-    width: 94%;
-
-  }
-
-
-  .signal-title {
-
-    font-size:
-      clamp(43px, 14vw, 65px);
-
-  }
-
-
-  .signal-source {
-
-    padding:
-      0 15px;
-
-  }
-
-
-  .message {
-
-    max-width: 94%;
-
-  }
-
-
-  .prompt {
-
-    min-height: 120px;
-
-    padding:
-      18px;
-
-  }
-
-
-  .composer-bottom {
-
-    align-items:
-      flex-end;
-
-  }
-
-
-  .file-chip {
-
-    max-width: 150px;
-
-  }
-
-}
-
-</style>
-
+      .textarea {
+        min-height: 65px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-
 <div class="app">
 
+  <!-- =======================================================
+       SIDEBAR
+  ======================================================== -->
 
-<!-- =======================================================
-     SIDEBAR
-======================================================= -->
+  <aside class="sidebar">
 
-<aside
-  id="sidebar"
-  class="sidebar"
->
+    <div class="brand">
+      <div class="brand-mark"></div>
 
-
-<div class="brand">
-
-  <div class="logo"></div>
-
-  <div>
-
-    <div class="brand-name">
-      ACI
+      <div>
+        <div class="brand-name">ACI</div>
+        <div class="brand-sub">Intelligence</div>
+      </div>
     </div>
 
-    <div class="brand-caption">
-      Intelligence
+    <button
+      class="new-chat"
+      id="newChatButton"
+      type="button"
+    >
+      + New chat
+    </button>
+
+    <div class="history">
+
+      <div class="history-label">
+        Today
+      </div>
+
+      <div
+        class="history-list"
+        id="historyList"
+      >
+        <div class="history-empty">
+          No conversations yet.
+        </div>
+      </div>
+
     </div>
 
-  </div>
+    <div class="sidebar-footer">
+      <span class="status-dot"></span>
+      ACI systems operational
+    </div>
+
+  </aside>
+
+
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-label">
+        Enterprise AI workspace
+      </div>
+
+      <button
+        class="topbar-new"
+        id="topNewChat"
+        type="button"
+      >
+        + New chat
+      </button>
+
+    </header>
+
+
+    <section class="workspace">
+
+      <div class="workspace-inner">
+
+        <!-- =================================================
+             AI SIGNAL
+        ================================================== -->
+
+        <section class="signal-area" id="signalArea">
+
+          <div class="signal-kicker">
+            AI / Technology signal
+          </div>
+
+          <h1
+            class="signal-text"
+            id="signalText"
+          >
+            AI is becoming infrastructure, not just software.
+          </h1>
+
+          <div
+            class="signal-meta"
+            id="signalMeta"
+          >
+            Fresh intelligence signal
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHAT
+        ================================================== -->
+
+        <section class="chat-area">
+
+          <div
+            class="messages"
+            id="messages"
+          ></div>
+
+          <div
+            class="trace"
+            id="trace"
+          >
+            <div class="trace-grid" id="traceGrid"></div>
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SUGGESTIONS
+        ================================================== -->
+
+        <div
+          class="suggestions"
+          id="suggestions"
+        ></div>
+
+
+        <!-- =================================================
+             COMPOSER
+        ================================================== -->
+
+        <div class="composer-wrap">
+
+          <div
+            class="attachment"
+            id="attachment"
+          >
+
+            <span>📎</span>
+
+            <span
+              class="attachment-name"
+              id="attachmentName"
+            ></span>
+
+            <button
+              class="remove-file"
+              id="removeFile"
+              type="button"
+              aria-label="Remove attachment"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div class="composer">
+
+            <textarea
+              class="textarea"
+              id="prompt"
+              rows="1"
+              placeholder="Ask ACI anything..."
+              autocomplete="off"
+            ></textarea>
+
+
+            <div class="composer-bottom">
+
+              <div class="composer-left">
+
+                <button
+                  class="icon-button"
+                  id="attachButton"
+                  type="button"
+                  title="Attach a file"
+                  aria-label="Attach a file"
+                >
+                  +
+                </button>
+
+              </div>
+
+
+              <button
+                class="send-button"
+                id="sendButton"
+                type="button"
+                title="Send"
+                aria-label="Send"
+              >
+                ↑
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="composer-note">
+            ACI automatically selects the appropriate approved AI model.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
-
-
-<button
-  id="newChat"
-  class="new-chat"
-  type="button"
->
-  ＋ New chat
-</button>
-
-
-<div class="side-label">
-  Today
-</div>
-
-
-<div
-  id="todayChats"
-  class="chat-list"
-></div>
-
-
-<div class="side-label">
-  Earlier
-</div>
-
-
-<div
-  id="earlierChats"
-  class="chat-list"
-></div>
-
-
-<div class="sidebar-bottom">
-
-  <div class="system-status">
-
-    <span class="status-dot"></span>
-
-    ACI systems operational
-
-  </div>
-
-</div>
-
-
-</aside>
-
-
-<!-- =======================================================
-     MAIN
-======================================================= -->
-
-<main class="main">
-
-
-<header class="topbar">
-
-
-<div class="top-left">
-
-  <button
-    id="mobileMenu"
-    class="mobile-menu"
-    type="button"
-    aria-label="Open menu"
-  >
-    ☰
-  </button>
-
-  <span>
-    Enterprise AI workspace
-  </span>
-
-</div>
-
-
-<div class="top-right">
-
-  <button
-    id="newChatTop"
-    class="top-button"
-    type="button"
-  >
-    + New chat
-  </button>
-
-</div>
-
-
-</header>
-
-
-<div class="workspace">
-
-
-<!-- =====================================================
-     DYNAMIC AI SIGNAL
-===================================================== -->
-
-<section
-  id="signal"
-  class="signal"
->
-
-
-<div
-  id="signalCategory"
-  class="signal-category"
->
-
-  <span class="signal-dot"></span>
-
-  <span id="signalCategoryText">
-    AI / Technology
-  </span>
-
-</div>
-
-
-<h1
-  id="signalTitle"
-  class="signal-title"
->
-
-  What's happening
-  in AI right now?
-
-</h1>
-
-
-<div class="orb"></div>
-
-
-<div
-  id="signalSource"
-  class="signal-source"
->
-  A fresh AI signal will appear here.
-</div>
-
-
-</section>
-
-
-<!-- =====================================================
-     CONVERSATION
-===================================================== -->
-
-<section
-  id="conversation"
-  class="conversation"
-></section>
-
-
-<!-- =====================================================
-     COMPOSER
-===================================================== -->
-
-<section
-  id="composer"
-  class="composer"
->
-
-
-<div class="composer-box">
-
-
-<textarea
-  id="prompt"
-  class="prompt"
-  placeholder="Ask ACI anything..."
-  aria-label="Ask ACI anything"
-></textarea>
-
-
-<div class="composer-bottom">
-
-
-<div class="tools">
-
-
-<button
-  id="attach"
-  class="attach"
-  type="button"
-  aria-label="Attach document"
-  title="Attach document"
->
-  ＋
-</button>
 
 
 <input
   id="fileInput"
   type="file"
-  hidden
-  accept="
-    .txt,
-    .md,
-    .csv,
-    .json,
-    .html,
-    .htm,
-    .js,
-    .jsx,
-    .ts,
-    .tsx,
-    .py,
-    .java,
-    .c,
-    .cpp,
-    .cs,
-    .sql,
-    .xml,
-    .yaml,
-    .yml,
-    .log,
-    .css,
-    .scss,
-    .sh,
-    .bash,
-    .pdf,
-    .doc,
-    .docx
-  "
->
-
-
-<div
-  id="fileChip"
-  class="file-chip"
->
-
-
-<span>
-  📎
-</span>
-
-
-<span
-  id="fileChipName"
-  class="file-chip-name"
-></span>
-
-
-<button
-  id="removeFile"
-  class="file-remove"
-  type="button"
-  aria-label="Remove attachment"
->
-  ×
-</button>
-
-
-</div>
-
-
-</div>
-
-
-<button
-  id="generate"
-  class="generate"
-  type="button"
->
-  Generate ↗
-</button>
-
-
-</div>
-
-
-</div>
-
-
-<div
-  id="suggestions"
-  class="suggestions"
-></div>
-
-
-<div class="info">
-
-  <span>
-    Intelligence runs server-side
-  </span>
-
-  <span>
-    Model selection is automatic
-  </span>
-
-  <span>
-    Enterprise policy ready
-  </span>
-
-</div>
-
-
-</section>
-
-
-</div>
-
-
-</main>
-
-
-</div>
+  accept=".pdf,.txt,.md,.csv,.json,.js,.jsx,.ts,.tsx,.py,.java,.sql,.html,.css,.xml,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
+/>
 
 
 <script>
+/* ============================================================
+   ACI EMPLOYEE WORKSPACE
+============================================================ */
 
-/* =========================================================
-   ACI EMPLOYEE FRONTEND
-   ========================================================= */
+const promptInput = document.getElementById("prompt");
+const sendButton = document.getElementById("sendButton");
 
+const attachButton = document.getElementById("attachButton");
+const fileInput = document.getElementById("fileInput");
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+const attachment = document.getElementById("attachment");
+const attachmentName = document.getElementById("attachmentName");
+const removeFile = document.getElementById("removeFile");
 
-const sidebar =
-  document.getElementById(
-    "sidebar"
-  );
+const messages = document.getElementById("messages");
 
+const suggestions = document.getElementById("suggestions");
 
-const promptInput =
-  document.getElementById(
-    "prompt"
-  );
+const signalText = document.getElementById("signalText");
+const signalMeta = document.getElementById("signalMeta");
 
+const signalArea = document.getElementById("signalArea");
 
-const generateButton =
-  document.getElementById(
-    "generate"
-  );
+const trace = document.getElementById("trace");
+const traceGrid = document.getElementById("traceGrid");
 
+const historyList = document.getElementById("historyList");
 
-const conversationElement =
-  document.getElementById(
-    "conversation"
-  );
+const newChatButton = document.getElementById("newChatButton");
+const topNewChat = document.getElementById("topNewChat");
 
 
-const signalElement =
-  document.getElementById(
-    "signal"
-  );
+/* ============================================================
+   STATE
+============================================================ */
 
+let selectedFile = null;
 
-const signalTitle =
-  document.getElementById(
-    "signalTitle"
-  );
+let conversation = [];
 
+let isSending = false;
 
-const signalCategoryText =
-  document.getElementById(
-    "signalCategoryText"
-  );
 
-
-const signalSource =
-  document.getElementById(
-    "signalSource"
-  );
-
-
-const suggestionsElement =
-  document.getElementById(
-    "suggestions"
-  );
-
-
-const fileInput =
-  document.getElementById(
-    "fileInput"
-  );
-
-
-const fileChip =
-  document.getElementById(
-    "fileChip"
-  );
-
-
-const fileChipName =
-  document.getElementById(
-    "fileChipName"
-  );
-
-
-/* =========================================================
-   CHAT STATE
-========================================================= */
-
-let conversations = [];
-
-let currentChatId = null;
-
-let attachedFile = null;
-
-let attachedText = "";
-
-
-/* =========================================================
-   LARGE FALLBACK THOUGHT LIBRARY
-========================================================= */
-
-const fallbackThoughts = [
-
-  {
-    category: "AI economics",
-    title:
-      "AI is becoming cheaper to use. That does not mean companies are becoming better at using it."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "The next enterprise AI problem may not be model capability. It may be knowing where every AI request is going."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Every AI answer has an infrastructure bill hiding behind it."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "When AI agents start acting instead of answering, the economics of every decision become much more important."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "Giving employees more AI does not automatically create more productivity. The workflow around the AI matters."
-  },
-
-  {
-    category: "Model economics",
-    title:
-      "If two models can solve the same task, why should the company always pay for the more expensive one?"
-  },
-
-  {
-    category: "Enterprise software",
-    title:
-      "AI is quietly turning software from a license expense into a consumption expense."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "The interesting question is no longer whether employees use AI. It is what happens after they start using it everywhere."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Inference happens one request at a time. Enterprise AI economics happen millions of requests later."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "Every new AI model creates more capability. It also creates another routing decision."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "The fastest AI answer is not always the most valuable one. The cheapest useful answer might be."
-  },
-
-  {
-    category: "AI security",
-    title:
-      "The more AI becomes part of everyday work, the harder it becomes to separate convenience from data risk."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "Enterprise AI governance cannot stop at asking which models employees are allowed to use."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "An AI agent that can execute a task changes the question from 'Can it answer?' to 'Should it act?'"
-  },
-
-  {
-    category: "AI markets",
-    title:
-      "AI competition is moving beyond intelligence. Price, latency, availability and reliability are becoming weapons too."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "A thousand cheap AI requests can matter more financially than one expensive experiment."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "Most companies will eventually need an AI layer between employees and models."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "The model is only one component of an AI system. The economics live across the entire request."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "What happens when choosing an AI model becomes as dynamic as choosing a cloud server?"
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "The winning enterprise AI architecture may be the one that knows when not to use the most powerful model."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "AI adoption becomes a finance problem the moment experimentation becomes habitual."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "If AI becomes infrastructure, someone eventually has to build the meter."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "GPU capacity is physical. AI demand is behavioral. The economics sit between the two."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "Saving ten minutes per employee sounds small until thousands of employees start doing it every day."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "The future enterprise AI stack may have an economic control plane sitting above the models."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "A policy that says 'use approved AI' answers who can use AI. It does not answer how efficiently they use it."
-  },
-
-  {
-    category: "Model economics",
-    title:
-      "Model prices are falling. The number of things companies want models to do is rising."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "An AI agent can multiply productivity. It can also multiply consumption."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Latency is a user experience metric. At enterprise scale, it becomes an economic metric too."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "The model that wins a benchmark is not necessarily the model that wins a company's workload."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "The right AI question may be less 'Which model is smartest?' and more 'Which model is sufficient?'"
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "AI spend becomes difficult to control when employees experience it as free."
-  },
-
-  {
-    category: "AI security",
-    title:
-      "An AI request can carry more information than its final answer reveals."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "Enterprise AI is becoming a portfolio problem: capability, cost, risk, speed and reliability."
-  },
-
-  {
-    category: "AI markets",
-    title:
-      "As model capabilities converge on everyday tasks, economics could become the differentiator."
-  },
-
-  {
-    category: "AI adoption",
-    title:
-      "The biggest AI transformation may happen quietly inside thousands of ordinary workflows."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "AI consumption has no office building, no electricity meter and no obvious queue. Yet it still creates a bill."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "What if employees never had to know which AI model was answering them?"
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "A good AI system should know when a simple task deserves a simple model."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "Software used to hide hardware complexity. AI may do the same for intelligence itself."
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "Once AI can call tools, APIs and other models, routing becomes a system design problem."
-  },
-
-  {
-    category: "AI productivity",
-    title:
-      "The value of AI is rarely the answer alone. It is the work that disappears after the answer."
-  },
-
-  {
-    category: "AI governance",
-    title:
-      "AI governance will eventually need dashboards that finance teams can understand."
-  },
-
-  {
-    category: "Model economics",
-    title:
-      "The cheapest model is not always the right model. The interesting problem is finding the cheapest model that works."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "Companies are buying intelligence before they have built a way to measure its consumption."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Every model request has a price. Every unnecessary request has an opportunity cost."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "AI transformation is becoming less about adding another chatbot and more about redesigning how work moves."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "The interface may hide the model completely. The economics cannot stay hidden forever."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "What would happen if every AI request had to justify its own cost?"
-  },
-
-  {
-    category: "AI agents",
-    title:
-      "The more autonomous AI becomes, the more important failure recovery becomes."
-  },
-
-  {
-    category: "Enterprise AI",
-    title:
-      "The next generation of enterprise software may route intelligence the way networks route traffic."
-  },
-
-  {
-    category: "AI infrastructure",
-    title:
-      "Model availability is becoming part of application reliability."
-  },
-
-  {
-    category: "AI economics",
-    title:
-      "AI cost optimization should happen before the bill arrives, not after finance discovers it."
-  },
-
-  {
-    category: "AI strategy",
-    title:
-      "An enterprise should not need every employee to become an AI infrastructure expert."
-  },
-
-  {
-    category: "Technology",
-    title:
-      "AI is turning the question 'What software should we buy?' into 'What intelligence should we consume?'"
-  }
-
-];
-
-
-/* =========================================================
-   RANDOM HELPERS
-========================================================= */
-
-function randomItem(
-  array
-) {
-
-  return array[
-    Math.floor(
-      Math.random() *
-      array.length
-    )
-  ];
-
-}
-
-
-function randomThought() {
-
-  const last =
-    localStorage.getItem(
-      "aci_last_thought"
-    );
-
-
-  let available =
-    fallbackThoughts.filter(
-      thought =>
-        thought.title !== last
-    );
-
-
-  if (!available.length) {
-
-    available =
-      fallbackThoughts;
-
-  }
-
-
-  const selected =
-    randomItem(
-      available
-    );
-
-
-  localStorage.setItem(
-    "aci_last_thought",
-    selected.title
-  );
-
-
-  return selected;
-
-}
-
-
-/* =========================================================
-   DYNAMIC INTERNET SIGNAL
-========================================================= */
-
-async function loadDynamicThought() {
-
-  signalElement.classList.remove(
-    "signal-changing"
-  );
-
-
-  signalTitle.textContent =
-    "Finding a fresh AI signal...";
-
-
-  signalCategoryText.textContent =
-    "AI / Technology";
-
-
-  signalSource.textContent =
-    "Looking for something worth thinking about.";
-
-
-  try {
-
-    const response =
-      await fetch(
-        `/api/insight?t=${Date.now()}`,
-        {
-          cache: "no-store"
-        }
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "Insight service unavailable"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data ||
-      !data.title
-    ) {
-
-      throw new Error(
-        "Invalid insight"
-      );
-
-    }
-
-
-    signalTitle.textContent =
-      data.title;
-
-
-    signalCategoryText.textContent =
-      data.category ||
-      "AI / Technology";
-
-
-    if (
-      data.sourceUrl &&
-      data.sourceName
-    ) {
-
-      signalSource.innerHTML =
-        `
-          <a
-            href="${escapeAttribute(data.sourceUrl)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ${escapeHTML(data.sourceName)}
-          </a>
-          · fresh technology signal
-        `;
-
-    } else {
-
-      signalSource.textContent =
-        "Fresh ACI thought";
-
-    }
-
-
-  } catch (error) {
-
-    console.warn(
-      "Dynamic insight failed:",
-      error
-    );
-
-
-    const fallback =
-      randomThought();
-
-
-    signalTitle.textContent =
-      fallback.title;
-
-
-    signalCategoryText.textContent =
-      fallback.category;
-
-
-    signalSource.textContent =
-      "ACI thought · generated for this session";
-
-  }
-
-
-  signalElement.classList.add(
-    "signal-changing"
-  );
-
-}
-
-
-/* =========================================================
-   SAFE HTML HELPERS
-========================================================= */
-
-function escapeHTML(
-  value
-) {
-
-  return String(
-    value
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-function escapeAttribute(
-  value
-) {
-
-  return escapeHTML(
-    value
-  );
-
-}
-
-
-/* =========================================================
+/* ============================================================
    SUGGESTIONS
-========================================================= */
+============================================================ */
 
 const suggestionLibrary = [
-
-  "Turn this idea into an execution plan",
-
-  "Challenge the assumptions behind this",
-
-  "Analyze the business opportunity",
-
-  "Find the biggest risks",
-
-  "Explain this simply",
-
-  "Make this executive-ready",
-
-  "Compare the possible approaches",
-
-  "Create a 30-day plan",
-
-  "What would you do first?",
-
-  "Find the hidden problems",
-
-  "Turn this into a professional email",
-
-  "Review this technical approach",
-
-  "Stress-test this strategy",
-
-  "Make this dramatically simpler",
-
-  "Build a decision framework",
-
-  "Summarize this for leadership",
-
-  "Identify what information is missing",
-
-  "Find the cheapest sensible approach",
-
-  "Turn these notes into action items",
-
-  "Prepare talking points for a meeting",
-
-  "Explain the trade-offs",
-
-  "Find the likely failure points",
-
-  "Review this code",
-
-  "Design a better architecture",
-
-  "Create an executive summary",
-
-  "What could go wrong?",
-
-  "Give me three alternative approaches",
-
-  "Turn this into a product idea",
-
-  "Analyze the unit economics",
-
-  "Help me make this decision",
-
-  "Find the strongest argument against this",
-
-  "Convert this into a presentation outline",
-
-  "Make this more concise",
-
-  "Make this more persuasive",
-
-  "Find the opportunity nobody is seeing",
-
-  "Break this into practical steps",
-
-  "Explain the technical implications",
-
-  "Create a risk matrix",
-
-  "Turn this research into decisions",
-
-  "What should happen next?"
-
+  "Analyze this business idea.",
+  "Summarize this document.",
+  "Explain this error.",
+  "Draft an email to my manager.",
+  "Compare two technology approaches.",
+  "Review this code.",
+  "Create a project plan.",
+  "Analyze this market.",
+  "Explain this concept simply.",
+  "Find the key risks.",
+  "Turn this into an executive summary.",
+  "Create a professional response.",
+  "Review this proposal.",
+  "Analyze this financial scenario.",
+  "Prepare meeting action items.",
+  "Help me solve this problem."
 ];
-
-
-function shuffle(
-  array
-) {
-
-  return [...array]
-    .sort(
-      () =>
-        Math.random() -
-        .5
-    );
-
-}
 
 
 function renderSuggestions() {
 
-  suggestionsElement.innerHTML =
-    "";
+  suggestions.innerHTML = "";
 
+  const shuffled = [...suggestionLibrary]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 5);
 
-  const selected =
-    shuffle(
-      suggestionLibrary
-    ).slice(
-      0,
-      7
-    );
+  shuffled.forEach(text => {
 
+    const button = document.createElement("button");
 
-  selected.forEach(
-    text => {
+    button.type = "button";
 
-      const button =
-        document.createElement(
-          "button"
-        );
+    button.className = "suggestion";
 
+    button.textContent = text;
 
-      button.type =
-        "button";
+    button.addEventListener("click", () => {
 
+      promptInput.value = text;
 
-      button.className =
-        "suggestion";
+      autoResize();
 
+      promptInput.focus();
 
-      button.textContent =
-        text;
+    });
 
+    suggestions.appendChild(button);
 
-      button.addEventListener(
-        "click",
-        () => {
-
-          promptInput.value =
-            text;
-
-
-          promptInput.focus();
-
-
-          promptInput.setSelectionRange(
-            promptInput.value.length,
-            promptInput.value.length
-          );
-
-        }
-      );
-
-
-      suggestionsElement.appendChild(
-        button
-      );
-
-    }
-  );
-
+  });
 }
 
 
-/* =========================================================
-   CHAT STORAGE
-========================================================= */
+/* ============================================================
+   SIGNAL
+============================================================ */
 
-function saveConversations() {
+/*
+  The backend /api/insight should return a short editorial signal.
+
+  Expected response:
+
+  {
+    "text": "AI agents are moving from experiments into workflows."
+  }
+
+  The frontend also enforces a maximum of 10 words.
+*/
+
+function limitToTenWords(text) {
+
+  if (!text) {
+    return "AI is becoming infrastructure, not just software.";
+  }
+
+  const words = text
+    .trim()
+    .split(/\s+/)
+    .slice(0, 10);
+
+  let result = words.join(" ");
+
+  /*
+    Avoid awkward cutoff punctuation.
+  */
+
+  if (!/[.!?]$/.test(result)) {
+    result += ".";
+  }
+
+  return result;
+}
+
+
+async function loadInsight() {
+
+  signalArea.style.opacity = "0.45";
 
   try {
 
-    localStorage.setItem(
-      "aci_conversations",
-      JSON.stringify(
-        conversations
-      )
+    const response = await fetch(
+      "/api/insight",
+      {
+        method: "GET",
+        cache: "no-store"
+      }
     );
+
+    if (!response.ok) {
+      throw new Error("Insight unavailable");
+    }
+
+    const data = await response.json();
+
+    const text =
+      data.text ||
+      data.insight ||
+      data.headline ||
+      "";
+
+    signalText.textContent = limitToTenWords(text);
+
+    signalMeta.textContent =
+      "Fresh intelligence signal · " +
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
   } catch (error) {
 
-    console.warn(
-      "Conversation storage unavailable:",
-      error
-    );
+    const fallbackSignals = [
+      "AI is becoming infrastructure, not just software.",
+      "Cheap intelligence is changing how businesses operate.",
+      "AI agents are moving deeper into workflows.",
+      "Model choice is becoming an economic decision.",
+      "Enterprise AI is shifting from pilots to production.",
+      "AI infrastructure is becoming a strategic advantage.",
+      "The next AI advantage may come from routing.",
+      "More AI usage means more economics to manage.",
+      "AI capability is becoming increasingly commoditized.",
+      "The valuable layer may sit above the models."
+    ];
+
+    const random =
+      fallbackSignals[
+        Math.floor(Math.random() * fallbackSignals.length)
+      ];
+
+    signalText.textContent = limitToTenWords(random);
+
+    signalMeta.textContent =
+      "ACI intelligence signal";
+
+  } finally {
+
+    setTimeout(() => {
+      signalArea.style.opacity = "1";
+    }, 120);
 
   }
-
 }
 
 
-function loadConversations() {
+/* ============================================================
+   TEXTAREA
+============================================================ */
 
-  try {
+function autoResize() {
 
-    const stored =
-      localStorage.getItem(
-        "aci_conversations"
-      );
+  promptInput.style.height = "auto";
 
-
-    if (!stored) {
-
-      return;
-
-    }
+  promptInput.style.height =
+    Math.min(promptInput.scrollHeight, 230) + "px";
+}
 
 
-    const parsed =
-      JSON.parse(
-        stored
-      );
+promptInput.addEventListener(
+  "input",
+  autoResize
+);
 
+
+promptInput.addEventListener(
+  "keydown",
+  event => {
 
     if (
-      Array.isArray(parsed)
+      event.key === "Enter" &&
+      !event.shiftKey
     ) {
 
-      conversations =
-        parsed.slice(
-          0,
-          30
-        );
+      event.preventDefault();
 
+      if (!isSending) {
+        sendPrompt();
+      }
     }
-
-  } catch (error) {
-
-    console.warn(
-      "Could not load conversations:",
-      error
-    );
 
   }
+);
+
+
+/* ============================================================
+   FILE ATTACHMENT
+============================================================ */
+
+attachButton.addEventListener(
+  "click",
+  () => {
+    fileInput.click();
+  }
+);
+
+
+fileInput.addEventListener(
+  "change",
+  () => {
+
+    const file = fileInput.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    selectedFile = file;
+
+    attachmentName.textContent = file.name;
+
+    attachment.classList.add("visible");
+
+  }
+);
+
+
+removeFile.addEventListener(
+  "click",
+  () => {
+
+    selectedFile = null;
+
+    fileInput.value = "";
+
+    attachment.classList.remove("visible");
+
+    attachmentName.textContent = "";
+
+  }
+);
+
+
+/* ============================================================
+   FILE READING
+============================================================ */
+
+function readFileAsText(file) {
+
+  return new Promise((resolve, reject) => {
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+
+    reader.onerror = () => {
+      reject(
+        new Error("Could not read the file.")
+      );
+    };
+
+    reader.readAsText(file);
+
+  });
 
 }
 
 
-/* =========================================================
-   CREATE CHAT
-========================================================= */
+function readFileAsBase64(file) {
 
-function createChat() {
+  return new Promise((resolve, reject) => {
 
-  const chat = {
+    const reader = new FileReader();
 
-    id:
-      Date.now().toString(),
+    reader.onload = () => {
 
-    title:
-      "New conversation",
+      const result = reader.result || "";
 
-    messages:
-      [],
+      const comma =
+        result.indexOf(",");
 
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  conversations.unshift(
-    chat
-  );
-
-
-  currentChatId =
-    chat.id;
-
-
-  attachedFile =
-    null;
-
-
-  attachedText =
-    "";
-
-
-  clearAttachment();
-
-
-  promptInput.value =
-    "";
-
-
-  renderSidebar();
-
-  renderConversation();
-
-  renderSuggestions();
-
-  loadDynamicThought();
-
-
-  promptInput.focus();
-
-
-  closeSidebar();
-
-  saveConversations();
-
-}
-
-
-function getCurrentChat() {
-
-  return conversations.find(
-    chat =>
-      chat.id ===
-      currentChatId
-  );
-
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-function renderSidebar() {
-
-  const today =
-    document.getElementById(
-      "todayChats"
-    );
-
-
-  const earlier =
-    document.getElementById(
-      "earlierChats"
-    );
-
-
-  today.innerHTML =
-    "";
-
-
-  earlier.innerHTML =
-    "";
-
-
-  conversations.forEach(
-    (
-      chat,
-      index
-    ) => {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "chat-item" +
-        (
-          chat.id ===
-          currentChatId
-            ? " active"
-            : ""
-        );
-
-
-      button.textContent =
-        chat.title ||
-        "New conversation";
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          currentChatId =
-            chat.id;
-
-
-          renderSidebar();
-
-          renderConversation();
-
-          closeSidebar();
-
-        }
+      resolve(
+        comma >= 0
+          ? result.slice(comma + 1)
+          : result
       );
 
+    };
 
-      if (
-        index < 6
-      ) {
+    reader.onerror = () => {
+      reject(
+        new Error("Could not process the attachment.")
+      );
+    };
 
-        today.appendChild(
-          button
-        );
+    reader.readAsDataURL(file);
 
-      } else {
-
-        earlier.appendChild(
-          button
-        );
-
-      }
-
-    }
-  );
+  });
 
 }
 
 
-/* =========================================================
-   CONVERSATION
-========================================================= */
+/* ============================================================
+   PREPARE FILE FOR GEMINI
+============================================================ */
 
-function renderConversation() {
+async function prepareFileForAI(file) {
 
-  conversationElement.innerHTML =
-    "";
+  if (!file) {
+    return null;
+  }
 
+  /*
+    Browser → Vercel JSON → Gemini.
 
-  const chat =
-    getCurrentChat();
+    Keep the upload conservative because Base64
+    increases the payload size by roughly 33%.
+  */
 
+  const MAX_FILE_SIZE = 2.8 * 1024 * 1024;
 
-  if (
-    !chat ||
-    !chat.messages.length
-  ) {
+  if (file.size > MAX_FILE_SIZE) {
 
-    return;
+    throw new Error(
+      "For now, attachments must be smaller than 2.8 MB."
+    );
 
   }
 
 
   /*
-   * Once a conversation exists,
-   * hide the large landing signal.
-   */
+    PDF
 
-  signalElement.style.display =
-    "none";
+    Sent as native document data to Gemini.
+  */
+
+  if (
+    file.type === "application/pdf" ||
+    file.name.toLowerCase().endsWith(".pdf")
+  ) {
+
+    const base64 =
+      await readFileAsBase64(file);
+
+    return {
+      name: file.name,
+      mimeType: "application/pdf",
+      base64
+    };
+
+  }
 
 
-  chat.messages.forEach(
-    message => {
+  /*
+    IMAGE
 
-      addMessageToDOM(
-        message.role,
-        message.content,
-        message.meta
-      );
+    Sent as native image data to Gemini.
+  */
 
-    }
-  );
+  if (
+    file.type &&
+    file.type.startsWith("image/")
+  ) {
+
+    const base64 =
+      await readFileAsBase64(file);
+
+    return {
+      name: file.name,
+      mimeType: file.type,
+      base64
+    };
+
+  }
 
 
-  scrollBottom();
+  /*
+    TEXT / CODE
+
+    Extract in browser and send text to backend.
+  */
+
+  const text =
+    await readFileAsText(file);
+
+  return {
+    name: file.name,
+    mimeType:
+      file.type || "text/plain",
+    extractedText: text
+  };
 
 }
 
 
-function addMessageToDOM(
+/* ============================================================
+   ADD MESSAGE
+============================================================ */
+
+function addMessage(
   role,
-  content,
-  meta = ""
+  content
 ) {
 
-  const message =
-    document.createElement(
-      "div"
-    );
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "message " + role;
 
 
-  message.className =
-    `message ${role}`;
+  const inner =
+    document.createElement("div");
 
 
   const label =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   label.className =
     "message-label";
-
 
   label.textContent =
     role === "user"
@@ -2942,282 +1622,337 @@ function addMessageToDOM(
       : "ACI";
 
 
-  const body =
-    document.createElement(
-      "div"
-    );
+  const bubble =
+    document.createElement("div");
 
+  bubble.className =
+    "bubble";
 
-  body.className =
-    "message-body";
-
-
-  body.textContent =
+  bubble.textContent =
     content;
 
 
-  message.appendChild(
-    label
-  );
+  inner.appendChild(label);
+  inner.appendChild(bubble);
 
+  wrapper.appendChild(inner);
 
-  message.appendChild(
-    body
-  );
+  messages.appendChild(wrapper);
 
+  scrollToBottom();
 
-  if (meta) {
-
-    const metadata =
-      document.createElement(
-        "div"
-      );
-
-
-    metadata.className =
-      "message-meta";
-
-
-    metadata.textContent =
-      meta;
-
-
-    message.appendChild(
-      metadata
-    );
-
-  }
-
-
-  conversationElement.appendChild(
-    message
-  );
+  return bubble;
 
 }
 
 
-function addTyping() {
+/* ============================================================
+   TYPING MESSAGE
+============================================================ */
 
-  const message =
-    document.createElement(
-      "div"
-    );
+function addTypingMessage() {
 
+  const wrapper =
+    document.createElement("div");
 
-  message.id =
-    "typingMessage";
-
-
-  message.className =
+  wrapper.className =
     "message ai";
 
 
-  message.innerHTML = `
-
-    <div class="message-label">
-      ACI
-    </div>
-
-    <div class="typing">
-
-      <span></span>
-      <span></span>
-      <span></span>
-
-    </div>
-
-  `;
+  const inner =
+    document.createElement("div");
 
 
-  conversationElement.appendChild(
-    message
-  );
+  const label =
+    document.createElement("div");
+
+  label.className =
+    "message-label";
+
+  label.textContent =
+    "ACI";
 
 
-  scrollBottom();
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    "bubble";
+
+
+  const typing =
+    document.createElement("div");
+
+  typing.className =
+    "typing";
+
+
+  typing.innerHTML =
+    "<span></span><span></span><span></span>";
+
+
+  bubble.appendChild(typing);
+
+  inner.appendChild(label);
+  inner.appendChild(bubble);
+
+  wrapper.appendChild(inner);
+
+  messages.appendChild(wrapper);
+
+  scrollToBottom();
+
+  return wrapper;
 
 }
 
 
-function removeTyping() {
+/* ============================================================
+   ERROR
+============================================================ */
 
-  const element =
-    document.getElementById(
-      "typingMessage"
-    );
+function addError(message) {
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "message ai";
 
 
-  if (element) {
+  const bubble =
+    document.createElement("div");
 
-    element.remove();
+  bubble.className =
+    "bubble error-message";
 
+  bubble.textContent =
+    message;
+
+
+  wrapper.appendChild(bubble);
+
+  messages.appendChild(wrapper);
+
+  scrollToBottom();
+
+}
+
+
+/* ============================================================
+   TRACE
+============================================================ */
+
+function renderTrace(data) {
+
+  traceGrid.innerHTML = "";
+
+  if (!data) {
+    trace.classList.remove("visible");
+    return;
   }
 
+
+  const items = [
+    ["Task", data.taskType],
+    ["Complexity", data.complexity + "/5"],
+    ["Sensitivity", data.sensitivity],
+    ["Quality", data.requiredQuality + "%"],
+    ["Model", data.model],
+    ["Provider", data.provider],
+    ["Tier", data.routingTier],
+    ["Tokens", data.totalTokens],
+    ["Latency", data.latencyMs + "ms"],
+    ["Outcome", data.outcome],
+    [
+      "Fallback",
+      data.fallbackUsed ? "YES" : "NO"
+    ]
+  ];
+
+
+  items.forEach(([label, value]) => {
+
+    if (
+      value === undefined ||
+      value === null
+    ) {
+      return;
+    }
+
+    const pill =
+      document.createElement("div");
+
+    pill.className =
+      "trace-pill";
+
+    const strong =
+      document.createElement("strong");
+
+    strong.textContent =
+      label + ": ";
+
+    const span =
+      document.createElement("span");
+
+    span.textContent =
+      String(value);
+
+    pill.appendChild(strong);
+    pill.appendChild(span);
+
+    traceGrid.appendChild(pill);
+
+  });
+
+
+  trace.classList.add("visible");
+
 }
 
 
-/* =========================================================
-   SEND REQUEST
-========================================================= */
+/* ============================================================
+   SEND PROMPT
+============================================================ */
 
 async function sendPrompt() {
+
+  if (isSending) {
+    return;
+  }
+
 
   const typedPrompt =
     promptInput.value.trim();
 
 
-  if (
-    !typedPrompt &&
-    !attachedFile
-  ) {
+  /*
+    If a file exists and no prompt was typed,
+    give the model an explicit instruction.
+  */
 
-    promptInput.focus();
-
-    return;
-
-  }
-
-
-  if (!currentChatId) {
-
-    createChat();
-
-  }
-
-
-  const chat =
-    getCurrentChat();
-
-
-  if (!chat) {
-
-    return;
-
-  }
-
-
-  let requestPrompt =
+  const requestPrompt =
     typedPrompt ||
-    "Analyze the attached document.";
-
-
-  /*
-   * Text-readable attachments
-   */
-
-  if (
-    attachedFile &&
-    attachedText
-  ) {
-
-    requestPrompt +=
-
-      `\n\n[ATTACHED DOCUMENT]
-Filename: ${attachedFile.name}
-
-${attachedText}
-
-[END ATTACHED DOCUMENT]`;
-
-  }
-
-
-  /*
-   * PDF/DOC/DOCX currently cannot be
-   * extracted by the browser.
-   *
-   * Keep the attachment information visible
-   * instead of pretending the content was read.
-   */
-
-  else if (
-    attachedFile
-  ) {
-
-    requestPrompt +=
-
-      `\n\n[ATTACHED FILE]
-Filename: ${attachedFile.name}
-Type: ${attachedFile.type || "unknown"}
-Size: ${attachedFile.size} bytes
-
-[END ATTACHED FILE]`;
-
-  }
-
-
-  /*
-   * Conversation title
-   */
-
-  if (
-    chat.messages.length === 0
-  ) {
-
-    chat.title =
-      createTitle(
-        typedPrompt ||
-        attachedFile?.name ||
-        "Document analysis"
-      );
-
-  }
-
-
-  /*
-   * User-facing message
-   */
-
-  const displayMessage =
-    attachedFile
-
-      ? `${typedPrompt || "Analyze this document."}\n\n📎 ${attachedFile.name}`
-
-      : typedPrompt;
-
-
-  chat.messages.push({
-
-    role:
-      "user",
-
-    content:
-      displayMessage,
-
-    meta:
-      attachedFile
-        ? `Attachment · ${attachedFile.name}`
+    (
+      selectedFile
+        ? "Analyze the attached file and provide the most useful summary or insights."
         : ""
+    );
 
+
+  if (!requestPrompt) {
+    promptInput.focus();
+    return;
+  }
+
+
+  isSending = true;
+
+  sendButton.disabled = true;
+
+
+  /*
+    Hide suggestions once the actual conversation starts.
+  */
+
+  suggestions.style.display = "none";
+
+
+  /*
+    Add user message.
+  */
+
+  let displayPrompt =
+    requestPrompt;
+
+  if (selectedFile) {
+
+    displayPrompt +=
+      "\n\n📎 " +
+      selectedFile.name;
+
+  }
+
+  addMessage(
+    "user",
+    displayPrompt
+  );
+
+
+  conversation.push({
+    role: "user",
+    content: requestPrompt
   });
 
 
-  promptInput.value =
-    "";
+  /*
+    Clear composer immediately.
+  */
+
+  promptInput.value = "";
+
+  autoResize();
 
 
   /*
-   * Preserve attachment on failure.
-   * Clear only after successful generation.
-   */
+    Prepare attachment.
+  */
 
-  renderSidebar();
+  let filePayload = null;
 
-  renderConversation();
+  try {
 
-  addTyping();
+    if (selectedFile) {
+
+      filePayload =
+        await prepareFileForAI(
+          selectedFile
+        );
+
+    }
+
+  } catch (error) {
+
+    addError(
+      error?.message ||
+      "Unable to process the attachment."
+    );
+
+    isSending = false;
+
+    sendButton.disabled = false;
+
+    return;
+
+  }
 
 
-  generateButton.disabled =
-    true;
+  /*
+    Loading state.
+  */
+
+  const typing =
+    addTypingMessage();
 
 
-  generateButton.textContent =
-    "Thinking...";
+  /*
+    Remove attachment after preparation.
+  */
+
+  selectedFile = null;
+
+  fileInput.value = "";
+
+  attachment.classList.remove("visible");
+
+  attachmentName.textContent = "";
 
 
-  const started =
-    Date.now();
+  /*
+    Hide previous trace.
+  */
+
+  trace.classList.remove("visible");
 
 
   try {
@@ -3226,41 +1961,57 @@ Size: ${attachedFile.size} bytes
       await fetch(
         "/api/chat",
         {
-
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
-
             "Content-Type":
               "application/json"
-
           },
 
-          body:
-            JSON.stringify({
-
-              prompt:
-                requestPrompt
-
-            })
-
+          body: JSON.stringify({
+            prompt: requestPrompt,
+            file: filePayload
+          })
         }
       );
+
+
+    /*
+      Always parse safely.
+      If Vercel returns HTML instead of JSON,
+      show a useful error rather than throwing
+      "Unexpected token <".
+    */
+
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
 
 
     let data;
 
 
-    try {
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ) {
 
       data =
         await response.json();
 
-    } catch {
+    } else {
+
+      const raw =
+        await response.text();
 
       throw new Error(
-        "The AI service returned an invalid response."
+        response.ok
+          ? "ACI returned an invalid response."
+          : "ACI server error (" +
+            response.status +
+            ")."
       );
 
     }
@@ -3276,463 +2027,322 @@ Size: ${attachedFile.size} bytes
     }
 
 
+    /*
+      Remove typing.
+    */
+
+    typing.remove();
+
+
+    /*
+      AI response.
+    */
+
     const answer =
       data?.answer ||
       "ACI returned an empty response.";
 
 
-    const elapsed =
-      Date.now() -
-      started;
+    addMessage(
+      "ai",
+      answer
+    );
 
 
-    removeTyping();
-
-
-    chat.messages.push({
-
-      role:
-        "ai",
-
-      content:
-        answer,
-
-      meta:
-        `Completed · ${formatLatency(elapsed)}`
-
+    conversation.push({
+      role: "assistant",
+      content: answer
     });
 
 
-    clearAttachment();
+    /*
+      Show economics/routing trace.
+    */
+
+    renderTrace(
+      data?.trace
+    );
 
 
-    attachedFile =
-      null;
+    /*
+      Add conversation to sidebar.
+    */
 
-
-    attachedText =
-      "";
-
-
-    renderConversation();
-
-    renderSidebar();
-
-    renderSuggestions();
-
-
-    saveConversations();
+    saveConversation(
+      requestPrompt
+    );
 
 
   } catch (error) {
 
-    removeTyping();
+    typing.remove();
 
 
-    chat.messages.push({
-
-      role:
-        "ai",
-
-      content:
-        `I couldn't complete that request.\n\n${error?.message || "Please try again."}`,
-
-      meta:
-        "Request failed"
-
-    });
-
-
-    renderConversation();
-
-
-    saveConversations();
+    addError(
+      error?.message ||
+      "Something went wrong while contacting ACI."
+    );
 
   } finally {
 
-    generateButton.disabled =
-      false;
+    isSending = false;
 
+    sendButton.disabled = false;
 
-    generateButton.textContent =
-      "Generate ↗";
-
-
-    scrollBottom();
+    promptInput.focus();
 
   }
 
 }
 
 
-/* =========================================================
-   TITLE
-========================================================= */
-
-function createTitle(
-  text
-) {
-
-  const cleaned =
-    String(
-      text
-    )
-      .replace(
-        /\s+/g,
-        " "
-      )
-      .trim();
-
-
-  if (
-    cleaned.length <= 42
-  ) {
-
-    return cleaned;
-
-  }
-
-
-  return (
-    cleaned.slice(
-      0,
-      42
-    ) +
-    "…"
-  );
-
-}
-
-
-/* =========================================================
-   LATENCY
-========================================================= */
-
-function formatLatency(
-  ms
-) {
-
-  if (
-    ms < 1000
-  ) {
-
-    return `${ms}ms`;
-
-  }
-
-
-  return `${(
-    ms / 1000
-  ).toFixed(1)}s`;
-
-}
-
-
-/* =========================================================
-   ATTACHMENTS
-========================================================= */
-
-document
-  .getElementById(
-    "attach"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      fileInput.value =
-        "";
-
-      fileInput.click();
-
-    }
-  );
-
-
-fileInput.addEventListener(
-  "change",
-  async event => {
-
-    const file =
-      event.target.files?.[0];
-
-
-    if (!file) {
-
-      return;
-
-    }
-
-
-    const MAX_SIZE =
-      5 * 1024 * 1024;
-
-
-    if (
-      file.size >
-      MAX_SIZE
-    ) {
-
-      alert(
-        "Please select a file smaller than 5 MB."
-      );
-
-      clearAttachment();
-
-      return;
-
-    }
-
-
-    attachedFile =
-      file;
-
-
-    attachedText =
-      "";
-
-
-    fileChipName.textContent =
-      file.name;
-
-
-    fileChip.classList.add(
-      "visible"
-    );
-
-
-    const extension =
-      file.name
-        .split(".")
-        .pop()
-        ?.toLowerCase();
-
-
-    const readable =
-      [
-
-        "txt",
-        "md",
-        "csv",
-        "json",
-        "html",
-        "htm",
-        "js",
-        "jsx",
-        "ts",
-        "tsx",
-        "py",
-        "java",
-        "c",
-        "cpp",
-        "cs",
-        "sql",
-        "xml",
-        "yaml",
-        "yml",
-        "log",
-        "css",
-        "scss",
-        "sh",
-        "bash"
-
-      ].includes(
-        extension
-      );
-
-
-    if (readable) {
-
-      try {
-
-        attachedText =
-          await file.text();
-
-      } catch {
-
-        attachedText =
-          "";
-
-      }
-
-    }
-
-  }
-);
-
-
-document
-  .getElementById(
-    "removeFile"
-  )
-  .addEventListener(
-    "click",
-    clearAttachment
-  );
-
-
-function clearAttachment() {
-
-  attachedFile =
-    null;
-
-  attachedText =
-    "";
-
-  fileInput.value =
-    "";
-
-  fileChipName.textContent =
-    "";
-
-  fileChip.classList.remove(
-    "visible"
-  );
-
-}
-
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-promptInput.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
-
-      event.preventDefault();
-
-      sendPrompt();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
-
-generateButton.addEventListener(
+/* ============================================================
+   SEND BUTTON
+============================================================ */
+
+sendButton.addEventListener(
   "click",
   sendPrompt
 );
 
 
-document
-  .getElementById(
-    "newChat"
-  )
-  .addEventListener(
-    "click",
-    createChat
-  );
+/* ============================================================
+   NEW CHAT
+============================================================ */
 
+function newChat() {
 
-document
-  .getElementById(
-    "newChatTop"
-  )
-  .addEventListener(
-    "click",
-    createChat
-  );
+  conversation = [];
 
+  messages.innerHTML = "";
 
-/* =========================================================
-   MOBILE MENU
-========================================================= */
+  trace.classList.remove("visible");
 
-document
-  .getElementById(
-    "mobileMenu"
-  )
-  .addEventListener(
-    "click",
-    () => {
+  traceGrid.innerHTML = "";
 
-      sidebar.classList.toggle(
-        "open"
-      );
+  promptInput.value = "";
 
-    }
-  );
+  autoResize();
 
+  suggestions.style.display = "flex";
 
-function closeSidebar() {
+  renderSuggestions();
 
-  sidebar.classList.remove(
-    "open"
-  );
+  loadInsight();
+
+  promptInput.focus();
 
 }
 
 
-/* =========================================================
-   SCROLL
-========================================================= */
+newChatButton.addEventListener(
+  "click",
+  newChat
+);
 
-function scrollBottom() {
 
-  setTimeout(
-    () => {
+topNewChat.addEventListener(
+  "click",
+  newChat
+);
 
-      window.scrollTo({
 
-        top:
-          document.body.scrollHeight,
+/* ============================================================
+   HISTORY
+============================================================ */
 
-        behavior:
-          "smooth"
+function getHistory() {
 
-      });
+  try {
 
-    },
-    40
-  );
+    return JSON.parse(
+      localStorage.getItem(
+        "aci_history"
+      ) || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
 
 }
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+function saveConversation(title) {
 
-loadConversations();
+  const cleanTitle =
+    title
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 65);
 
 
-if (
-  conversations.length
-) {
+  if (!cleanTitle) {
+    return;
+  }
+
+
+  let history =
+    getHistory();
+
 
   /*
-   * Don't automatically open the
-   * previous conversation.
-   *
-   * Employee lands on a fresh workspace.
-   */
+    Avoid repeated identical entries.
+  */
 
-  currentChatId =
-    null;
+  if (
+    history.length &&
+    history[0].title === cleanTitle
+  ) {
+    return;
+  }
+
+
+  history.unshift({
+    title: cleanTitle,
+    timestamp: Date.now()
+  });
+
+
+  history =
+    history.slice(0, 20);
+
+
+  localStorage.setItem(
+    "aci_history",
+    JSON.stringify(history)
+  );
+
+
+  renderHistory();
 
 }
 
 
-renderSidebar();
+function renderHistory() {
+
+  const history =
+    getHistory();
+
+
+  historyList.innerHTML = "";
+
+
+  if (!history.length) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "history-empty";
+
+    empty.textContent =
+      "No conversations yet.";
+
+    historyList.appendChild(empty);
+
+    return;
+
+  }
+
+
+  history.forEach(item => {
+
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+      "history-item";
+
+    button.textContent =
+      item.title;
+
+
+    /*
+      History is currently intentionally lightweight.
+      Clicking starts a fresh workspace because we
+      aren't storing complete conversations locally.
+    */
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        promptInput.value =
+          item.title;
+
+        autoResize();
+
+        promptInput.focus();
+
+      }
+    );
+
+
+    historyList.appendChild(
+      button
+    );
+
+  });
+
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
+
+  const workspace =
+    document.querySelector(
+      ".workspace"
+    );
+
+  requestAnimationFrame(() => {
+
+    workspace.scrollTo({
+      top: workspace.scrollHeight,
+      behavior: "smooth"
+    });
+
+  });
+
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
 
 renderSuggestions();
 
-loadDynamicThought();
+renderHistory();
 
+loadInsight();
+
+autoResize();
+
+promptInput.focus();
+
+
+/*
+  Refresh the AI signal periodically.
+
+  This keeps the landing signal fresh
+  without refreshing the whole page.
+*/
+
+setInterval(
+  loadInsight,
+  10 * 60 * 1000
+);
 
 </script>
 
 </body>
-
 </html>
