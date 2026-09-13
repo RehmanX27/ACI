@@ -1,1761 +1,1360 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+<title>ACI · AI Consumption Intelligence</title>
 
-  <title>ACI · AI Consumption Intelligence</title>
+<style>
 
-  <style>
+/* =========================================================
+   CORE THEME
+========================================================= */
 
-    /* =========================================================
-       THEME VARIABLES
-    ========================================================= */
+:root{
+  --bg:#050505;
+  --surface:#0b0b0b;
+  --surface2:#111111;
+  --border:#252525;
 
-    :root {
+  --text:#f3f3f3;
+  --muted:#6d6d6d;
 
-      --bg: #050505;
-      --bg-soft: #080808;
+  --accent:#ffffff;
+  --accentSoft:rgba(255,255,255,.08);
 
-      --surface: #0c0c0c;
-      --surface-2: #111111;
-      --surface-3: #161616;
+  --userBg:#f3f3f3;
+  --userText:#050505;
 
-      --border: #242424;
-      --border-soft: #181818;
+  --ok:#67f5a0;
+  --danger:#ef8585;
 
-      --text: #f3f3f3;
-      --text-secondary: #b0b0b0;
-      --muted: #666;
-      --muted-2: #444;
+  --sidebar:292px;
+}
 
-      --accent: #ffffff;
-      --accent-soft: rgba(255,255,255,.10);
 
-      --user-bg: #f2f2f2;
-      --user-text: #050505;
+/* =========================================================
+   LIGHT
+========================================================= */
 
-      --success: #67f5a0;
-      --danger: #e97878;
+body[data-theme="light"]{
 
-      --sidebar-width: 292px;
+  --bg:#f4f4f1;
+  --surface:#ffffff;
+  --surface2:#ededeb;
+  --border:#d9d9d5;
 
-      --radius: 15px;
+  --text:#111111;
+  --muted:#6d6d6d;
 
-      --shadow:
-        0 20px 60px rgba(0,0,0,.25);
-    }
+  --accent:#111111;
+  --accentSoft:rgba(0,0,0,.06);
 
+  --userBg:#111111;
+  --userText:#ffffff;
+}
 
-    /* =========================================================
-       ACCENT COLORS
-    ========================================================= */
 
-    body[data-accent="blue"] {
-      --accent: #5ea7ff;
-      --accent-soft: rgba(94,167,255,.12);
-    }
+/* =========================================================
+   ACCENTS
+========================================================= */
 
-    body[data-accent="violet"] {
-      --accent: #a78bfa;
-      --accent-soft: rgba(167,139,250,.12);
-    }
+body[data-accent="blue"]{
+  --accent:#5ea7ff;
+  --accentSoft:rgba(94,167,255,.12);
+}
 
-    body[data-accent="green"] {
-      --accent: #55d99a;
-      --accent-soft: rgba(85,217,154,.12);
-    }
+body[data-theme="light"][data-accent="blue"]{
+  --accent:#1769d2;
+}
 
-    body[data-accent="orange"] {
-      --accent: #ff9d52;
-      --accent-soft: rgba(255,157,82,.12);
-    }
 
-    body[data-accent="pink"] {
-      --accent: #f472b6;
-      --accent-soft: rgba(244,114,182,.12);
-    }
+body[data-accent="violet"]{
+  --accent:#a78bfa;
+  --accentSoft:rgba(167,139,250,.12);
+}
 
+body[data-theme="light"][data-accent="violet"]{
+  --accent:#7047c4;
+}
 
-    /* =========================================================
-       LIGHT THEME
-    ========================================================= */
 
-    body[data-theme="light"] {
+body[data-accent="green"]{
+  --accent:#55d99a;
+  --accentSoft:rgba(85,217,154,.12);
+}
 
-      --bg: #f4f4f2;
-      --bg-soft: #eeeeec;
+body[data-theme="light"][data-accent="green"]{
+  --accent:#168653;
+}
 
-      --surface: #ffffff;
-      --surface-2: #f7f7f6;
-      --surface-3: #eeeeec;
 
-      --border: #dcdcd8;
-      --border-soft: #e8e8e4;
+body[data-accent="orange"]{
+  --accent:#ff9d52;
+  --accentSoft:rgba(255,157,82,.12);
+}
 
-      --text: #111111;
-      --text-secondary: #555555;
+body[data-theme="light"][data-accent="orange"]{
+  --accent:#c96513;
+}
 
-      --muted: #777777;
-      --muted-2: #999999;
 
-      --accent: #111111;
+body[data-accent="pink"]{
+  --accent:#f472b6;
+  --accentSoft:rgba(244,114,182,.12);
+}
 
-      --user-bg: #111111;
-      --user-text: #ffffff;
+body[data-theme="light"][data-accent="pink"]{
+  --accent:#c63b7e;
+}
 
-      --shadow:
-        0 20px 50px rgba(0,0,0,.08);
-    }
 
+/* =========================================================
+   RESET
+========================================================= */
 
-    body[data-theme="light"][data-accent="blue"] {
-      --accent: #1769d2;
-      --accent-soft: rgba(23,105,210,.10);
-    }
+*{
+  box-sizing:border-box;
+}
 
-    body[data-theme="light"][data-accent="violet"] {
-      --accent: #6d42c1;
-      --accent-soft: rgba(109,66,193,.10);
-    }
+html,
+body{
 
-    body[data-theme="light"][data-accent="green"] {
-      --accent: #168653;
-      --accent-soft: rgba(22,134,83,.10);
-    }
+  margin:0;
 
-    body[data-theme="light"][data-accent="orange"] {
-      --accent: #c96513;
-      --accent-soft: rgba(201,101,19,.10);
-    }
+  width:100%;
+  height:100%;
 
-    body[data-theme="light"][data-accent="pink"] {
-      --accent: #c63b7e;
-      --accent-soft: rgba(198,59,126,.10);
-    }
+  background:var(--bg);
+  color:var(--text);
 
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
 
-    /* =========================================================
-       RESET
-    ========================================================= */
+body{
+  overflow:hidden;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+button,
+textarea{
+  font:inherit;
+}
 
-    html,
-    body {
+button{
+  cursor:pointer;
+}
 
-      margin: 0;
 
-      width: 100%;
-      height: 100%;
+/* =========================================================
+   APP
+========================================================= */
 
-      background: var(--bg);
-      color: var(--text);
+.app{
 
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+  height:100vh;
 
-      transition:
-        background .2s ease,
-        color .2s ease;
-    }
+  display:flex;
+}
 
-    body {
-      overflow: hidden;
-    }
 
-    button,
-    textarea,
-    input {
-      font: inherit;
-    }
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-    button {
-      cursor: pointer;
-    }
+.sidebar{
 
+  width:var(--sidebar);
 
-    /* =========================================================
-       APP
-    ========================================================= */
+  flex-shrink:0;
 
-    .app {
+  height:100vh;
 
-      width: 100%;
-      height: 100vh;
+  background:var(--surface);
 
-      display: flex;
+  border-right:
+    1px solid var(--border);
 
-      background: var(--bg);
-    }
+  padding:
+    24px 22px 18px;
 
+  display:flex;
 
-    /* =========================================================
-       SIDEBAR
-    ========================================================= */
+  flex-direction:column;
+}
 
-    .sidebar {
 
-      width: var(--sidebar-width);
+.brand{
 
-      height: 100vh;
+  display:flex;
 
-      flex-shrink: 0;
+  align-items:center;
 
-      background: var(--surface);
+  gap:12px;
 
-      border-right:
-        1px solid var(--border);
+  margin:
+    0 4px 26px;
+}
 
-      display: flex;
 
-      flex-direction: column;
+.mark{
 
-      padding:
-        24px 22px 18px;
-    }
+  width:35px;
+  height:35px;
 
+  border-radius:10px;
 
-    /* BRAND */
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #fff,
+      #bbb 25%,
+      #666 55%,
+      #111 100%
+    );
 
-    .brand {
+  box-shadow:
+    0 0 0 1px #333;
+}
 
-      display: flex;
 
-      align-items: center;
+.brandName{
 
-      gap: 12px;
+  font-size:19px;
 
-      margin:
-        0 4px 26px;
-    }
+  font-weight:800;
 
-    .brand-mark {
+  line-height:1;
+}
 
-      width: 35px;
-      height: 35px;
 
-      border-radius: 10px;
+.brandSub{
 
-      background:
-        radial-gradient(
-          circle at 30% 25%,
-          #ffffff,
-          #cfcfcf 20%,
-          #888 42%,
-          #333 70%,
-          #111
-        );
+  font-size:8px;
 
-      box-shadow:
-        0 0 0 1px #333,
-        inset 0 0 12px rgba(255,255,255,.25);
-    }
+  letter-spacing:2px;
 
-    .brand-name {
+  color:var(--muted);
 
-      font-size: 19px;
+  margin-top:4px;
+}
 
-      font-weight: 800;
 
-      letter-spacing: -.5px;
+.newChat{
 
-      line-height: 1;
-    }
+  height:49px;
 
-    .brand-sub {
+  border:0;
 
-      margin-top: 4px;
+  border-radius:12px;
 
-      font-size: 8px;
+  background:var(--accent);
 
-      letter-spacing: 2px;
+  color:var(--bg);
 
-      color: var(--muted);
+  font-weight:750;
 
-      text-transform: uppercase;
-    }
+  text-align:left;
 
+  padding:
+    0 18px;
+}
 
-    /* NEW CHAT */
 
-    .new-chat {
+.history{
 
-      width: 100%;
+  margin-top:34px;
 
-      min-height: 49px;
+  flex:1;
 
-      border: 0;
+  min-height:0;
 
-      border-radius: 12px;
+  overflow:auto;
+}
 
-      background: var(--accent);
 
-      color:
-        var(--bg);
+.historyLabel{
 
-      font-size: 16px;
+  margin:
+    0 9px 13px;
 
-      font-weight: 750;
+  color:var(--muted);
 
-      text-align: left;
+  font-size:9px;
 
-      padding: 0 18px;
+  font-weight:700;
 
-      transition:
-        transform .15s ease,
-        opacity .15s ease;
-    }
+  letter-spacing:2px;
 
-    body[data-theme="light"] .new-chat {
-      color: white;
-    }
+  text-transform:uppercase;
+}
 
-    .new-chat:hover {
 
-      transform:
-        translateY(-1px);
+.historyItem{
 
-      opacity: .88;
-    }
+  display:block;
 
+  width:100%;
 
-    /* HISTORY */
+  border:0;
 
-    .history {
+  background:transparent;
 
-      margin-top: 34px;
+  color:var(--muted);
 
-      flex: 1;
+  padding:
+    9px 10px;
 
-      min-height: 0;
+  border-radius:8px;
 
-      overflow-y: auto;
-    }
+  text-align:left;
 
-    .history-label {
+  font-size:12px;
 
-      margin:
-        0 9px 13px;
+  white-space:nowrap;
 
-      color: var(--muted);
+  overflow:hidden;
 
-      font-size: 9px;
+  text-overflow:ellipsis;
+}
 
-      font-weight: 700;
 
-      letter-spacing: 2px;
+.historyItem:hover{
 
-      text-transform: uppercase;
-    }
+  background:var(--accentSoft);
 
-    .history-list {
+  color:var(--text);
+}
 
-      display: flex;
 
-      flex-direction: column;
+.empty{
 
-      gap: 3px;
-    }
+  padding:
+    8px 10px;
 
-    .history-item {
+  color:#444;
 
-      width: 100%;
+  font-size:11px;
+}
 
-      border: 0;
 
-      background: transparent;
+.status{
 
-      color: var(--text-secondary);
+  border-top:
+    1px solid var(--border);
 
-      padding:
-        9px 10px;
+  padding-top:18px;
 
-      border-radius: 9px;
+  color:var(--muted);
 
-      text-align: left;
+  font-size:10px;
+}
 
-      font-size: 12px;
 
-      overflow: hidden;
+.dot{
 
-      white-space: nowrap;
+  display:inline-block;
 
-      text-overflow: ellipsis;
-    }
+  width:7px;
+  height:7px;
 
-    .history-item:hover {
+  border-radius:50%;
 
-      background:
-        var(--accent-soft);
+  background:var(--ok);
 
-      color:
-        var(--text);
-    }
+  margin-right:7px;
+}
 
-    .history-empty {
 
-      color: var(--muted-2);
+/* =========================================================
+   MAIN
+========================================================= */
 
-      font-size: 11px;
+.main{
 
-      padding:
-        8px 10px;
-    }
+  flex:1;
 
+  min-width:0;
 
-    /* FOOTER */
+  height:100vh;
 
-    .sidebar-footer {
+  display:flex;
 
-      border-top:
-        1px solid var(--border);
+  flex-direction:column;
 
-      padding:
-        18px 3px 0;
+  background:var(--bg);
+}
 
-      color:
-        var(--muted);
 
-      font-size: 10px;
-    }
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-    .status-dot {
+.topbar{
 
-      display: inline-block;
+  height:70px;
 
-      width: 7px;
-      height: 7px;
+  flex-shrink:0;
 
-      border-radius: 50%;
+  border-bottom:
+    1px solid var(--border);
 
-      background:
-        var(--success);
+  display:flex;
 
-      margin-right: 7px;
+  align-items:center;
 
-      box-shadow:
-        0 0 10px rgba(103,245,160,.5);
-    }
+  justify-content:space-between;
 
+  padding:
+    0 26px 0 30px;
+}
 
-    /* =========================================================
-       MAIN
-    ========================================================= */
 
-    .main {
+.topLabel{
 
-      min-width: 0;
+  font-size:11px;
 
-      flex: 1;
+  color:var(--muted);
+}
 
-      height: 100vh;
 
-      display: flex;
+/* =========================================================
+   APPEARANCE
+========================================================= */
 
-      flex-direction: column;
+.themeWrap{
 
-      background: var(--bg);
-    }
+  position:relative;
+}
 
 
-    /* =========================================================
-       TOP BAR
-    ========================================================= */
+.themeBtn{
 
-    .topbar {
+  height:35px;
 
-      height: 70px;
+  border:
+    1px solid var(--border);
 
-      flex-shrink: 0;
+  background:
+    var(--surface);
 
-      border-bottom:
-        1px solid var(--border-soft);
+  color:
+    var(--text);
 
-      display: flex;
+  border-radius:9px;
 
-      align-items: center;
+  padding:
+    0 11px;
 
-      justify-content: space-between;
+  font-size:11px;
+}
 
-      padding:
-        0 24px 0 30px;
-    }
 
-    .topbar-left {
+.themeMenu{
 
-      display: flex;
+  display:none;
 
-      align-items: center;
+  position:absolute;
 
-      gap: 10px;
-    }
+  z-index:100;
 
-    .topbar-label {
+  right:0;
 
-      color:
-        var(--muted);
+  top:43px;
 
-      font-size: 11px;
-    }
+  width:230px;
 
+  padding:12px;
 
-    /* =========================================================
-       THEME CONTROL
-    ========================================================= */
+  background:
+    var(--surface);
 
-    .theme-wrapper {
+  border:
+    1px solid var(--border);
 
-      position: relative;
-    }
+  border-radius:13px;
 
-    .theme-button {
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.25);
+}
 
-      height: 35px;
 
-      padding:
-        0 11px;
+.themeMenu.open{
+  display:block;
+}
 
-      display: flex;
 
-      align-items: center;
+.menuTitle{
 
-      gap: 7px;
+  font-size:9px;
 
-      border:
-        1px solid var(--border);
+  color:var(--muted);
 
-      background:
-        var(--surface);
+  letter-spacing:1.5px;
 
-      color:
-        var(--text-secondary);
+  text-transform:uppercase;
 
-      border-radius: 9px;
+  margin:
+    3px 5px 9px;
+}
 
-      font-size: 11px;
-    }
 
-    .theme-button:hover {
+.themeChoices{
 
-      color:
-        var(--text);
+  display:grid;
 
-      border-color:
-        var(--muted);
-    }
+  grid-template-columns:
+    1fr 1fr;
 
-    .theme-menu {
+  gap:6px;
 
-      position: absolute;
+  margin-bottom:13px;
+}
 
-      top: 44px;
 
-      right: 0;
+.themeChoice{
 
-      width: 235px;
+  border:
+    1px solid var(--border);
 
-      padding: 12px;
+  background:
+    var(--surface2);
 
-      background:
-        var(--surface);
+  color:
+    var(--text);
 
-      border:
-        1px solid var(--border);
+  border-radius:8px;
 
-      border-radius: 13px;
+  padding:
+    9px 8px;
 
-      box-shadow:
-        var(--shadow);
+  text-align:left;
 
-      display: none;
+  font-size:10px;
+}
 
-      z-index: 1000;
-    }
 
-    .theme-menu.open {
-      display: block;
-    }
+.themeChoice.active,
+.themeChoice:hover{
 
-    .menu-title {
+  border-color:
+    var(--accent);
 
-      color:
-        var(--muted);
+  background:
+    var(--accentSoft);
+}
 
-      font-size: 9px;
 
-      letter-spacing: 1.5px;
+.accents{
 
-      text-transform: uppercase;
+  display:flex;
 
-      margin:
-        4px 5px 9px;
-    }
+  gap:8px;
 
+  padding:
+    2px 4px 4px;
 
-    /* THEME OPTIONS */
+  flex-wrap:wrap;
+}
 
-    .theme-options {
 
-      display: grid;
+.accent{
 
-      grid-template-columns:
-        1fr 1fr;
+  width:25px;
 
-      gap: 6px;
+  height:25px;
 
-      margin-bottom: 13px;
-    }
+  border-radius:50%;
 
-    .theme-option {
+  border:
+    2px solid transparent;
 
-      border:
-        1px solid var(--border);
+  padding:0;
+}
 
-      background:
-        var(--surface-2);
 
-      color:
-        var(--text-secondary);
+.accent.active{
 
-      padding:
-        9px 8px;
+  border-color:
+    var(--text);
+}
 
-      border-radius: 8px;
 
-      font-size: 10px;
+.neutral{background:#999}
+.blue{background:#5ea7ff}
+.violet{background:#a78bfa}
+.green{background:#55d99a}
+.orange{background:#ff9d52}
+.pink{background:#f472b6}
 
-      text-align: left;
-    }
 
-    .theme-option:hover,
-    .theme-option.active {
+/* =========================================================
+   WORKSPACE
+========================================================= */
 
-      border-color:
-        var(--accent);
+.workspace{
 
-      color:
-        var(--text);
+  flex:1;
 
-      background:
-        var(--accent-soft);
-    }
+  min-height:0;
 
+  overflow:hidden;
+}
 
-    /* ACCENTS */
 
-    .accent-options {
+.workspaceInner{
 
-      display: flex;
+  width:
+    min(
+      1080px,
+      calc(100% - 48px)
+    );
 
-      gap: 8px;
+  height:100%;
 
-      flex-wrap: wrap;
+  margin:auto;
 
-      padding:
-        2px 4px 5px;
-    }
+  display:flex;
 
-    .accent-dot {
+  flex-direction:column;
+}
 
-      width: 25px;
-      height: 25px;
 
-      border-radius: 50%;
+/* =========================================================
+   SIGNAL
+========================================================= */
 
-      border:
-        2px solid transparent;
+.signal{
 
-      padding: 0;
-    }
+  flex-shrink:0;
 
-    .accent-dot.active {
+  padding:
+    40px 0 20px;
+}
 
-      border-color:
-        var(--text);
-    }
 
-    .accent-neutral {
-      background: #999;
-    }
+.kicker{
 
-    .accent-blue {
-      background: #5ea7ff;
-    }
+  font-size:10px;
 
-    .accent-violet {
-      background: #a78bfa;
-    }
+  font-weight:700;
 
-    .accent-green {
-      background: #55d99a;
-    }
+  letter-spacing:1.6px;
 
-    .accent-orange {
-      background: #ff9d52;
-    }
+  text-transform:uppercase;
 
-    .accent-pink {
-      background: #f472b6;
-    }
+  color:var(--muted);
 
+  margin-bottom:13px;
+}
 
-    /* =========================================================
-       WORKSPACE
-       
-       IMPORTANT FIX:
-       The workspace itself does NOT scroll behind the composer.
-       The conversation has its OWN scroll container.
-    ========================================================= */
 
-    .workspace {
+.kicker::before{
 
-      flex: 1;
+  content:"";
 
-      min-height: 0;
+  display:inline-block;
 
-      overflow: hidden;
+  width:6px;
+  height:6px;
 
-      position: relative;
-    }
+  border-radius:50%;
 
-    .workspace-inner {
+  background:var(--accent);
 
-      width:
-        min(1080px, calc(100% - 48px));
+  box-shadow:
+    0 0 9px var(--accent);
 
-      height: 100%;
+  margin-right:9px;
+}
 
-      margin:
-        0 auto;
 
-      display: flex;
+.signalText{
 
-      flex-direction: column;
-    }
+  max-width:900px;
 
+  margin:0;
 
-    /* =========================================================
-       AI SIGNAL
-    ========================================================= */
+  font-size:
+    clamp(
+      30px,
+      3.5vw,
+      51px
+    );
 
-    .signal-area {
+  line-height:1.02;
 
-      flex-shrink: 0;
+  letter-spacing:-2.3px;
 
-      padding:
-        42px 0 25px;
-    }
+  font-weight:850;
+}
 
-    .signal-kicker {
 
-      display: flex;
+.signalMeta{
 
-      align-items: center;
+  font-size:10px;
 
-      gap: 9px;
+  color:#555;
 
-      color:
-        var(--muted);
+  margin-top:12px;
+}
 
-      font-size: 10px;
 
-      font-weight: 700;
+/* =========================================================
+   CHAT SCROLL
+========================================================= */
 
-      letter-spacing:
-        1.6px;
+.chatScroll{
 
-      text-transform:
-        uppercase;
+  flex:1;
 
-      margin-bottom:
-        14px;
-    }
+  min-height:0;
 
-    .signal-kicker::before {
+  overflow-y:auto;
 
-      content: "";
+  padding:
+    8px 0 20px;
 
-      width: 6px;
-      height: 6px;
+  scrollbar-width:thin;
+}
 
-      border-radius: 50%;
 
-      background:
-        var(--accent);
+.messages{
 
-      box-shadow:
-        0 0 10px var(--accent);
-    }
+  display:flex;
 
-    .signal-text {
+  flex-direction:column;
 
-      max-width: 900px;
+  gap:22px;
 
-      font-size:
-        clamp(30px, 3.5vw, 51px);
+  padding-right:3px;
+}
 
-      line-height:
-        1.02;
 
-      font-weight: 850;
+.message{
 
-      letter-spacing:
-        -2.4px;
+  display:flex;
 
-      color:
-        var(--text);
+  width:100%;
+}
 
-      margin: 0;
 
-      text-wrap: balance;
+.message.user{
 
-      transition:
-        opacity .2s ease;
-    }
+  justify-content:flex-end;
+}
 
-    .signal-meta {
 
-      margin-top:
-        14px;
+.message.ai{
 
-      color:
-        var(--muted-2);
+  justify-content:flex-start;
+}
 
-      font-size: 10px;
-    }
 
+.messageInner{
 
-    /* =========================================================
-       CONVERSATION SCROLL AREA
-       
-       THIS IS THE MAIN GLITCH FIX.
-    ========================================================= */
+  max-width:
+    min(
+      800px,
+      88%
+    );
+}
 
-    .chat-scroll {
 
-      flex: 1;
+.label{
 
-      min-height: 0;
+  font-size:9px;
 
-      overflow-y: auto;
+  letter-spacing:1.3px;
 
-      padding:
-        8px 0 24px;
+  text-transform:uppercase;
 
-      scrollbar-width:
-        thin;
+  color:var(--muted);
 
-      scrollbar-color:
-        var(--border)
-        transparent;
-    }
+  margin-bottom:7px;
+}
 
-    .chat-scroll::-webkit-scrollbar {
 
-      width: 6px;
-    }
+.bubble{
 
-    .chat-scroll::-webkit-scrollbar-thumb {
+  padding:
+    15px 17px;
 
-      background:
-        var(--border);
+  border-radius:15px;
 
-      border-radius:
-        20px;
-    }
+  font-size:14px;
 
-    .messages {
+  line-height:1.68;
 
-      display: flex;
+  word-break:break-word;
+}
 
-      flex-direction: column;
 
-      gap: 22px;
+.user .bubble{
 
-      padding-right: 3px;
-    }
+  background:
+    var(--userBg);
 
+  color:
+    var(--userText);
 
-    /* =========================================================
-       MESSAGES
-    ========================================================= */
+  border-bottom-right-radius:4px;
+}
 
-    .message {
 
-      display: flex;
+.ai .bubble{
 
-      width: 100%;
-    }
+  background:
+    var(--surface);
 
-    .message.user {
+  color:
+    var(--text);
 
-      justify-content:
-        flex-end;
-    }
+  border:
+    1px solid var(--border);
 
-    .message.ai {
+  border-bottom-left-radius:4px;
+}
 
-      justify-content:
-        flex-start;
-    }
 
-    .message-inner {
+/* =========================================================
+   MARKDOWN
+========================================================= */
 
-      max-width:
-        min(800px, 88%);
-    }
+.markdown p{
 
-    .bubble {
+  margin:
+    0 0 11px;
+}
 
-      border-radius:
-        15px;
 
-      padding:
-        15px 17px;
+.markdown p:last-child{
 
-      font-size:
-        14px;
+  margin-bottom:0;
+}
 
-      line-height:
-        1.68;
 
-      word-break:
-        break-word;
+.markdown strong{
 
-      box-shadow:
-        0 2px 8px rgba(0,0,0,.03);
-    }
+  font-weight:750;
+}
 
-    .user .bubble {
 
-      background:
-        var(--user-bg);
+.markdown ul{
 
-      color:
-        var(--user-text);
+  margin:
+    8px 0;
 
-      border-bottom-right-radius:
-        4px;
-    }
+  padding-left:20px;
+}
 
-    .ai .bubble {
 
-      background:
-        var(--surface);
+.markdown li{
 
-      color:
-        var(--text);
+  margin:
+    4px 0;
+}
 
-      border:
-        1px solid var(--border);
 
-      border-bottom-left-radius:
-        4px;
-    }
+.markdown code{
 
-    .message-label {
+  background:
+    var(--surface2);
 
-      font-size:
-        9px;
+  border:
+    1px solid var(--border);
 
-      color:
-        var(--muted);
+  padding:
+    2px 5px;
 
-      letter-spacing:
-        1.3px;
+  border-radius:5px;
 
-      text-transform:
-        uppercase;
+  font-family:
+    monospace;
 
-      margin-bottom:
-        7px;
-    }
+  font-size:12px;
+}
 
 
-    /* =========================================================
-       BASIC MARKDOWN
-    ========================================================= */
+/* =========================================================
+   TYPING
+========================================================= */
 
-    .markdown {
+.typing{
 
-      white-space:
-        normal;
-    }
+  display:flex;
 
-    .markdown p {
+  gap:4px;
+}
 
-      margin:
-        0 0 12px;
-    }
 
-    .markdown p:last-child {
+.typing span{
 
-      margin-bottom:
-        0;
-    }
+  width:4px;
 
-    .markdown strong {
+  height:4px;
 
-      font-weight:
-        750;
+  border-radius:50%;
 
-      color:
-        var(--text);
-    }
+  background:var(--muted);
 
-    .markdown em {
+  animation:
+    blink 1s infinite;
+}
 
-      opacity:
-        .9;
-    }
 
-    .markdown ul {
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
 
-      margin:
-        9px 0;
 
-      padding-left:
-        20px;
-    }
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
 
-    .markdown li {
 
-      margin-bottom:
-        5px;
-    }
+@keyframes blink{
 
-    .markdown code {
+  0%,100%{
+    opacity:.2;
+  }
 
-      background:
-        var(--surface-3);
+  50%{
+    opacity:1;
+  }
+}
 
-      border:
-        1px solid var(--border);
 
-      border-radius:
-        5px;
+/* =========================================================
+   TRACE
+========================================================= */
 
-      padding:
-        2px 5px;
+.trace{
 
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        monospace;
+  display:none;
 
-      font-size:
-        12px;
-    }
+  margin:
+    5px 0 15px;
 
+  border:
+    1px solid var(--border);
 
-    /* =========================================================
-       TYPING
-    ========================================================= */
+  background:
+    var(--surface);
 
-    .typing {
+  border-radius:12px;
 
-      display:
-        inline-flex;
+  padding:
+    12px 14px;
+}
 
-      gap:
-        4px;
 
-      align-items:
-        center;
-    }
+.trace.show{
+  display:block;
+}
 
-    .typing span {
 
-      width:
-        4px;
+.traceGrid{
 
-      height:
-        4px;
+  display:flex;
 
-      border-radius:
-        50%;
+  flex-wrap:wrap;
 
-      background:
-        var(--muted);
+  gap:7px;
+}
 
-      animation:
-        blink 1s infinite ease-in-out;
-    }
 
-    .typing span:nth-child(2) {
-      animation-delay:
-        .15s;
-    }
+.pill{
 
-    .typing span:nth-child(3) {
-      animation-delay:
-        .30s;
-    }
+  border:
+    1px solid var(--border);
 
-    @keyframes blink {
+  background:
+    var(--surface2);
 
-      0%,
-      100% {
-        opacity: .2;
-      }
+  padding:
+    6px 8px;
 
-      50% {
-        opacity: 1;
-      }
-    }
+  border-radius:7px;
 
+  font-size:10px;
 
-    /* =========================================================
-       TRACE
-    ========================================================= */
+  color:var(--muted);
+}
 
-    .trace {
 
-      display:
-        none;
+.pill b{
 
-      margin:
-        5px 0 15px;
+  color:var(--text);
+}
 
-      border:
-        1px solid var(--border);
 
-      border-radius:
-        12px;
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
 
-      background:
-        var(--surface);
+.suggestions{
 
-      padding:
-        12px 14px;
-    }
+  flex-shrink:0;
 
-    .trace.visible {
-      display:
-        block;
-    }
+  display:flex;
 
-    .trace-grid {
+  gap:8px;
 
-      display:
-        flex;
+  flex-wrap:wrap;
 
-      flex-wrap:
-        wrap;
+  padding:
+    7px 0 11px;
+}
 
-      gap:
-        7px;
-    }
 
-    .trace-pill {
+.suggestion{
 
-      border:
-        1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-      background:
-        var(--surface-2);
+  background:
+    var(--surface);
 
-      padding:
-        6px 8px;
+  color:
+    var(--muted);
 
-      border-radius:
-        7px;
+  border-radius:999px;
 
-      font-size:
-        10px;
+  padding:
+    8px 12px;
 
-      color:
-        var(--muted);
-    }
+  font-size:10px;
+}
 
-    .trace-pill strong {
 
-      color:
-        var(--text-secondary);
+.suggestion:hover{
 
-      font-weight:
-        650;
-    }
+  color:var(--text);
 
+  border-color:
+    var(--accent);
 
-    /* =========================================================
-       SUGGESTIONS
-    ========================================================= */
+  background:
+    var(--accentSoft);
+}
 
-    .suggestions {
 
-      flex-shrink: 0;
+/* =========================================================
+   COMPOSER
+========================================================= */
 
-      display:
-        flex;
+.composerWrap{
 
-      flex-wrap:
-        wrap;
+  flex-shrink:0;
 
-      gap:
-        8px;
+  padding:
+    5px 0 21px;
 
-      padding:
-        8px 0 11px;
-    }
+  background:
+    var(--bg);
+}
 
-    .suggestion {
 
-      border:
-        1px solid var(--border);
+.attachment{
 
-      background:
-        var(--surface);
+  display:none;
 
-      color:
-        var(--text-secondary);
+  width:max-content;
 
-      border-radius:
-        999px;
+  max-width:100%;
 
-      padding:
-        8px 12px;
+  align-items:center;
 
-      font-size:
-        10px;
+  gap:8px;
 
-      transition:
-        color .15s ease,
-        border-color .15s ease,
-        background .15s ease;
-    }
+  margin-bottom:8px;
 
-    .suggestion:hover {
+  border:
+    1px solid var(--border);
 
-      color:
-        var(--text);
+  background:
+    var(--surface);
 
-      border-color:
-        var(--accent);
+  color:
+    var(--text);
 
-      background:
-        var(--accent-soft);
-    }
+  border-radius:9px;
 
+  padding:
+    7px 10px;
 
-    /* =========================================================
-       COMPOSER
-       
-       NO STICKY.
-       NO ABSOLUTE.
-       NO OVERLAY.
-       
-       It occupies its own layout space.
-    ========================================================= */
+  font-size:10px;
+}
 
-    .composer-wrap {
 
-      flex-shrink: 0;
+.attachment.show{
 
-      padding:
-        6px 0 22px;
+  display:flex;
+}
 
-      background:
-        var(--bg);
-    }
 
+.fileName{
 
-    /* ATTACHMENT */
+  max-width:320px;
 
-    .attachment {
+  overflow:hidden;
 
-      display:
-        none;
+  text-overflow:ellipsis;
 
-      align-items:
-        center;
+  white-space:nowrap;
+}
 
-      gap:
-        9px;
 
-      width:
-        fit-content;
+.remove{
 
-      max-width:
-        100%;
+  border:0;
 
-      margin-bottom:
-        8px;
+  background:transparent;
 
-      border:
-        1px solid var(--border);
+  color:var(--muted);
 
-      background:
-        var(--surface);
+  font-size:14px;
+}
 
-      color:
-        var(--text-secondary);
 
-      border-radius:
-        9px;
+.composer{
 
-      padding:
-        7px 10px;
+  border:
+    1px solid var(--border);
 
-      font-size:
-        10px;
-    }
+  background:
+    var(--surface);
 
-    .attachment.visible {
-      display:
-        flex;
-    }
+  border-radius:17px;
+}
 
-    .attachment-name {
 
-      max-width:
-        320px;
+.composer:focus-within{
 
-      overflow:
-        hidden;
+  border-color:
+    var(--accent);
+}
 
-      text-overflow:
-        ellipsis;
 
-      white-space:
-        nowrap;
-    }
+textarea{
 
-    .remove-file {
+  display:block;
 
-      border:
-        0;
+  width:100%;
 
-      background:
-        transparent;
+  min-height:67px;
 
-      color:
-        var(--muted);
+  max-height:190px;
 
-      padding:
-        0 2px;
+  resize:none;
 
-      font-size:
-        14px;
-    }
+  border:0;
 
-    .remove-file:hover {
+  outline:0;
 
-      color:
-        var(--text);
-    }
+  background:transparent;
 
+  color:var(--text);
 
-    /* COMPOSER */
+  padding:
+    16px 17px 8px;
 
-    .composer {
+  font-size:14px;
 
-      border:
-        1px solid var(--border);
+  line-height:1.5;
+}
 
-      background:
-        var(--surface);
 
-      border-radius:
-        17px;
+textarea::placeholder{
 
-      box-shadow:
-        var(--shadow);
+  color:var(--muted);
+}
 
-      transition:
-        border-color .15s ease;
-    }
 
-    .composer:focus-within {
+.composerBottom{
 
-      border-color:
-        var(--accent);
-    }
+  display:flex;
 
+  align-items:center;
 
-    /* TEXTAREA */
+  justify-content:space-between;
 
-    .textarea {
+  padding:
+    6px 9px 9px 12px;
+}
 
-      display:
-        block;
 
-      width:
-        100%;
+.icon{
 
-      min-height:
-        67px;
+  width:34px;
 
-      max-height:
-        190px;
+  height:34px;
 
-      resize:
-        none;
+  border:
+    1px solid transparent;
 
-      border:
-        0;
+  background:transparent;
 
-      outline:
-        0;
+  color:var(--muted);
 
-      background:
-        transparent;
+  border-radius:9px;
 
-      color:
-        var(--text);
+  font-size:17px;
+}
 
-      padding:
-        16px 17px 8px;
 
-      font-size:
-        14px;
+.icon:hover{
 
-      line-height:
-        1.5;
-    }
+  background:
+    var(--surface2);
 
-    .textarea::placeholder {
+  color:
+    var(--text);
 
-      color:
-        var(--muted);
-    }
+  border-color:
+    var(--border);
+}
 
 
-    /* COMPOSER BOTTOM */
+.send{
 
-    .composer-bottom {
+  width:38px;
 
-      display:
-        flex;
+  height:38px;
 
-      align-items:
-        center;
+  border:0;
 
-      justify-content:
-        space-between;
+  border-radius:11px;
 
-      padding:
-        6px 9px 9px 12px;
-    }
+  background:
+    var(--accent);
 
-    .composer-left {
+  color:
+    var(--bg);
 
-      display:
-        flex;
+  font-weight:800;
 
-      align-items:
-        center;
+  font-size:17px;
+}
 
-      gap:
-        6px;
-    }
 
+.send:disabled{
 
-    /* ICON */
+  opacity:.35;
 
-    .icon-button {
+  cursor:not-allowed;
+}
 
-      width:
-        34px;
 
-      height:
-        34px;
+.note{
 
-      border:
-        1px solid transparent;
+  text-align:center;
 
-      background:
-        transparent;
+  color:#444;
 
-      color:
-        var(--muted);
+  font-size:9px;
 
-      border-radius:
-        9px;
+  margin-top:7px;
+}
 
-      display:
-        grid;
 
-      place-items:
-        center;
+#fileInput{
+  display:none;
+}
 
-      font-size:
-        17px;
-    }
 
-    .icon-button:hover {
+.error{
 
-      color:
-        var(--text);
+  color:
+    var(--danger);
 
-      background:
-        var(--surface-2);
+  border:
+    1px solid rgba(239,133,133,.25);
 
-      border-color:
-        var(--border);
-    }
+  background:
+    rgba(239,133,133,.05);
 
+  border-radius:10px;
 
-    /* SEND */
+  padding:
+    11px 13px;
 
-    .send-button {
+  font-size:11px;
+}
 
-      width:
-        38px;
 
-      height:
-        38px;
+/* =========================================================
+   MOBILE
+========================================================= */
 
-      border:
-        0;
+@media(max-width:800px){
 
-      border-radius:
-        11px;
+  .sidebar{
+    display:none;
+  }
 
-      background:
-        var(--accent);
+  .topbar{
 
-      color:
-        var(--bg);
+    height:58px;
 
-      display:
-        grid;
+    padding:
+      0 15px;
+  }
 
-      place-items:
-        center;
+  .workspaceInner{
 
-      font-size:
-        17px;
+    width:
+      calc(100% - 28px);
+  }
 
-      font-weight:
-        800;
+  .signal{
 
-      transition:
-        transform .15s ease,
-        opacity .15s ease;
-    }
+    padding:
+      30px 0 18px;
+  }
 
-    body[data-theme="light"] .send-button {
-      color: white;
-    }
+  .signalText{
 
-    .send-button:hover {
+    font-size:31px;
 
-      transform:
-        translateY(-1px);
+    letter-spacing:-1.6px;
+  }
 
-      opacity:
-        .88;
-    }
+  .messageInner{
 
-    .send-button:disabled {
+    max-width:94%;
+  }
 
-      opacity:
-        .35;
+  .suggestions{
 
-      cursor:
-        not-allowed;
+    overflow-x:auto;
 
-      transform:
-        none;
-    }
+    flex-wrap:nowrap;
 
+    scrollbar-width:none;
+  }
 
-    /* NOTE */
+  .suggestion{
 
-    .composer-note {
+    white-space:nowrap;
+  }
 
-      margin-top:
-        7px;
+  .composerWrap{
 
-      text-align:
-        center;
+    padding-bottom:13px;
+  }
 
-      color:
-        var(--muted-2);
+}
 
-      font-size:
-        9px;
-    }
-
-    #fileInput {
-      display:
-        none;
-    }
-
-
-    /* =========================================================
-       ERROR
-    ========================================================= */
-
-    .error-message {
-
-      color:
-        var(--danger);
-
-      border:
-        1px solid rgba(233,120,120,.25);
-
-      background:
-        rgba(233,120,120,.05);
-
-      border-radius:
-        10px;
-
-      padding:
-        11px 13px;
-
-      font-size:
-        11px;
-    }
-
-
-    /* =========================================================
-       MOBILE
-    ========================================================= */
-
-    @media (max-width: 800px) {
-
-      body {
-        overflow:
-          hidden;
-      }
-
-      .sidebar {
-        display:
-          none;
-      }
-
-      .topbar {
-
-        height:
-          58px;
-
-        padding:
-          0 15px;
-      }
-
-      .workspace-inner {
-
-        width:
-          calc(100% - 28px);
-      }
-
-      .signal-area {
-
-        padding:
-          30px 0 20px;
-      }
-
-      .signal-text {
-
-        font-size:
-          clamp(29px, 8vw, 43px);
-
-        letter-spacing:
-          -1.8px;
-      }
-
-      .chat-scroll {
-
-        padding-bottom:
-          12px;
-      }
-
-      .message-inner {
-
-        max-width:
-          94%;
-      }
-
-      .suggestions {
-
-        overflow-x:
-          auto;
-
-        flex-wrap:
-          nowrap;
-
-        scrollbar-width:
-          none;
-      }
-
-      .suggestions::-webkit-scrollbar {
-        display:
-          none;
-      }
-
-      .suggestion {
-        white-space:
-          nowrap;
-      }
-
-      .composer-wrap {
-        padding-bottom:
-          13px;
-      }
-
-      .theme-menu {
-        right:
-          -4px;
-      }
-    }
-
-
-    @media (max-width: 480px) {
-
-      .topbar-label {
-        font-size:
-          10px;
-      }
-
-      .theme-button {
-        font-size:
-          0;
-      }
-
-      .theme-button span {
-        font-size:
-          15px;
-      }
-
-      .signal-text {
-
-        font-size:
-          30px;
-
-        line-height:
-          1.03;
-      }
-
-      .bubble {
-
-        font-size:
-          13px;
-      }
-
-      .textarea {
-
-        min-height:
-          62px;
-      }
-    }
-
-  </style>
+</style>
 </head>
 
 
@@ -1768,24 +1367,21 @@
 <div class="app">
 
 
-  <!-- =======================================================
-       SIDEBAR
-  ======================================================== -->
+  <!-- SIDEBAR -->
 
   <aside class="sidebar">
 
-
     <div class="brand">
 
-      <div class="brand-mark"></div>
+      <div class="mark"></div>
 
       <div>
 
-        <div class="brand-name">
+        <div class="brandName">
           ACI
         </div>
 
-        <div class="brand-sub">
+        <div class="brandSub">
           Intelligence
         </div>
 
@@ -1795,8 +1391,8 @@
 
 
     <button
-      class="new-chat"
-      id="newChatButton"
+      class="newChat"
+      id="newChat"
       type="button"
     >
       + New chat
@@ -1805,38 +1401,34 @@
 
     <div class="history">
 
-      <div class="history-label">
+      <div class="historyLabel">
         Today
       </div>
 
-      <div
-        class="history-list"
-        id="historyList"
-      >
-        <div class="history-empty">
+      <div id="historyList">
+
+        <div class="empty">
           No conversations yet.
         </div>
+
       </div>
 
     </div>
 
 
-    <div class="sidebar-footer">
+    <div class="status">
 
-      <span class="status-dot"></span>
+      <span class="dot"></span>
 
       ACI systems operational
 
     </div>
 
-
   </aside>
 
 
 
-  <!-- =======================================================
-       MAIN
-  ======================================================== -->
+  <!-- MAIN -->
 
   <main class="main">
 
@@ -1845,48 +1437,39 @@
 
     <header class="topbar">
 
-
-      <div class="topbar-left">
-
-        <div class="topbar-label">
-          Enterprise AI workspace
-        </div>
-
+      <div class="topLabel">
+        Enterprise AI workspace
       </div>
 
 
-      <!-- THEME CONTROL -->
+      <!-- APPEARANCE -->
 
-      <div class="theme-wrapper">
-
+      <div class="themeWrap">
 
         <button
-          class="theme-button"
-          id="themeButton"
+          class="themeBtn"
+          id="themeBtn"
           type="button"
         >
-          <span>◐</span>
-          <span>Appearance</span>
+          ◐ Appearance
         </button>
 
 
         <div
-          class="theme-menu"
+          class="themeMenu"
           id="themeMenu"
         >
 
-
-          <div class="menu-title">
+          <div class="menuTitle">
             Appearance
           </div>
 
 
-          <div class="theme-options">
-
+          <div class="themeChoices">
 
             <button
-              class="theme-option"
-              data-theme-choice="dark"
+              class="themeChoice"
+              data-theme="dark"
               type="button"
             >
               🌑 Dark
@@ -1894,75 +1477,71 @@
 
 
             <button
-              class="theme-option"
-              data-theme-choice="light"
+              class="themeChoice"
+              data-theme="light"
               type="button"
             >
               ☀️ Light
             </button>
 
-
           </div>
 
 
-          <div class="menu-title">
+          <div class="menuTitle">
             Accent
           </div>
 
 
-          <div class="accent-options">
-
+          <div class="accents">
 
             <button
-              class="accent-dot accent-neutral"
-              data-accent-choice="neutral"
+              class="accent neutral"
+              data-accent="neutral"
+              type="button"
               title="Neutral"
-              type="button"
             ></button>
 
 
             <button
-              class="accent-dot accent-blue"
-              data-accent-choice="blue"
+              class="accent blue"
+              data-accent="blue"
+              type="button"
               title="Blue"
-              type="button"
             ></button>
 
 
             <button
-              class="accent-dot accent-violet"
-              data-accent-choice="violet"
+              class="accent violet"
+              data-accent="violet"
+              type="button"
               title="Violet"
-              type="button"
             ></button>
 
 
             <button
-              class="accent-dot accent-green"
-              data-accent-choice="green"
+              class="accent green"
+              data-accent="green"
+              type="button"
               title="Green"
-              type="button"
             ></button>
 
 
             <button
-              class="accent-dot accent-orange"
-              data-accent-choice="orange"
+              class="accent orange"
+              data-accent="orange"
+              type="button"
               title="Orange"
-              type="button"
             ></button>
 
 
             <button
-              class="accent-dot accent-pink"
-              data-accent-choice="pink"
-              title="Pink"
+              class="accent pink"
+              data-accent="pink"
               type="button"
+              title="Pink"
             ></button>
-
 
           </div>
-
 
         </div>
 
@@ -1972,29 +1551,24 @@
 
 
 
-    <!-- =====================================================
-         WORKSPACE
-    ====================================================== -->
+    <!-- WORKSPACE -->
 
     <section class="workspace">
 
+      <div class="workspaceInner">
 
-      <div class="workspace-inner">
 
+        <!-- SIGNAL -->
 
-        <!-- =================================================
-             SIGNAL
-        ================================================== -->
+        <section class="signal">
 
-        <section class="signal-area">
-
-          <div class="signal-kicker">
+          <div class="kicker">
             AI / Technology signal
           </div>
 
 
           <h1
-            class="signal-text"
+            class="signalText"
             id="signalText"
           >
             AI is becoming infrastructure, not just software.
@@ -2002,7 +1576,7 @@
 
 
           <div
-            class="signal-meta"
+            class="signalMeta"
             id="signalMeta"
           >
             Fresh intelligence signal
@@ -2012,18 +1586,12 @@
 
 
 
-        <!-- =================================================
-             CHAT SCROLL
-             
-             THIS CONTAINER SCROLLS.
-             THE COMPOSER DOES NOT.
-        ================================================== -->
+        <!-- CHAT -->
 
         <section
-          class="chat-scroll"
+          class="chatScroll"
           id="chatScroll"
         >
-
 
           <div
             class="messages"
@@ -2037,20 +1605,17 @@
           >
 
             <div
-              class="trace-grid"
+              class="traceGrid"
               id="traceGrid"
             ></div>
 
           </div>
 
-
         </section>
 
 
 
-        <!-- =================================================
-             SUGGESTIONS
-        ================================================== -->
+        <!-- SUGGESTIONS -->
 
         <div
           class="suggestions"
@@ -2059,14 +1624,10 @@
 
 
 
-        <!-- =================================================
-             COMPOSER
-        ================================================== -->
+        <!-- COMPOSER -->
 
-        <div class="composer-wrap">
+        <div class="composerWrap">
 
-
-          <!-- ATTACHMENT -->
 
           <div
             class="attachment"
@@ -2076,15 +1637,14 @@
             <span>📎</span>
 
             <span
-              class="attachment-name"
-              id="attachmentName"
+              class="fileName"
+              id="fileName"
             ></span>
 
             <button
-              class="remove-file"
+              class="remove"
               id="removeFile"
               type="button"
-              aria-label="Remove attachment"
             >
               ×
             </button>
@@ -2092,63 +1652,45 @@
           </div>
 
 
-
-          <!-- COMPOSER -->
-
           <div class="composer">
 
-
             <textarea
-              class="textarea"
               id="prompt"
               rows="1"
               placeholder="Ask ACI anything..."
-              autocomplete="off"
             ></textarea>
 
 
-            <div class="composer-bottom">
+            <div class="composerBottom">
 
-
-              <div class="composer-left">
-
-                <button
-                  class="icon-button"
-                  id="attachButton"
-                  type="button"
-                  title="Attach a file"
-                  aria-label="Attach a file"
-                >
-                  +
-                </button>
-
-              </div>
+              <button
+                class="icon"
+                id="attach"
+                type="button"
+                title="Attach file"
+              >
+                +
+              </button>
 
 
               <button
-                class="send-button"
-                id="sendButton"
+                class="send"
+                id="send"
                 type="button"
-                title="Send"
-                aria-label="Send"
               >
                 ↑
               </button>
 
-
             </div>
-
 
           </div>
 
 
-          <div class="composer-note">
+          <div class="note">
             ACI automatically selects the appropriate approved AI model.
           </div>
 
-
         </div>
-
 
       </div>
 
@@ -2158,9 +1700,6 @@
 
 </div>
 
-
-
-<!-- FILE INPUT -->
 
 <input
   id="fileInput"
@@ -2176,88 +1715,76 @@
    ELEMENTS
 ============================================================ */
 
+const $ = id =>
+  document.getElementById(id);
+
+
 const body =
   document.body;
 
-const promptInput =
-  document.getElementById("prompt");
+const prompt =
+  $("prompt");
 
-const sendButton =
-  document.getElementById("sendButton");
-
-const attachButton =
-  document.getElementById("attachButton");
-
-const fileInput =
-  document.getElementById("fileInput");
-
-const attachment =
-  document.getElementById("attachment");
-
-const attachmentName =
-  document.getElementById("attachmentName");
-
-const removeFile =
-  document.getElementById("removeFile");
+const send =
+  $("send");
 
 const messages =
-  document.getElementById("messages");
+  $("messages");
 
 const chatScroll =
-  document.getElementById("chatScroll");
+  $("chatScroll");
 
 const suggestions =
-  document.getElementById("suggestions");
+  $("suggestions");
 
-const signalText =
-  document.getElementById("signalText");
+const attachment =
+  $("attachment");
 
-const signalMeta =
-  document.getElementById("signalMeta");
+const fileName =
+  $("fileName");
+
+const fileInput =
+  $("fileInput");
 
 const trace =
-  document.getElementById("trace");
+  $("trace");
 
 const traceGrid =
-  document.getElementById("traceGrid");
+  $("traceGrid");
 
 const historyList =
-  document.getElementById("historyList");
+  $("historyList");
 
-const newChatButton =
-  document.getElementById("newChatButton");
+const signalText =
+  $("signalText");
 
-const themeButton =
-  document.getElementById("themeButton");
-
-const themeMenu =
-  document.getElementById("themeMenu");
+const signalMeta =
+  $("signalMeta");
 
 
-/* ============================================================
-   STATE
-============================================================ */
+let selectedFile =
+  null;
 
-let selectedFile = null;
-
-let conversation = [];
-
-let isSending = false;
+let isSending =
+  false;
 
 
 /* ============================================================
    THEME
 ============================================================ */
 
-function applyTheme() {
+function applyTheme(){
 
   const theme =
-    localStorage.getItem("aci_theme") ||
-    "dark";
+    localStorage.getItem(
+      "aci_theme"
+    ) || "dark";
+
 
   const accent =
-    localStorage.getItem("aci_accent") ||
-    "neutral";
+    localStorage.getItem(
+      "aci_accent"
+    ) || "neutral";
 
 
   body.dataset.theme =
@@ -2268,24 +1795,28 @@ function applyTheme() {
 
 
   document
-    .querySelectorAll("[data-theme-choice]")
+    .querySelectorAll(
+      "[data-theme]"
+    )
     .forEach(button => {
 
       button.classList.toggle(
         "active",
-        button.dataset.themeChoice === theme
+        button.dataset.theme === theme
       );
 
     });
 
 
   document
-    .querySelectorAll("[data-accent-choice]")
+    .querySelectorAll(
+      "[data-accent]"
+    )
     .forEach(button => {
 
       button.classList.toggle(
         "active",
-        button.dataset.accentChoice === accent
+        button.dataset.accent === accent
       );
 
     });
@@ -2293,63 +1824,15 @@ function applyTheme() {
 }
 
 
-document
-  .querySelectorAll("[data-theme-choice]")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const theme =
-          button.dataset.themeChoice;
-
-        localStorage.setItem(
-          "aci_theme",
-          theme
-        );
-
-        applyTheme();
-
-      }
-    );
-
-  });
-
-
-document
-  .querySelectorAll("[data-accent-choice]")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        const accent =
-          button.dataset.accentChoice;
-
-        localStorage.setItem(
-          "aci_accent",
-          accent
-        );
-
-        applyTheme();
-
-      }
-    );
-
-  });
-
-
-themeButton.addEventListener(
+$("themeBtn").addEventListener(
   "click",
   event => {
 
     event.stopPropagation();
 
-    themeMenu.classList.toggle(
-      "open"
-    );
+    $("themeMenu")
+      .classList
+      .toggle("open");
 
   }
 );
@@ -2359,12 +1842,19 @@ document.addEventListener(
   "click",
   event => {
 
-    if (
-      !themeMenu.contains(event.target) &&
-      !themeButton.contains(event.target)
-    ) {
+    const menu =
+      $("themeMenu");
 
-      themeMenu.classList.remove(
+    const button =
+      $("themeBtn");
+
+
+    if (
+      !menu.contains(event.target) &&
+      !button.contains(event.target)
+    ){
+
+      menu.classList.remove(
         "open"
       );
 
@@ -2372,6 +1862,52 @@ document.addEventListener(
 
   }
 );
+
+
+document
+  .querySelectorAll(
+    "[data-theme]"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        localStorage.setItem(
+          "aci_theme",
+          button.dataset.theme
+        );
+
+        applyTheme();
+
+      }
+    );
+
+  });
+
+
+document
+  .querySelectorAll(
+    "[data-accent]"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        localStorage.setItem(
+          "aci_accent",
+          button.dataset.accent
+        );
+
+        applyTheme();
+
+      }
+    );
+
+  });
 
 
 applyTheme();
@@ -2405,39 +1941,41 @@ const suggestionLibrary = [
 
   "Turn this into an executive summary.",
 
-  "Create a professional response.",
-
-  "Review this proposal.",
-
-  "Analyze this financial scenario.",
-
-  "Prepare meeting action items.",
-
-  "Help me solve this problem."
+  "Review this proposal."
 
 ];
 
 
-function renderSuggestions() {
+function renderSuggestions(){
 
-  suggestions.innerHTML = "";
+  suggestions.innerHTML =
+    "";
 
-  const shuffled =
+
+  const selected =
     [...suggestionLibrary]
-      .sort(() => Math.random() - .5)
-      .slice(0, 5);
+      .sort(
+        () =>
+          Math.random() - 0.5
+      )
+      .slice(0,5);
 
 
-  shuffled.forEach(text => {
+  selected.forEach(text => {
 
     const button =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
+
 
     button.type =
       "button";
 
+
     button.className =
       "suggestion";
+
 
     button.textContent =
       text;
@@ -2447,12 +1985,12 @@ function renderSuggestions() {
       "click",
       () => {
 
-        promptInput.value =
+        prompt.value =
           text;
 
-        autoResize();
+        resizePrompt();
 
-        promptInput.focus();
+        prompt.focus();
 
       }
     );
@@ -2468,15 +2006,15 @@ function renderSuggestions() {
 
 
 /* ============================================================
-   10-WORD AI SIGNAL
+   AI SIGNAL
 ============================================================ */
 
-function limitToTenWords(text) {
+function tenWords(text){
 
-  if (!text) {
+  if (!text){
 
-    return:
-      "AI is becoming infrastructure, not just software.";
+    return "AI is becoming infrastructure, not just software.";
+
   }
 
 
@@ -2484,7 +2022,7 @@ function limitToTenWords(text) {
     text
       .trim()
       .split(/\s+/)
-      .slice(0, 10);
+      .slice(0,10);
 
 
   let result =
@@ -2493,7 +2031,7 @@ function limitToTenWords(text) {
 
   if (
     !/[.!?]$/.test(result)
-  ) {
+  ){
 
     result += ".";
 
@@ -2505,25 +2043,21 @@ function limitToTenWords(text) {
 }
 
 
-async function loadInsight() {
+async function loadInsight(){
 
-  signalText.style.opacity =
-    ".4";
-
-
-  try {
+  try{
 
     const response =
       await fetch(
         "/api/insight",
         {
-          method: "GET",
-          cache: "no-store"
+          cache:
+            "no-store"
         }
       );
 
 
-    if (!response.ok) {
+    if (!response.ok){
 
       throw new Error(
         "Insight unavailable"
@@ -2537,7 +2071,7 @@ async function loadInsight() {
 
 
     signalText.textContent =
-      limitToTenWords(
+      tenWords(
         data.text ||
         data.insight ||
         data.headline
@@ -2546,67 +2080,51 @@ async function loadInsight() {
 
     signalMeta.textContent =
       "Fresh intelligence signal · " +
-      new Date().toLocaleTimeString(
-        [],
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      );
+      new Date()
+        .toLocaleTimeString(
+          [],
+          {
+            hour:
+              "2-digit",
+
+            minute:
+              "2-digit"
+          }
+        );
 
 
-  } catch {
+  }catch{
 
-    const fallbackSignals = [
+    const fallback = [
 
       "AI is becoming infrastructure, not just software.",
 
-      "Cheap intelligence is changing business operations.",
+      "Model choice is becoming an economic decision.",
 
       "AI agents are moving deeper into workflows.",
 
-      "Model choice is becoming an economic decision.",
-
-      "Enterprise AI is moving from pilots to production.",
-
-      "AI infrastructure is becoming a strategic advantage.",
-
       "The next AI advantage may come from routing.",
 
-      "More AI usage means more economics to manage.",
-
-      "AI capability is becoming increasingly commoditized.",
-
-      "The valuable layer may sit above the models."
+      "Enterprise AI is moving from pilots to production."
 
     ];
 
 
-    const random =
-      fallbackSignals[
-        Math.floor(
-          Math.random() *
-          fallbackSignals.length
-        )
-      ];
-
-
     signalText.textContent =
-      limitToTenWords(random);
+      tenWords(
+        fallback[
+          Math.floor(
+            Math.random() *
+            fallback.length
+          )
+        ]
+      );
 
 
     signalMeta.textContent =
       "ACI intelligence signal";
 
   }
-
-
-  setTimeout(() => {
-
-    signalText.style.opacity =
-      "1";
-
-  }, 100);
 
 }
 
@@ -2615,43 +2133,39 @@ async function loadInsight() {
    TEXTAREA
 ============================================================ */
 
-function autoResize() {
+function resizePrompt(){
 
-  promptInput.style.height =
+  prompt.style.height =
     "auto";
 
 
-  promptInput.style.height =
+  prompt.style.height =
     Math.min(
-      promptInput.scrollHeight,
+      prompt.scrollHeight,
       190
     ) + "px";
 
 }
 
 
-promptInput.addEventListener(
+prompt.addEventListener(
   "input",
-  autoResize
+  resizePrompt
 );
 
 
-promptInput.addEventListener(
+prompt.addEventListener(
   "keydown",
   event => {
 
     if (
       event.key === "Enter" &&
       !event.shiftKey
-    ) {
+    ){
 
       event.preventDefault();
 
-      if (!isSending) {
-
-        sendPrompt();
-
-      }
+      sendPrompt();
 
     }
 
@@ -2660,10 +2174,10 @@ promptInput.addEventListener(
 
 
 /* ============================================================
-   FILE
+   FILE ATTACHMENT
 ============================================================ */
 
-attachButton.addEventListener(
+$("attach").addEventListener(
   "click",
   () => {
 
@@ -2677,99 +2191,62 @@ fileInput.addEventListener(
   "change",
   () => {
 
-    const file =
-      fileInput.files?.[0];
+    selectedFile =
+      fileInput.files?.[0] ||
+      null;
 
 
-    if (!file) {
+    if (!selectedFile){
+
       return;
+
     }
 
 
-    selectedFile =
-      file;
-
-
-    attachmentName.textContent =
-      file.name;
+    fileName.textContent =
+      selectedFile.name;
 
 
     attachment.classList.add(
-      "visible"
+      "show"
     );
 
   }
 );
 
 
-removeFile.addEventListener(
+$("removeFile").addEventListener(
   "click",
-  () => {
-
-    selectedFile =
-      null;
-
-    fileInput.value =
-      "";
-
-    attachment.classList.remove(
-      "visible"
-    );
-
-    attachmentName.textContent =
-      "";
-
-  }
+  clearFile
 );
 
 
-/* ============================================================
-   FILE READING
-============================================================ */
+function clearFile(){
 
-function readFileAsText(file) {
+  selectedFile =
+    null;
 
-  return new Promise(
-    (resolve, reject) => {
+  fileInput.value =
+    "";
 
-      const reader =
-        new FileReader();
+  fileName.textContent =
+    "";
 
-
-      reader.onload =
-        () => {
-
-          resolve(
-            reader.result
-          );
-
-        };
-
-
-      reader.onerror =
-        () => {
-
-          reject(
-            new Error(
-              "Could not read the file."
-            )
-          );
-
-        };
-
-
-      reader.readAsText(file);
-
-    }
+  attachment.classList.remove(
+    "show"
   );
 
 }
 
 
-function readFileAsBase64(file) {
+/* ============================================================
+   FILE PROCESSING
+============================================================ */
+
+function readBase64(file){
 
   return new Promise(
-    (resolve, reject) => {
+    (resolve,reject) => {
 
       const reader =
         new FileReader();
@@ -2779,7 +2256,9 @@ function readFileAsBase64(file) {
         () => {
 
           const result =
-            reader.result || "";
+            String(
+              reader.result || ""
+            );
 
 
           const comma =
@@ -2809,7 +2288,9 @@ function readFileAsBase64(file) {
         };
 
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(
+        file
+      );
 
     }
   );
@@ -2817,27 +2298,67 @@ function readFileAsBase64(file) {
 }
 
 
-/* ============================================================
-   PREPARE FILE
-============================================================ */
+function readText(file){
 
-async function prepareFileForAI(file) {
+  return new Promise(
+    (resolve,reject) => {
 
-  if (!file) {
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        () => {
+
+          resolve(
+            String(
+              reader.result || ""
+            )
+          );
+
+        };
+
+
+      reader.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "Could not read the file."
+            )
+          );
+
+        };
+
+
+      reader.readAsText(
+        file
+      );
+
+    }
+  );
+
+}
+
+
+async function prepareFile(file){
+
+  if (!file){
 
     return null;
 
   }
 
 
-  const MAX_FILE_SIZE =
-    2.8 * 1024 * 1024;
-
+  /*
+    Conservative browser → Vercel
+    JSON payload limit.
+  */
 
   if (
     file.size >
-    MAX_FILE_SIZE
-  ) {
+    2.8 * 1024 * 1024
+  ){
 
     throw new Error(
       "For now, attachments must be smaller than 2.8 MB."
@@ -2853,16 +2374,11 @@ async function prepareFileForAI(file) {
   if (
     file.type ===
       "application/pdf" ||
+
     file.name
       .toLowerCase()
       .endsWith(".pdf")
-  ) {
-
-    const base64 =
-      await readFileAsBase64(
-        file
-      );
-
+  ){
 
     return {
 
@@ -2872,7 +2388,10 @@ async function prepareFileForAI(file) {
       mimeType:
         "application/pdf",
 
-      base64
+      base64:
+        await readBase64(
+          file
+        )
 
     };
 
@@ -2888,13 +2407,7 @@ async function prepareFileForAI(file) {
     file.type.startsWith(
       "image/"
     )
-  ) {
-
-    const base64 =
-      await readFileAsBase64(
-        file
-      );
-
+  ){
 
     return {
 
@@ -2904,7 +2417,10 @@ async function prepareFileForAI(file) {
       mimeType:
         file.type,
 
-      base64
+      base64:
+        await readBase64(
+          file
+        )
 
     };
 
@@ -2914,12 +2430,6 @@ async function prepareFileForAI(file) {
   /*
     TEXT / CODE
   */
-
-  const text =
-    await readFileAsText(
-      file
-    );
-
 
   return {
 
@@ -2931,7 +2441,9 @@ async function prepareFileForAI(file) {
       "text/plain",
 
     extractedText:
-      text
+      await readText(
+        file
+      )
 
   };
 
@@ -2939,28 +2451,35 @@ async function prepareFileForAI(file) {
 
 
 /* ============================================================
-   BASIC SAFE MARKDOWN
+   SAFE MARKDOWN
 ============================================================ */
 
-function escapeHTML(value) {
+function escapeHtml(value){
 
-  return value
+  return String(
+    value || ""
+  )
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -2969,17 +2488,13 @@ function escapeHTML(value) {
 }
 
 
-function renderMarkdown(text) {
+function renderMarkdown(text){
 
   let html =
-    escapeHTML(
-      String(text || "")
+    escapeHtml(
+      text
     );
 
-
-  /*
-    Bold
-  */
 
   html =
     html.replace(
@@ -2988,21 +2503,6 @@ function renderMarkdown(text) {
     );
 
 
-  /*
-    Italic
-  */
-
-  html =
-    html.replace(
-      /\*(.*?)\*/g,
-      "<em>$1</em>"
-    );
-
-
-  /*
-    Inline code
-  */
-
   html =
     html.replace(
       /`([^`]+)`/g,
@@ -3010,15 +2510,11 @@ function renderMarkdown(text) {
     );
 
 
-  /*
-    Bullet points
-  */
-
   const lines =
     html.split("\n");
 
 
-  let result =
+  let output =
     "";
 
   let inList =
@@ -3027,15 +2523,17 @@ function renderMarkdown(text) {
 
   for (
     const line of lines
-  ) {
+  ){
 
     if (
-      /^\s*[-•]\s+/.test(line)
-    ) {
+      /^\s*[-•]\s+/.test(
+        line
+      )
+    ){
 
-      if (!inList) {
+      if (!inList){
 
-        result +=
+        output +=
           "<ul>";
 
         inList =
@@ -3044,20 +2542,19 @@ function renderMarkdown(text) {
       }
 
 
-      result +=
+      output +=
         "<li>" +
-        line
-          .replace(
-            /^\s*[-•]\s+/,
-            ""
-          ) +
+        line.replace(
+          /^\s*[-•]\s+/,
+          ""
+        ) +
         "</li>";
 
-    } else {
+    }else{
 
-      if (inList) {
+      if (inList){
 
-        result +=
+        output +=
           "</ul>";
 
         inList =
@@ -3066,11 +2563,9 @@ function renderMarkdown(text) {
       }
 
 
-      if (
-        line.trim()
-      ) {
+      if (line.trim()){
 
-        result +=
+        output +=
           "<p>" +
           line +
           "</p>";
@@ -3082,35 +2577,35 @@ function renderMarkdown(text) {
   }
 
 
-  if (inList) {
+  if (inList){
 
-    result +=
+    output +=
       "</ul>";
 
   }
 
 
-  return result;
+  return output;
 
 }
 
 
 /* ============================================================
-   ADD MESSAGE
+   MESSAGE
 ============================================================ */
 
 function addMessage(
   role,
-  content
-) {
+  text
+){
 
-  const wrapper =
+  const message =
     document.createElement(
       "div"
     );
 
 
-  wrapper.className =
+  message.className =
     "message " +
     role;
 
@@ -3122,7 +2617,7 @@ function addMessage(
 
 
   inner.className =
-    "message-inner";
+    "messageInner";
 
 
   const label =
@@ -3132,7 +2627,7 @@ function addMessage(
 
 
   label.className =
-    "message-label";
+    "label";
 
 
   label.textContent =
@@ -3153,7 +2648,7 @@ function addMessage(
 
   if (
     role === "ai"
-  ) {
+  ){
 
     const markdown =
       document.createElement(
@@ -3167,7 +2662,7 @@ function addMessage(
 
     markdown.innerHTML =
       renderMarkdown(
-        content
+        text
       );
 
 
@@ -3175,36 +2670,31 @@ function addMessage(
       markdown
     );
 
-  } else {
+  }else{
 
     bubble.textContent =
-      content;
+      text;
 
   }
 
 
-  inner.appendChild(
-    label
-  );
-
-  inner.appendChild(
+  inner.append(
+    label,
     bubble
   );
 
-  wrapper.appendChild(
+
+  message.appendChild(
     inner
   );
 
 
   messages.appendChild(
-    wrapper
+    message
   );
 
 
-  scrollToBottom();
-
-
-  return bubble;
+  scrollBottom();
 
 }
 
@@ -3213,15 +2703,15 @@ function addMessage(
    TYPING
 ============================================================ */
 
-function addTypingMessage() {
+function addTyping(){
 
-  const wrapper =
+  const message =
     document.createElement(
       "div"
     );
 
 
-  wrapper.className =
+  message.className =
     "message ai";
 
 
@@ -3232,7 +2722,7 @@ function addTypingMessage() {
 
 
   inner.className =
-    "message-inner";
+    "messageInner";
 
 
   const label =
@@ -3242,7 +2732,7 @@ function addTypingMessage() {
 
 
   label.className =
-    "message-label";
+    "label";
 
 
   label.textContent =
@@ -3259,52 +2749,36 @@ function addTypingMessage() {
     "bubble";
 
 
-  const typing =
-    document.createElement(
-      "div"
-    );
-
-
-  typing.className =
-    "typing";
-
-
-  typing.innerHTML =
+  bubble.innerHTML =
     `
-      <span></span>
-      <span></span>
-      <span></span>
+      <div class="typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     `;
 
 
-  bubble.appendChild(
-    typing
-  );
-
-
-  inner.appendChild(
-    label
-  );
-
-  inner.appendChild(
+  inner.append(
+    label,
     bubble
   );
 
 
-  wrapper.appendChild(
+  message.appendChild(
     inner
   );
 
 
   messages.appendChild(
-    wrapper
+    message
   );
 
 
-  scrollToBottom();
+  scrollBottom();
 
 
-  return wrapper;
+  return message;
 
 }
 
@@ -3313,15 +2787,15 @@ function addTypingMessage() {
    ERROR
 ============================================================ */
 
-function addError(message) {
+function addError(text){
 
-  const wrapper =
+  const message =
     document.createElement(
       "div"
     );
 
 
-  wrapper.className =
+  message.className =
     "message ai";
 
 
@@ -3332,7 +2806,7 @@ function addError(message) {
 
 
   inner.className =
-    "message-inner";
+    "messageInner";
 
 
   const bubble =
@@ -3342,11 +2816,11 @@ function addError(message) {
 
 
   bubble.className =
-    "bubble error-message";
+    "bubble error";
 
 
   bubble.textContent =
-    message;
+    text;
 
 
   inner.appendChild(
@@ -3354,17 +2828,17 @@ function addError(message) {
   );
 
 
-  wrapper.appendChild(
+  message.appendChild(
     inner
   );
 
 
   messages.appendChild(
-    wrapper
+    message
   );
 
 
-  scrollToBottom();
+  scrollBottom();
 
 }
 
@@ -3373,16 +2847,16 @@ function addError(message) {
    TRACE
 ============================================================ */
 
-function renderTrace(data) {
+function renderTrace(data){
 
   traceGrid.innerHTML =
     "";
 
 
-  if (!data) {
+  if (!data){
 
     trace.classList.remove(
-      "visible"
+      "show"
     );
 
     return;
@@ -3390,7 +2864,7 @@ function renderTrace(data) {
   }
 
 
-  const items = [
+  const values = [
 
     [
       "Task",
@@ -3399,7 +2873,9 @@ function renderTrace(data) {
 
     [
       "Complexity",
-      data.complexity + "/5"
+      data.complexity != null
+        ? data.complexity + "/5"
+        : "-"
     ],
 
     [
@@ -3409,7 +2885,9 @@ function renderTrace(data) {
 
     [
       "Quality",
-      data.requiredQuality + "%"
+      data.requiredQuality != null
+        ? data.requiredQuality + "%"
+        : "-"
     ],
 
     [
@@ -3434,7 +2912,9 @@ function renderTrace(data) {
 
     [
       "Latency",
-      data.latencyMs + "ms"
+      data.latencyMs != null
+        ? data.latencyMs + "ms"
+        : "-"
     ],
 
     [
@@ -3452,13 +2932,13 @@ function renderTrace(data) {
   ];
 
 
-  items.forEach(
-    ([label, value]) => {
+  values.forEach(
+    ([key,value]) => {
 
       if (
         value === undefined ||
         value === null
-      ) {
+      ){
 
         return;
 
@@ -3472,17 +2952,17 @@ function renderTrace(data) {
 
 
       pill.className =
-        "trace-pill";
+        "pill";
 
 
-      const strong =
+      const bold =
         document.createElement(
-          "strong"
+          "b"
         );
 
 
-      strong.textContent =
-        label + ": ";
+      bold.textContent =
+        key + ": ";
 
 
       const span =
@@ -3495,12 +2975,8 @@ function renderTrace(data) {
         String(value);
 
 
-      pill.appendChild(
-        strong
-      );
-
-
-      pill.appendChild(
+      pill.append(
+        bold,
         span
       );
 
@@ -3514,493 +2990,11 @@ function renderTrace(data) {
 
 
   trace.classList.add(
-    "visible"
+    "show"
   );
 
 
-  scrollToBottom();
-
-}
-
-
-/* ============================================================
-   SEND
-============================================================ */
-
-async function sendPrompt() {
-
-  if (isSending) {
-    return;
-  }
-
-
-  const typedPrompt =
-    promptInput.value.trim();
-
-
-  const requestPrompt =
-    typedPrompt ||
-    (
-      selectedFile
-        ? "Analyze the attached file and provide the most useful summary or insights."
-        : ""
-    );
-
-
-  if (!requestPrompt) {
-
-    promptInput.focus();
-
-    return;
-
-  }
-
-
-  isSending =
-    true;
-
-  sendButton.disabled =
-    true;
-
-
-  suggestions.style.display =
-    "none";
-
-
-  let displayPrompt =
-    requestPrompt;
-
-
-  if (selectedFile) {
-
-    displayPrompt +=
-      "\n\n📎 " +
-      selectedFile.name;
-
-  }
-
-
-  addMessage(
-    "user",
-    displayPrompt
-  );
-
-
-  conversation.push({
-
-    role:
-      "user",
-
-    content:
-      requestPrompt
-
-  });
-
-
-  promptInput.value =
-    "";
-
-  autoResize();
-
-
-  let filePayload =
-    null;
-
-
-  try {
-
-    if (selectedFile) {
-
-      filePayload =
-        await prepareFileForAI(
-          selectedFile
-        );
-
-    }
-
-  } catch (error) {
-
-    addError(
-      error?.message ||
-      "Unable to process the attachment."
-    );
-
-
-    isSending =
-      false;
-
-    sendButton.disabled =
-      false;
-
-    return;
-
-  }
-
-
-  const typing =
-    addTypingMessage();
-
-
-  selectedFile =
-    null;
-
-  fileInput.value =
-    "";
-
-  attachment.classList.remove(
-    "visible"
-  );
-
-  attachmentName.textContent =
-    "";
-
-
-  trace.classList.remove(
-    "visible"
-  );
-
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/chat",
-        {
-
-          method:
-            "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json"
-
-          },
-
-          body:
-            JSON.stringify({
-
-              prompt:
-                requestPrompt,
-
-              file:
-                filePayload
-
-            })
-
-        }
-      );
-
-
-    const contentType =
-      response.headers.get(
-        "content-type"
-      ) || "";
-
-
-    let data;
-
-
-    if (
-      contentType.includes(
-        "application/json"
-      )
-    ) {
-
-      data =
-        await response.json();
-
-    } else {
-
-      await response.text();
-
-      throw new Error(
-        "ACI server returned an invalid response."
-      );
-
-    }
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data?.error ||
-        "AI request failed."
-      );
-
-    }
-
-
-    typing.remove();
-
-
-    const answer =
-      data?.answer ||
-      "ACI returned an empty response.";
-
-
-    addMessage(
-      "ai",
-      answer
-    );
-
-
-    conversation.push({
-
-      role:
-        "assistant",
-
-      content:
-        answer
-
-    });
-
-
-    renderTrace(
-      data?.trace
-    );
-
-
-    saveConversation(
-      requestPrompt
-    );
-
-
-  } catch (error) {
-
-    typing.remove();
-
-
-    addError(
-      error?.message ||
-      "Something went wrong while contacting ACI."
-    );
-
-  } finally {
-
-    isSending =
-      false;
-
-    sendButton.disabled =
-      false;
-
-    promptInput.focus();
-
-  }
-
-}
-
-
-/* ============================================================
-   SEND BUTTON
-============================================================ */
-
-sendButton.addEventListener(
-  "click",
-  sendPrompt
-);
-
-
-/* ============================================================
-   NEW CHAT
-============================================================ */
-
-function newChat() {
-
-  conversation =
-    [];
-
-  messages.innerHTML =
-    "";
-
-  trace.classList.remove(
-    "visible"
-  );
-
-  traceGrid.innerHTML =
-    "";
-
-  promptInput.value =
-    "";
-
-  autoResize();
-
-  suggestions.style.display =
-    "flex";
-
-  renderSuggestions();
-
-  loadInsight();
-
-  promptInput.focus();
-
-}
-
-
-newChatButton.addEventListener(
-  "click",
-  newChat
-);
-
-
-/* ============================================================
-   HISTORY
-============================================================ */
-
-function getHistory() {
-
-  try {
-
-    return JSON.parse(
-      localStorage.getItem(
-        "aci_history"
-      ) || "[]"
-    );
-
-  } catch {
-
-    return [];
-
-  }
-
-}
-
-
-function saveConversation(title) {
-
-  const cleanTitle =
-    title
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 65);
-
-
-  if (!cleanTitle) {
-    return;
-  }
-
-
-  let history =
-    getHistory();
-
-
-  if (
-    history.length &&
-    history[0].title === cleanTitle
-  ) {
-
-    return;
-
-  }
-
-
-  history.unshift({
-
-    title:
-      cleanTitle,
-
-    timestamp:
-      Date.now()
-
-  });
-
-
-  history =
-    history.slice(
-      0,
-      20
-    );
-
-
-  localStorage.setItem(
-    "aci_history",
-    JSON.stringify(history)
-  );
-
-
-  renderHistory();
-
-}
-
-
-function renderHistory() {
-
-  const history =
-    getHistory();
-
-
-  historyList.innerHTML =
-    "";
-
-
-  if (!history.length) {
-
-    const empty =
-      document.createElement(
-        "div"
-      );
-
-
-    empty.className =
-      "history-empty";
-
-
-    empty.textContent =
-      "No conversations yet.";
-
-
-    historyList.appendChild(
-      empty
-    );
-
-
-    return;
-
-  }
-
-
-  history.forEach(
-    item => {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "history-item";
-
-
-      button.textContent =
-        item.title;
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          promptInput.value =
-            item.title;
-
-          autoResize();
-
-          promptInput.focus();
-
-        }
-      );
-
-
-      historyList.appendChild(
-        button
-      );
-
-    }
-  );
+  scrollBottom();
 
 }
 
@@ -4009,7 +3003,7 @@ function renderHistory() {
    SCROLL
 ============================================================ */
 
-function scrollToBottom() {
+function scrollBottom(){
 
   requestAnimationFrame(
     () => {
@@ -4031,6 +3025,450 @@ function scrollToBottom() {
 
 
 /* ============================================================
+   HISTORY
+============================================================ */
+
+function renderHistory(){
+
+  historyList.innerHTML =
+    "";
+
+
+  let history =
+    [];
+
+
+  try{
+
+    history =
+      JSON.parse(
+        localStorage.getItem(
+          "aci_history"
+        ) || "[]"
+      );
+
+  }catch{
+
+    history =
+      [];
+
+  }
+
+
+  if (!history.length){
+
+    historyList.innerHTML =
+      `
+        <div class="empty">
+          No conversations yet.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  history.forEach(
+    item => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "historyItem";
+
+
+      button.textContent =
+        item.title;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          prompt.value =
+            item.title;
+
+          resizePrompt();
+
+          prompt.focus();
+
+        }
+      );
+
+
+      historyList.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+function saveHistory(title){
+
+  const clean =
+    title
+      .replace(
+        /\s+/g,
+        " "
+      )
+      .trim()
+      .slice(
+        0,
+        65
+      );
+
+
+  if (!clean){
+
+    return;
+
+  }
+
+
+  let history =
+    [];
+
+
+  try{
+
+    history =
+      JSON.parse(
+        localStorage.getItem(
+          "aci_history"
+        ) || "[]"
+      );
+
+  }catch{
+
+    history =
+      [];
+
+  }
+
+
+  if (
+    history[0]?.title ===
+    clean
+  ){
+
+    return;
+
+  }
+
+
+  history.unshift({
+
+    title:
+      clean,
+
+    time:
+      Date.now()
+
+  });
+
+
+  localStorage.setItem(
+    "aci_history",
+    JSON.stringify(
+      history.slice(
+        0,
+        20
+      )
+    )
+  );
+
+
+  renderHistory();
+
+}
+
+
+/* ============================================================
+   NEW CHAT
+============================================================ */
+
+function newChat(){
+
+  messages.innerHTML =
+    "";
+
+  trace.classList.remove(
+    "show"
+  );
+
+  traceGrid.innerHTML =
+    "";
+
+  prompt.value =
+    "";
+
+  clearFile();
+
+  suggestions.style.display =
+    "flex";
+
+  renderSuggestions();
+
+  loadInsight();
+
+  resizePrompt();
+
+  prompt.focus();
+
+}
+
+
+$("newChat").addEventListener(
+  "click",
+  newChat
+);
+
+
+/* ============================================================
+   SEND TO ACI
+============================================================ */
+
+async function sendPrompt(){
+
+  if (isSending){
+
+    return;
+
+  }
+
+
+  const typed =
+    prompt.value.trim();
+
+
+  const requestPrompt =
+    typed ||
+    (
+      selectedFile
+        ? "Analyze the attached file and provide the most useful summary or insights."
+        : ""
+    );
+
+
+  if (!requestPrompt){
+
+    prompt.focus();
+
+    return;
+
+  }
+
+
+  isSending =
+    true;
+
+  send.disabled =
+    true;
+
+
+  suggestions.style.display =
+    "none";
+
+
+  let displayPrompt =
+    requestPrompt;
+
+
+  if (selectedFile){
+
+    displayPrompt +=
+      "\n\n📎 " +
+      selectedFile.name;
+
+  }
+
+
+  addMessage(
+    "user",
+    displayPrompt
+  );
+
+
+  prompt.value =
+    "";
+
+  resizePrompt();
+
+
+  let payload =
+    null;
+
+
+  try{
+
+    payload =
+      await prepareFile(
+        selectedFile
+      );
+
+  }catch(error){
+
+    addError(
+      error.message
+    );
+
+    isSending =
+      false;
+
+    send.disabled =
+      false;
+
+    return;
+
+  }
+
+
+  const typing =
+    addTyping();
+
+
+  clearFile();
+
+
+  trace.classList.remove(
+    "show"
+  );
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+
+          method:
+            "POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+
+              prompt:
+                requestPrompt,
+
+              file:
+                payload
+
+            })
+
+        }
+      );
+
+
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
+
+
+    let data;
+
+
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ){
+
+      data =
+        await response.json();
+
+    }else{
+
+      await response.text();
+
+      throw new Error(
+        "ACI server returned a non-JSON response. Check the Vercel deployment."
+      );
+
+    }
+
+
+    if (!response.ok){
+
+      throw new Error(
+        data?.error ||
+        "AI request failed."
+      );
+
+    }
+
+
+    typing.remove();
+
+
+    addMessage(
+      "ai",
+      data.answer ||
+      "ACI returned an empty response."
+    );
+
+
+    renderTrace(
+      data.trace
+    );
+
+
+    saveHistory(
+      requestPrompt
+    );
+
+
+  }catch(error){
+
+    typing.remove();
+
+
+    addError(
+      error.message ||
+      "Something went wrong while contacting ACI."
+    );
+
+
+  }finally{
+
+    isSending =
+      false;
+
+    send.disabled =
+      false;
+
+    prompt.focus();
+
+  }
+
+}
+
+
+send.addEventListener(
+  "click",
+  sendPrompt
+);
+
+
+/* ============================================================
    INITIALIZE
 ============================================================ */
 
@@ -4040,14 +3478,10 @@ renderHistory();
 
 loadInsight();
 
-autoResize();
+resizePrompt();
 
-promptInput.focus();
+prompt.focus();
 
-
-/*
-  Refresh editorial signal every 10 minutes.
-*/
 
 setInterval(
   loadInsight,
