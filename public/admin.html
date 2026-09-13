@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>ACI · Economics</title>
+<title>ACI · Enterprise AI Economics</title>
 
 
 <style>
@@ -18,24 +18,21 @@
 :root {
 
   --bg: #07080b;
+  --panel: #0d1016;
+  --panel2: #10141b;
+  --panel3: #090b10;
 
-  --panel: #0d0f13;
+  --line: #202631;
+  --line2: #292f3a;
 
-  --panel2: #11141a;
+  --text: #f4f6f8;
+  --muted: #7e8796;
+  --muted2: #586170;
 
-  --line: #20242c;
-
-  --text: #f5f6f8;
-
-  --muted: #7e8694;
-
-  --green: #72e2a4;
-
-  --yellow: #e8c66b;
-
-  --red: #ef7070;
-
-  --blue: #9baeff;
+  --green: #6ee7a5;
+  --red: #ff6f75;
+  --yellow: #e7c76d;
+  --blue: #9db1ff;
 
 }
 
@@ -43,15 +40,24 @@
   box-sizing: border-box;
 }
 
+
+html,
 body {
 
   margin: 0;
 
+  min-height: 100%;
+
+}
+
+
+body {
+
   background:
     radial-gradient(
       circle at 70% -20%,
-      #171b26,
-      #090a0d 42%,
+      #171b25,
+      #090a0e 40%,
       #07080b 75%
     );
 
@@ -70,14 +76,14 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
 header {
 
   height:
-    70px;
+    68px;
 
   padding:
     0 30px;
@@ -95,12 +101,13 @@ header {
     1px solid rgba(255,255,255,.06);
 
   background:
-    rgba(7,8,11,.78);
+    rgba(7,8,11,.8);
 
   backdrop-filter:
     blur(20px);
 
 }
+
 
 .brand {
 
@@ -116,29 +123,38 @@ header {
   font-weight:
     800;
 
+  letter-spacing:
+    -.03em;
+
 }
+
 
 .mark {
 
   width:
-    25px;
+    27px;
 
   height:
-    25px;
+    27px;
 
   border-radius:
-    8px;
+    9px;
 
   background:
     linear-gradient(
       135deg,
-      white,
-      #666
+      #ffffff,
+      #70757d
     );
+
+  box-shadow:
+    0 0 25px
+    rgba(255,255,255,.12);
 
 }
 
-.date {
+
+.header-right {
 
   color:
     var(--muted);
@@ -149,9 +165,9 @@ header {
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGIN
-===================================================== */
+========================================================= */
 
 .login {
 
@@ -159,7 +175,7 @@ header {
     min(420px, 90%);
 
   margin:
-    120px auto;
+    130px auto;
 
   padding:
     30px;
@@ -175,12 +191,17 @@ header {
 
 }
 
+
 .login h2 {
 
   margin:
-    0 0 10px;
+    0 0 8px;
+
+  letter-spacing:
+    -.03em;
 
 }
+
 
 .login p {
 
@@ -190,35 +211,40 @@ header {
   font-size:
     13px;
 
+  line-height:
+    1.6;
+
 }
+
 
 .login input {
 
   width:
     100%;
 
-  margin:
-    15px 0;
-
   padding:
     13px;
+
+  margin:
+    14px 0;
 
   background:
     #080a0e;
 
+  color:
+    white;
+
   border:
-    1px solid #282d36;
+    1px solid var(--line2);
 
   border-radius:
     10px;
-
-  color:
-    white;
 
   outline:
     none;
 
 }
+
 
 .login button {
 
@@ -248,6 +274,7 @@ header {
 
 }
 
+
 .error {
 
   color:
@@ -256,25 +283,29 @@ header {
   font-size:
     12px;
 
+  margin-top:
+    12px;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    MAIN
-===================================================== */
+========================================================= */
 
 main {
 
   width:
-    min(1450px, 94%);
+    min(1480px, 94%);
 
   margin:
-    0 auto;
+    auto;
 
   padding:
-    38px 0 70px;
+    35px 0 70px;
 
 }
+
 
 .topline {
 
@@ -288,24 +319,29 @@ main {
     flex-end;
 
   margin-bottom:
-    27px;
+    20px;
 
 }
 
-.topline h1 {
+
+.title {
 
   margin:
     0;
 
   font-size:
-    30px;
+    31px;
 
   letter-spacing:
-    -.045em;
+    -.055em;
 
 }
 
-.topline p {
+
+.subtitle {
+
+  margin:
+    7px 0 0;
 
   color:
     var(--muted);
@@ -313,10 +349,8 @@ main {
   font-size:
     12px;
 
-  margin:
-    8px 0 0;
-
 }
+
 
 .actions {
 
@@ -328,22 +362,23 @@ main {
 
 }
 
-button.action {
+
+.action {
 
   background:
     #11141a;
 
   color:
-    #c6ccd5;
+    #c5cad3;
 
   border:
-    1px solid #282d36;
-
-  border-radius:
-    9px;
+    1px solid var(--line2);
 
   padding:
     10px 14px;
+
+  border-radius:
+    10px;
 
   cursor:
     pointer;
@@ -351,9 +386,65 @@ button.action {
 }
 
 
-/* =====================================================
+.action:hover {
+
+  border-color:
+    #505763;
+
+}
+
+
+/* =========================================================
+   CONNECTION
+========================================================= */
+
+.connection {
+
+  margin-bottom:
+    18px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  color:
+    var(--green);
+
+  font-size:
+    12px;
+
+}
+
+
+.dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--green);
+
+  box-shadow:
+    0 0 10px
+    rgba(110,231,165,.55);
+
+}
+
+
+/* =========================================================
    ECONOMICS HERO
-===================================================== */
+========================================================= */
 
 .hero-grid {
 
@@ -361,9 +452,7 @@ button.action {
     grid;
 
   grid-template-columns:
-    1.5fr
-    1fr
-    1fr;
+    1.5fr 1fr 1fr;
 
   gap:
     12px;
@@ -373,13 +462,14 @@ button.action {
 
 }
 
-.big-card {
+
+.hero-card {
 
   min-height:
-    190px;
+    175px;
 
   padding:
-    26px;
+    25px;
 
   background:
     linear-gradient(
@@ -389,44 +479,64 @@ button.action {
     );
 
   border:
-    1px solid #252a33;
+    1px solid var(--line);
 
   border-radius:
     20px;
 
 }
 
+
 .label {
 
   color:
-    #737c8b;
+    #778294;
 
   font-size:
     10px;
 
-  letter-spacing:
-    .14em;
-
   text-transform:
     uppercase;
 
+  letter-spacing:
+    .14em;
+
 }
 
-.big-number {
+
+.big-value {
 
   font-size:
-    clamp(38px, 5vw, 64px);
-
-  letter-spacing:
-    -.065em;
-
-  margin:
-    22px 0 10px;
+    clamp(38px, 5vw, 62px);
 
   font-weight:
-    750;
+    760;
+
+  letter-spacing:
+    -.07em;
+
+  margin-top:
+    20px;
 
 }
+
+
+.medium-value {
+
+  font-size:
+    31px;
+
+  font-weight:
+    720;
+
+  letter-spacing:
+    -.045em;
+
+  margin-top:
+    29px;
+
+}
+
 
 .green {
 
@@ -435,36 +545,27 @@ button.action {
 
 }
 
-.small-number {
-
-  font-size:
-    30px;
-
-  margin-top:
-    28px;
-
-  letter-spacing:
-    -.045em;
-
-}
 
 .meta {
-
-  color:
-    #59616f;
-
-  font-size:
-    11px;
 
   margin-top:
     8px;
 
+  color:
+    var(--muted2);
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
 }
 
 
-/* =====================================================
-   CARDS
-===================================================== */
+/* =========================================================
+   METRICS
+========================================================= */
 
 .metrics {
 
@@ -472,7 +573,7 @@ button.action {
     grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+    repeat(5, 1fr);
 
   gap:
     12px;
@@ -482,7 +583,11 @@ button.action {
 
 }
 
+
 .metric {
+
+  padding:
+    20px;
 
   background:
     var(--panel);
@@ -491,33 +596,31 @@ button.action {
     1px solid var(--line);
 
   border-radius:
-    16px;
-
-  padding:
-    20px;
+    17px;
 
 }
+
 
 .metric-value {
 
   margin-top:
-    13px;
+    12px;
 
   font-size:
-    24px;
+    25px;
 
   font-weight:
-    750;
+    740;
 
   letter-spacing:
-    -.035em;
+    -.04em;
 
 }
 
 
-/* =====================================================
-   GRID
-===================================================== */
+/* =========================================================
+   ANALYTICS
+========================================================= */
 
 .grid {
 
@@ -535,6 +638,7 @@ button.action {
 
 }
 
+
 .panel {
 
   background:
@@ -551,17 +655,30 @@ button.action {
 
 }
 
-.panel h2 {
+
+.panel-title {
 
   margin:
-    0 0 22px;
+    0 0 20px;
 
   font-size:
     15px;
 
+  letter-spacing:
+    -.025em;
+
 }
 
-.row {
+
+.analytics-row {
+
+  padding:
+    11px 0;
+
+}
+
+
+.analytics-top {
 
   display:
     flex;
@@ -572,46 +689,33 @@ button.action {
   align-items:
     center;
 
-  padding:
-    13px 0;
-
-  border-bottom:
-    1px solid #1b1f26;
+  color:
+    #9ca5b3;
 
   font-size:
     12px;
 
 }
 
-.row:last-child {
 
-  border-bottom:
-    none;
-
-}
-
-.row span:first-child {
+.analytics-top strong {
 
   color:
-    #8b94a2;
+    #dce1e7;
 
 }
 
 
-/* =====================================================
-   BARS
-===================================================== */
-
 .bar {
-
-  margin-top:
-    8px;
 
   height:
     5px;
 
+  margin-top:
+    8px;
+
   background:
-    #1c2028;
+    #1d222b;
 
   border-radius:
     20px;
@@ -621,13 +725,14 @@ button.action {
 
 }
 
-.fill {
+
+.bar-fill {
 
   height:
     100%;
 
   background:
-    #d9dde4;
+    #dce0e5;
 
   border-radius:
     20px;
@@ -635,9 +740,66 @@ button.action {
 }
 
 
-/* =====================================================
+/* =========================================================
+   ECONOMICS DETAIL
+========================================================= */
+
+.detail-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    12px;
+
+}
+
+
+.detail-row {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  padding:
+    13px 0;
+
+  border-bottom:
+    1px solid #1b2028;
+
+  font-size:
+    12px;
+
+}
+
+
+.detail-row:last-child {
+
+  border-bottom:
+    none;
+
+}
+
+
+.detail-row span {
+
+  color:
+    #828b99;
+
+}
+
+
+/* =========================================================
    TABLE
-===================================================== */
+========================================================= */
 
 .table-panel {
 
@@ -649,15 +811,48 @@ button.action {
 
 }
 
-.table-header {
+
+.table-heading {
 
   padding:
-    21px;
+    22px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
 
   border-bottom:
     1px solid var(--line);
 
 }
+
+
+.table-heading h2 {
+
+  margin:
+    0;
+
+  font-size:
+    15px;
+
+}
+
+
+.table-heading span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+}
+
 
 .table-wrap {
 
@@ -666,18 +861,20 @@ button.action {
 
 }
 
+
 table {
 
   width:
     100%;
 
   min-width:
-    1200px;
+    1250px;
 
   border-collapse:
     collapse;
 
 }
+
 
 th {
 
@@ -685,63 +882,63 @@ th {
     left;
 
   padding:
-    14px 18px;
+    14px 16px;
 
   background:
-    #0a0c10;
+    #090b0f;
 
   color:
-    #697280;
+    #697381;
 
   font-size:
     9px;
 
-  text-transform:
-    uppercase;
-
   letter-spacing:
     .12em;
 
+  text-transform:
+    uppercase;
+
 }
+
 
 td {
 
   padding:
-    15px 18px;
+    15px 16px;
 
   border-top:
-    1px solid #1b1f26;
+    1px solid #1a1f27;
 
   color:
-    #c9ced6;
+    #cdd2da;
 
   font-size:
     11px;
 
 }
 
+
+tbody tr {
+
+  cursor:
+    pointer;
+
+  transition:
+    background .15s;
+
+}
+
+
+tbody tr:hover {
+
+  background:
+    #11151c;
+
+}
+
+
 .pass {
-
-  color:
-    var(--green);
-
-}
-
-.fail {
-
-  color:
-    var(--red);
-
-}
-
-.fallback {
-
-  color:
-    var(--yellow);
-
-}
-
-.save {
 
   color:
     var(--green);
@@ -752,34 +949,341 @@ td {
 }
 
 
-/* =====================================================
+.fail {
+
+  color:
+    var(--red);
+
+  font-weight:
+    700;
+
+}
+
+
+.fallback {
+
+  color:
+    var(--yellow);
+
+  font-weight:
+    700;
+
+}
+
+
+.savings {
+
+  color:
+    var(--green);
+
+  font-weight:
+    700;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-backdrop {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  display:
+    none;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    24px;
+
+  background:
+    rgba(0,0,0,.78);
+
+  backdrop-filter:
+    blur(10px);
+
+  z-index:
+    100;
+
+}
+
+
+.modal-backdrop.open {
+
+  display:
+    flex;
+
+}
+
+
+.modal {
+
+  width:
+    min(1180px, 96vw);
+
+  max-height:
+    90vh;
+
+  overflow-y:
+    auto;
+
+  padding:
+    30px;
+
+  background:
+    #10141c;
+
+  border:
+    1px solid #303744;
+
+  border-radius:
+    22px;
+
+  box-shadow:
+    0 40px 120px
+    rgba(0,0,0,.65);
+
+}
+
+
+.modal-head {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  margin-bottom:
+    20px;
+
+}
+
+
+.modal-head h2 {
+
+  margin:
+    0;
+
+  font-size:
+    22px;
+
+  letter-spacing:
+    -.04em;
+
+}
+
+
+.close {
+
+  padding:
+    9px 14px;
+
+  background:
+    #171b23;
+
+  border:
+    1px solid #303642;
+
+  color:
+    white;
+
+  border-radius:
+    10px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.intelligence-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    10px;
+
+}
+
+
+.intelligence-card {
+
+  padding:
+    15px;
+
+  background:
+    #0b0e14;
+
+  border-radius:
+    12px;
+
+}
+
+
+.intelligence-label {
+
+  color:
+    #758092;
+
+  font-size:
+    9px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .08em;
+
+}
+
+
+.intelligence-value {
+
+  margin-top:
+    7px;
+
+  font-size:
+    13px;
+
+  color:
+    #f2f4f7;
+
+  word-break:
+    break-word;
+
+}
+
+
+.content-title {
+
+  margin:
+    24px 0 9px;
+
+  color:
+    #8c96a6;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .1em;
+
+}
+
+
+.content-box {
+
+  padding:
+    17px;
+
+  min-height:
+    65px;
+
+  max-height:
+    300px;
+
+  overflow:
+    auto;
+
+  white-space:
+    pre-wrap;
+
+  word-break:
+    break-word;
+
+  background:
+    #090c11;
+
+  border:
+    1px solid #252b35;
+
+  border-radius:
+    11px;
+
+  color:
+    #e4e7eb;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.65;
+
+}
+
+
+/* =========================================================
    FOOTER
-===================================================== */
+========================================================= */
 
 .footer {
 
   text-align:
     center;
 
+  margin-top:
+    35px;
+
   color:
-    #464d58;
+    #454c58;
 
   font-size:
     10px;
 
-  margin-top:
-    35px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px) {
+
+  .hero-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+  .metrics {
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+  }
 
 }
 
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+@media(max-width:800px) {
 
-@media(max-width:1000px) {
-
-  .hero-grid {
+  .grid,
+  .detail-grid {
 
     grid-template-columns:
       1fr;
@@ -793,34 +1297,49 @@ td {
 
   }
 
-}
+  .topline {
 
-@media(max-width:700px) {
+    flex-direction:
+      column;
 
-  .grid {
+    align-items:
+      flex-start;
+
+    gap:
+      15px;
+
+  }
+
+  .intelligence-grid {
 
     grid-template-columns:
       1fr;
 
   }
 
+}
+
+
+@media(max-width:500px) {
+
   .metrics {
 
     grid-template-columns:
-      1fr 1fr;
+      1fr;
 
   }
 
-  .topline {
+  main {
 
-    align-items:
-      flex-start;
+    width:
+      92%;
 
-    flex-direction:
-      column;
+  }
 
-    gap:
-      18px;
+  .modal {
+
+    padding:
+      20px;
 
   }
 
@@ -840,23 +1359,24 @@ td {
 
   <div class="mark"></div>
 
-  ACI
+  <span>ACI</span>
 
 </div>
 
+
 <div
-  id="date"
-  class="date"
+  id="fxHeader"
+  class="header-right"
 >
-  AI Economics
+  Enterprise AI Economics
 </div>
 
 </header>
 
 
-<!-- =====================================================
+<!-- =======================================================
      LOGIN
-===================================================== -->
+======================================================= -->
 
 <section
   id="login"
@@ -868,7 +1388,8 @@ td {
 </h2>
 
 <p>
-  Enter the ACI administrator token.
+  Secure administrator access to AI consumption,
+  routing and economics intelligence.
 </p>
 
 <input
@@ -877,7 +1398,9 @@ td {
   placeholder="Admin token"
 >
 
-<button onclick="connect()">
+<button
+  onclick="connect()"
+>
   Enter console
 </button>
 
@@ -889,9 +1412,9 @@ td {
 </section>
 
 
-<!-- =====================================================
+<!-- =======================================================
      DASHBOARD
-===================================================== -->
+======================================================= -->
 
 <main
   id="dashboard"
@@ -903,12 +1426,12 @@ td {
 
 <div>
 
-<h1>
+<h1 class="title">
   AI Economics
 </h1>
 
-<p id="subtitle">
-  Consumption · routing · cost avoidance · resilience
+<p class="subtitle">
+  Consumption · routing · cost avoidance · resilience · outcomes
 </p>
 
 </div>
@@ -935,14 +1458,25 @@ td {
 </div>
 
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+<div class="connection">
+
+<span class="dot"></span>
+
+<span id="connectionText">
+  Connected
+</span>
+
+</div>
+
+
+<!-- =======================================================
+     ECONOMICS HERO
+======================================================= -->
 
 <section class="hero-grid">
 
 
-<div class="big-card">
+<div class="hero-card">
 
 <div class="label">
   Estimated cost avoided
@@ -950,7 +1484,7 @@ td {
 
 <div
   id="saving"
-  class="big-number green"
+  class="big-value green"
 >
   ₹0
 </div>
@@ -959,17 +1493,17 @@ td {
   id="savingUSD"
   class="meta"
 >
-  $0.0000
+  $0.000000
 </div>
 
 <div class="meta">
-  Compared with designated baseline model
+  Estimated difference versus designated baseline model
 </div>
 
 </div>
 
 
-<div class="big-card">
+<div class="hero-card">
 
 <div class="label">
   Actual AI spend
@@ -977,7 +1511,7 @@ td {
 
 <div
   id="actual"
-  class="small-number"
+  class="medium-value"
 >
   ₹0
 </div>
@@ -986,21 +1520,21 @@ td {
   id="actualUSD"
   class="meta"
 >
-  $0.0000
+  $0.000000
 </div>
 
 </div>
 
 
-<div class="big-card">
+<div class="hero-card">
 
 <div class="label">
-  Baseline spend
+  Baseline AI spend
 </div>
 
 <div
   id="baseline"
-  class="small-number"
+  class="medium-value"
 >
   ₹0
 </div>
@@ -1009,7 +1543,7 @@ td {
   id="baselineUSD"
   class="meta"
 >
-  $0.0000
+  $0.000000
 </div>
 
 </div>
@@ -1017,9 +1551,9 @@ td {
 </section>
 
 
-<!-- =====================================================
+<!-- =======================================================
      METRICS
-===================================================== -->
+======================================================= -->
 
 <section class="metrics">
 
@@ -1027,11 +1561,27 @@ td {
 <div class="metric">
 
 <div class="label">
-  Requests
+  Total requests
 </div>
 
 <div
   id="requests"
+  class="metric-value"
+>
+  0
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="label">
+  Total tokens
+</div>
+
+<div
+  id="tokens"
   class="metric-value"
 >
   0
@@ -1075,14 +1625,14 @@ td {
 <div class="metric">
 
 <div class="label">
-  Cost / request
+  Success rate
 </div>
 
 <div
-  id="costRequest"
+  id="success"
   class="metric-value"
 >
-  ₹0
+  0%
 </div>
 
 </div>
@@ -1090,17 +1640,17 @@ td {
 </section>
 
 
-<!-- =====================================================
-     ANALYTICS
-===================================================== -->
+<!-- =======================================================
+     MODEL / TASK
+======================================================= -->
 
 <section class="grid">
 
 
 <div class="panel">
 
-<h2>
-  Model consumption
+<h2 class="panel-title">
+  Model Consumption
 </h2>
 
 <div id="models"></div>
@@ -1110,8 +1660,8 @@ td {
 
 <div class="panel">
 
-<h2>
-  Task consumption
+<h2 class="panel-title">
+  Task Consumption
 </h2>
 
 <div id="tasks"></div>
@@ -1121,51 +1671,47 @@ td {
 </section>
 
 
-<!-- =====================================================
-     ECONOMICS
-===================================================== -->
+<!-- =======================================================
+     ECONOMICS / RESILIENCE
+======================================================= -->
 
-<section class="grid">
+<section class="detail-grid">
 
 
 <div class="panel">
 
-<h2>
+<h2 class="panel-title">
   Economics
 </h2>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Actual AI spend
 </span>
 
-<strong
-  id="ecoActual"
->
+<strong id="ecoActual">
   ₹0
 </strong>
 
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Baseline spend
 </span>
 
-<strong
-  id="ecoBaseline"
->
+<strong id="ecoBaseline">
   ₹0
 </strong>
 
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Estimated cost avoided
@@ -1181,7 +1727,7 @@ td {
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Fallback savings
@@ -1197,7 +1743,7 @@ td {
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Optimization
@@ -1212,62 +1758,69 @@ td {
 
 </div>
 
+
+<div class="detail-row">
+
+<span>
+  Baseline model
+</span>
+
+<strong id="baselineModel">
+  -
+</strong>
+
+</div>
+
 </div>
 
 
 <div class="panel">
 
-<h2>
-  Resilience
+<h2 class="panel-title">
+  AI Resilience
 </h2>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Requests
 </span>
 
-<strong
-  id="resRequests"
->
+<strong id="resRequests">
   0
 </strong>
 
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Fallback events
 </span>
 
-<strong
-  id="resFallbacks"
->
+<strong id="resFallbacks">
   0
 </strong>
 
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Fallback rate
 </span>
 
-<strong
-  id="resRate"
->
+<strong id="resRate">
   0%
 </strong>
 
 </div>
 
 
-<div class="row">
+<div class="detail-row">
 
 <span>
   Requests rescued
@@ -1275,6 +1828,23 @@ td {
 
 <strong
   id="rescued"
+  class="green"
+>
+  0
+</strong>
+
+</div>
+
+
+<div class="detail-row">
+
+<span>
+  Failed requests
+</span>
+
+<strong
+  id="failed"
+  class="fail"
 >
   0
 </strong>
@@ -1286,24 +1856,22 @@ td {
 </section>
 
 
-<!-- =====================================================
-     REQUESTS
-===================================================== -->
+<!-- =======================================================
+     REQUEST LOG
+======================================================= -->
 
 <section class="panel table-panel">
 
-<div class="table-header">
+
+<div class="table-heading">
 
 <h2>
-  Request economics
+  AI Request Log
 </h2>
 
-<div
-  id="fxInfo"
-  class="meta"
->
-  FX valuation
-</div>
+<span id="fxInfo">
+  INR valuation
+</span>
 
 </div>
 
@@ -1326,6 +1894,10 @@ Task
 
 <th>
 Complexity
+</th>
+
+<th>
+Sensitivity
 </th>
 
 <th>
@@ -1382,19 +1954,91 @@ ACI · AI Consumption Intelligence · Economics Control Plane
 </main>
 
 
+<!-- =======================================================
+     REQUEST INTELLIGENCE MODAL
+======================================================= -->
+
+<div
+  id="modalBackdrop"
+  class="modal-backdrop"
+  onclick="closeModal(event)"
+>
+
+
+<div
+  class="modal"
+  onclick="event.stopPropagation()"
+>
+
+
+<div class="modal-head">
+
+<h2>
+  Request Intelligence
+</h2>
+
+<button
+  class="close"
+  onclick="closeModal()"
+>
+  Close
+</button>
+
+</div>
+
+
+<div
+  id="intelligenceGrid"
+  class="intelligence-grid"
+></div>
+
+
+<div class="content-title">
+  User Prompt
+</div>
+
+<div
+  id="promptContent"
+  class="content-box"
+>
+</div>
+
+
+<div class="content-title">
+  AI Output
+</div>
+
+<div
+  id="outputContent"
+  class="content-box"
+>
+</div>
+
+
+</div>
+
+</div>
+
+
 <script>
 
 
-let adminToken = "";
+let adminToken =
+  "";
 
-let requests = [];
+let requests =
+  [];
 
-let fxRate = 95.60;
+let summary =
+  {};
+
+let fxRate =
+  95.60;
 
 
-/* =====================================================
+/* =========================================================
    LOGIN
-===================================================== */
+========================================================= */
 
 window.connect =
 function() {
@@ -1411,7 +2055,7 @@ function() {
     document
       .getElementById("loginError")
       .textContent =
-        "Token required.";
+        "Administrator token required.";
 
     return;
 
@@ -1423,9 +2067,9 @@ function() {
 };
 
 
-/* =====================================================
-   LOAD
-===================================================== */
+/* =========================================================
+   LOAD DATA
+========================================================= */
 
 window.loadData =
 async function() {
@@ -1470,6 +2114,11 @@ async function() {
         : [];
 
 
+    summary =
+      data.summary ||
+      {};
+
+
     fxRate =
       Number(
         data?.fx?.usdInr ||
@@ -1480,25 +2129,38 @@ async function() {
     document
       .getElementById("login")
       .style.display =
-        "none";
+      "none";
 
 
     document
       .getElementById("dashboard")
       .style.display =
-        "block";
+      "block";
 
 
     document
-      .getElementById("date")
+      .getElementById("connectionText")
       .textContent =
-        `USD/INR ₹${fxRate.toFixed(2)}`;
+      `Connected · ${requests.length} requests loaded`;
+
+
+    document
+      .getElementById("fxHeader")
+      .textContent =
+      `USD/INR ₹${fxRate.toFixed(2)}`;
 
 
     document
       .getElementById("fxInfo")
       .textContent =
-        `INR valuation at ₹${fxRate.toFixed(2)} / USD · ${data?.fx?.date || ""}`;
+      `INR valuation at ₹${fxRate.toFixed(2)} / USD · ${data?.fx?.date || ""}`;
+
+
+    document
+      .getElementById("baselineModel")
+      .textContent =
+      data?.economics?.baselineModel ||
+      "gpt-5.6-sol";
 
 
     render();
@@ -1508,198 +2170,243 @@ async function() {
     document
       .getElementById("loginError")
       .textContent =
-        error?.message ||
-        "Unable to connect.";
+      error?.message ||
+      "Unable to connect.";
 
   }
 
 };
 
 
-/* =====================================================
+/* =========================================================
    RENDER
-===================================================== */
+========================================================= */
 
 function render() {
 
-  const actual =
-    sum("estimated_cost_usd");
+  const actualUSD =
+    Number(
+      summary.actualCostUSD ||
+      0
+    );
 
 
-  const baseline =
-    sum("baseline_cost_usd");
+  const baselineUSD =
+    Number(
+      summary.baselineCostUSD ||
+      0
+    );
 
 
-  const savings =
-    sum("savings_usd");
+  const savingsUSD =
+    Number(
+      summary.savingsUSD ||
+      0
+    );
 
 
-  const fallbackSavings =
-    sum("fallback_savings_usd");
-
-
-  const fallbackCount =
-    requests.filter(
-      r =>
-        r.fallback_used === true
-    ).length;
-
-
-  const optimization =
-    baseline > 0
-      ? savings / baseline * 100
-      : 0;
+  const fallbackSavingsUSD =
+    Number(
+      summary.fallbackSavingsUSD ||
+      0
+    );
 
 
   const actualINR =
-    actual * fxRate;
+    actualUSD *
+    fxRate;
 
 
   const baselineINR =
-    baseline * fxRate;
+    baselineUSD *
+    fxRate;
 
 
   const savingsINR =
-    savings * fxRate;
+    savingsUSD *
+    fxRate;
 
 
   const fallbackINR =
-    fallbackSavings * fxRate;
+    fallbackSavingsUSD *
+    fxRate;
 
 
-  /* Hero */
+  /*
+   * HERO
+   */
 
-  text(
+  setText(
     "saving",
     rupee(savingsINR)
   );
 
-  text(
+
+  setText(
     "savingUSD",
-    `$${savings.toFixed(4)}`
+    `$${savingsUSD.toFixed(6)}`
   );
 
 
-  text(
+  setText(
     "actual",
     rupee(actualINR)
   );
 
-  text(
+
+  setText(
     "actualUSD",
-    `$${actual.toFixed(4)}`
+    `$${actualUSD.toFixed(6)}`
   );
 
 
-  text(
+  setText(
     "baseline",
     rupee(baselineINR)
   );
 
-  text(
+
+  setText(
     "baselineUSD",
-    `$${baseline.toFixed(4)}`
+    `$${baselineUSD.toFixed(6)}`
   );
 
 
-  /* Metrics */
+  /*
+   * METRICS
+   */
 
-  text(
+  setText(
     "requests",
-    requests.length.toLocaleString()
+    Number(
+      summary.totalRequests || 0
+    ).toLocaleString()
   );
 
 
-  text(
+  setText(
+    "tokens",
+    Number(
+      summary.totalTokens || 0
+    ).toLocaleString()
+  );
+
+
+  setText(
     "optimization",
-    `${optimization.toFixed(1)}%`
+    `${Number(
+      summary.optimizationPercent || 0
+    ).toFixed(1)}%`
   );
 
 
-  text(
+  setText(
     "fallbacks",
-    fallbackCount.toLocaleString()
-  );
-
-
-  text(
-    "costRequest",
-    rupee(
-      requests.length
-        ? actualINR /
-          requests.length
-        : 0
+    Number(
+      summary.fallbackEvents || 0
     )
   );
 
 
-  /* Economics */
+  setText(
+    "success",
+    `${Number(
+      summary.successRate || 0
+    ).toFixed(1)}%`
+  );
 
-  text(
+
+  /*
+   * ECONOMICS
+   */
+
+  setText(
     "ecoActual",
     rupee(actualINR)
   );
 
 
-  text(
+  setText(
     "ecoBaseline",
     rupee(baselineINR)
   );
 
 
-  text(
+  setText(
     "ecoSavings",
     rupee(savingsINR)
   );
 
 
-  text(
+  setText(
     "ecoFallback",
     rupee(fallbackINR)
   );
 
 
-  text(
+  setText(
     "ecoPercent",
-    `${optimization.toFixed(1)}%`
+    `${Number(
+      summary.optimizationPercent || 0
+    ).toFixed(1)}%`
   );
 
 
-  /* Resilience */
+  /*
+   * RESILIENCE
+   */
 
-  text(
+  const total =
+    Number(
+      summary.totalRequests || 0
+    );
+
+
+  const fallback =
+    Number(
+      summary.fallbackEvents || 0
+    );
+
+
+  const rate =
+    total
+      ? fallback /
+        total *
+        100
+      : 0;
+
+
+  setText(
     "resRequests",
-    requests.length
+    total
   );
 
 
-  text(
+  setText(
     "resFallbacks",
-    fallbackCount
+    fallback
   );
 
 
-  text(
+  setText(
     "resRate",
-    `${
-      requests.length
-        ? (
-            fallbackCount /
-            requests.length *
-            100
-          ).toFixed(1)
-        : 0
-    }%`
+    `${rate.toFixed(1)}%`
   );
 
 
-  text(
+  setText(
     "rescued",
-    requests.filter(
-      r =>
-        r.fallback_used === true &&
-        r.outcome === "PASS"
-    ).length
+    Number(
+      summary.rescued || 0
+    )
+  );
+
+
+  setText(
+    "failed",
+    Number(
+      summary.failed || 0
+    )
   );
 
 
@@ -1712,39 +2419,53 @@ function render() {
 }
 
 
-/* =====================================================
-   MODEL ANALYTICS
-===================================================== */
+/* =========================================================
+   MODEL CONSUMPTION
+========================================================= */
 
 function renderModels() {
 
-  const groups = {};
-
-  requests.forEach(r => {
-
-    const model =
-      r.model ||
-      "Unknown";
+  const groups =
+    {};
 
 
-    if (!groups[model]) {
+  requests.forEach(
+    r => {
 
-      groups[model] = {
-        requests: 0,
-        cost: 0
-      };
+      const model =
+        r.model ||
+        "Unknown";
+
+
+      if (!groups[model]) {
+
+        groups[model] = {
+
+          requests: 0,
+
+          tokens: 0,
+
+          cost: 0
+
+        };
+
+      }
+
+
+      groups[model].requests++;
+
+      groups[model].tokens +=
+        Number(
+          r.total_tokens || 0
+        );
+
+      groups[model].cost +=
+        Number(
+          r.estimated_cost_usd || 0
+        );
 
     }
-
-
-    groups[model].requests++;
-
-    groups[model].cost +=
-      Number(
-        r.estimated_cost_usd || 0
-      );
-
-  });
+  );
 
 
   const rows =
@@ -1768,84 +2489,97 @@ function renderModels() {
 
   document.getElementById(
     "models"
-  ).innerHTML = rows.map(
-    ([name, value]) => {
+  ).innerHTML =
 
-      const width =
-        value.requests /
-        max *
-        100;
+    rows.map(
+      ([name, value]) => {
+
+        const width =
+          value.requests /
+          max *
+          100;
 
 
-      return `
+        return `
 
-        <div class="row">
+          <div class="analytics-row">
 
-          <span>
-            ${escapeHtml(name)}
-          </span>
+            <div class="analytics-top">
 
-          <strong>
-            ${value.requests}
-            · ${rupee(
-              value.cost *
-              fxRate
-            )}
-          </strong>
+              <span>
+                ${escapeHtml(name)}
+              </span>
 
-        </div>
+              <strong>
+                ${value.requests}
+                requests ·
+                ${rupee(
+                  value.cost *
+                  fxRate
+                )}
+              </strong>
 
-        <div class="bar">
+            </div>
 
-          <div
-            class="fill"
-            style="width:${width}%"
-          ></div>
+            <div class="bar">
 
-        </div>
+              <div
+                class="bar-fill"
+                style="width:${width}%"
+              ></div>
 
-      `;
+            </div>
 
-    }
-  ).join("");
+          </div>
+
+        `;
+
+      }
+    ).join("");
 
 }
 
 
-/* =====================================================
-   TASK ANALYTICS
-===================================================== */
+/* =========================================================
+   TASK CONSUMPTION
+========================================================= */
 
 function renderTasks() {
 
-  const groups = {};
+  const groups =
+    {};
 
 
-  requests.forEach(r => {
+  requests.forEach(
+    r => {
 
-    const task =
-      r.task_type ||
-      "Unknown";
+      const task =
+        r.task_type ||
+        "Unknown";
 
 
-    if (!groups[task]) {
+      if (!groups[task]) {
 
-      groups[task] = {
-        requests: 0,
-        cost: 0
-      };
+        groups[task] = {
+
+          requests: 0,
+
+          cost: 0
+
+        };
+
+      }
+
+
+      groups[task].requests++;
+
+      groups[task].cost +=
+        Number(
+          r.estimated_cost_usd || 0
+        );
 
     }
-
-
-    groups[task].requests++;
-
-    groups[task].cost +=
-      Number(
-        r.estimated_cost_usd || 0
-      );
-
-  });
+  );
 
 
   const rows =
@@ -1857,192 +2591,491 @@ function renderTasks() {
       );
 
 
+  const max =
+    Math.max(
+      1,
+      ...rows.map(
+        x =>
+          x[1].requests
+      )
+    );
+
+
   document.getElementById(
     "tasks"
   ).innerHTML =
+
     rows.map(
-      ([name,value]) => `
+      ([name, value]) => {
 
-        <div class="row">
+        const width =
+          value.requests /
+          max *
+          100;
 
-          <span>
-            ${escapeHtml(name)}
-          </span>
 
-          <strong>
-            ${value.requests}
-            · ${rupee(
-              value.cost *
+        return `
+
+          <div class="analytics-row">
+
+            <div class="analytics-top">
+
+              <span>
+                ${escapeHtml(name)}
+              </span>
+
+              <strong>
+                ${value.requests}
+                requests ·
+                ${rupee(
+                  value.cost *
+                  fxRate
+                )}
+              </strong>
+
+            </div>
+
+            <div class="bar">
+
+              <div
+                class="bar-fill"
+                style="width:${width}%"
+              ></div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   REQUEST TABLE
+========================================================= */
+
+function renderTable() {
+
+  const table =
+    document.getElementById(
+      "table"
+    );
+
+
+  table.innerHTML =
+    requests.map(
+      (r, index) => {
+
+        const actual =
+          Number(
+            r.actual_cost_inr ||
+            (
+              Number(
+                r.estimated_cost_usd ||
+                0
+              ) *
               fxRate
-            )}
-          </strong>
+            )
+          );
+
+
+        const baseline =
+          Number(
+            r.baseline_cost_inr ||
+            (
+              Number(
+                r.baseline_cost_usd ||
+                0
+              ) *
+              fxRate
+            )
+          );
+
+
+        const savings =
+          Number(
+            r.savings_inr ||
+            (
+              Number(
+                r.savings_usd ||
+                0
+              ) *
+              fxRate
+            )
+          );
+
+
+        return `
+
+          <tr
+            onclick="openRequest(${index})"
+          >
+
+            <td>
+              ${formatDate(
+                r.created_at
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                r.task_type ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${r.complexity || "-"}
+              /5
+            </td>
+
+            <td>
+              ${escapeHtml(
+                r.sensitivity ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                r.model ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${Number(
+                r.total_tokens ||
+                0
+              ).toLocaleString()}
+            </td>
+
+            <td>
+              ${rupee(actual)}
+            </td>
+
+            <td>
+              ${rupee(baseline)}
+            </td>
+
+            <td class="savings">
+              ${rupee(savings)}
+            </td>
+
+            <td>
+
+              ${
+                r.fallback_used === true
+                  ? `<span class="fallback">
+                       YES
+                     </span>`
+                  : "-"
+              }
+
+            </td>
+
+            <td>
+
+              ${
+                r.outcome === "PASS"
+                  ? `<span class="pass">
+                       PASS
+                     </span>`
+                  : `<span class="fail">
+                       FAIL
+                     </span>`
+              }
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =========================================================
+   REQUEST INTELLIGENCE
+========================================================= */
+
+window.openRequest =
+function(index) {
+
+  const r =
+    requests[index];
+
+
+  if (!r) {
+    return;
+  }
+
+
+  const fields = [
+
+    [
+      "REQUEST ID",
+      r.request_id || "-"
+    ],
+
+    [
+      "TASK TYPE",
+      r.task_type || "-"
+    ],
+
+    [
+      "COMPLEXITY",
+      `${r.complexity || "-"}/5`
+    ],
+
+    [
+      "SENSITIVITY",
+      r.sensitivity || "-"
+    ],
+
+    [
+      "REQUIRED QUALITY",
+      r.required_quality
+        ? `${r.required_quality}%`
+        : "-"
+    ],
+
+    [
+      "ROUTING TIER",
+      r.routing_tier || "-"
+    ],
+
+    [
+      "ROUTING REASON",
+      r.routing_reason || "-"
+    ],
+
+    [
+      "MODEL",
+      r.model || "-"
+    ],
+
+    [
+      "PROVIDER",
+      r.provider || "-"
+    ],
+
+    [
+      "INPUT TOKENS",
+      Number(
+        r.input_tokens || 0
+      ).toLocaleString()
+    ],
+
+    [
+      "OUTPUT TOKENS",
+      Number(
+        r.output_tokens || 0
+      ).toLocaleString()
+    ],
+
+    [
+      "TOTAL TOKENS",
+      Number(
+        r.total_tokens || 0
+      ).toLocaleString()
+    ],
+
+    [
+      "ESTIMATED COST",
+      `$${Number(
+        r.estimated_cost_usd || 0
+      ).toFixed(8)} · ${rupee(
+        Number(
+          r.actual_cost_inr || 0
+        )
+      )}`
+    ],
+
+    [
+      "BASELINE COST",
+      `$${Number(
+        r.baseline_cost_usd || 0
+      ).toFixed(8)} · ${rupee(
+        Number(
+          r.baseline_cost_inr || 0
+        )
+      )}`
+    ],
+
+    [
+      "COST AVOIDED",
+      `$${Number(
+        r.savings_usd || 0
+      ).toFixed(8)} · ${rupee(
+        Number(
+          r.savings_inr || 0
+        )
+      )}`
+    ],
+
+    [
+      "FALLBACK SAVING",
+      `$${Number(
+        r.fallback_savings_usd || 0
+      ).toFixed(8)} · ${rupee(
+        Number(
+          r.fallback_savings_inr || 0
+        )
+      )}`
+    ],
+
+    [
+      "FALLBACK USED",
+      r.fallback_used === true
+        ? "YES"
+        : "NO"
+    ],
+
+    [
+      "LATENCY",
+      `${Number(
+        r.latency_ms || 0
+      ).toLocaleString()} ms`
+    ],
+
+    [
+      "OUTCOME",
+      r.outcome || "-"
+    ]
+
+  ];
+
+
+  document.getElementById(
+    "intelligenceGrid"
+  ).innerHTML =
+
+    fields.map(
+      ([label,value]) => `
+
+        <div class="intelligence-card">
+
+          <div class="intelligence-label">
+            ${escapeHtml(label)}
+          </div>
+
+          <div class="intelligence-value">
+            ${escapeHtml(value)}
+          </div>
 
         </div>
 
       `
     ).join("");
 
-}
+
+  const prompt =
+    r.prompt;
 
 
-/* =====================================================
-   TABLE
-===================================================== */
+  const output =
+    r.output;
 
-function renderTable() {
 
   document.getElementById(
-    "table"
-  ).innerHTML = requests.map(
-    r => {
+    "promptContent"
+  ).textContent =
 
-      const actual =
-        Number(
-          r.estimated_cost_usd || 0
-        );
+    prompt
+      ? prompt
+      : "Prompt content was not stored.";
 
 
-      const baseline =
-        Number(
-          r.baseline_cost_usd || 0
-        );
+  document.getElementById(
+    "outputContent"
+  ).textContent =
+
+    output
+      ? output
+      : "Output content was not stored.";
 
 
-      const savings =
-        Number(
-          r.savings_usd || 0
-        );
+  document
+    .getElementById(
+      "modalBackdrop"
+    )
+    .classList.add(
+      "open"
+    );
+
+};
 
 
-      return `
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
 
-        <tr>
-
-          <td>
-            ${formatDate(
-              r.created_at
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              r.task_type || "-"
-            )}
-          </td>
-
-          <td>
-            ${r.complexity || "-"}
-            /5
-          </td>
-
-          <td>
-            ${escapeHtml(
-              r.model || "-"
-            )}
-          </td>
-
-          <td>
-            ${Number(
-              r.total_tokens || 0
-            ).toLocaleString()}
-          </td>
-
-          <td>
-            ${rupee(
-              actual * fxRate
-            )}
-          </td>
-
-          <td>
-            ${rupee(
-              baseline * fxRate
-            )}
-          </td>
-
-          <td class="save">
-            ${rupee(
-              savings * fxRate
-            )}
-          </td>
-
-          <td>
-
-            ${
-              r.fallback_used === true
-                ? `<span class="fallback">
-                    YES
-                   </span>`
-                : "-"
-            }
-
-          </td>
-
-          <td>
-
-            ${
-              r.outcome === "PASS"
-                ? `<span class="pass">
-                    PASS
-                   </span>`
-                : `<span class="fail">
-                    FAIL
-                   </span>`
-            }
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  ).join("");
-
-}
-
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function sum(field) {
-
-  return requests.reduce(
-    (total, r) =>
-      total +
-      Number(
-        r[field] || 0
-      ),
-    0
-  );
-
-}
-
-
-function rupee(value) {
+window.closeModal =
+function(event) {
 
   if (
-    Math.abs(value) < 0.01 &&
-    value !== 0
+    event &&
+    event.target !==
+      document.getElementById(
+        "modalBackdrop"
+      )
   ) {
 
-    return `₹${value.toFixed(4)}`;
+    return;
 
   }
 
 
-  return `₹${Number(value || 0)
-    .toLocaleString(
-      "en-IN",
-      {
-        maximumFractionDigits: 2
-      }
-    )}`;
+  document
+    .getElementById(
+      "modalBackdrop"
+    )
+    .classList.remove(
+      "open"
+    );
 
-}
+};
 
 
-function text(
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      document
+        .getElementById(
+          "modalBackdrop"
+        )
+        .classList.remove(
+          "open"
+        );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function setText(
   id,
   value
 ) {
@@ -2055,11 +3088,42 @@ function text(
 }
 
 
+function rupee(value) {
+
+  const n =
+    Number(value || 0);
+
+
+  if (
+    Math.abs(n) < 0.01 &&
+    n !== 0
+  ) {
+
+    return `₹${n.toFixed(4)}`;
+
+  }
+
+
+  return `₹${n.toLocaleString(
+    "en-IN",
+    {
+      minimumFractionDigits:
+        0,
+
+      maximumFractionDigits:
+        2
+    }
+  )}`;
+
+}
+
+
 function formatDate(value) {
 
   if (!value) {
     return "-";
   }
+
 
   return new Date(value)
     .toLocaleString(
@@ -2067,6 +3131,7 @@ function formatDate(value) {
       {
         dateStyle:
           "short",
+
         timeStyle:
           "short"
       }
@@ -2102,31 +3167,49 @@ function escapeHtml(value) {
 }
 
 
+/* =========================================================
+   LOGOUT
+========================================================= */
+
 window.logout =
 function() {
 
-  adminToken = "";
+  adminToken =
+    "";
 
-  requests = [];
+  requests =
+    [];
+
+  summary =
+    {};
 
   document
-    .getElementById("dashboard")
+    .getElementById(
+      "dashboard"
+    )
     .style.display =
-      "none";
+    "none";
+
 
   document
-    .getElementById("login")
+    .getElementById(
+      "login"
+    )
     .style.display =
-      "block";
+    "block";
+
 
   document
-    .getElementById("token")
+    .getElementById(
+      "token"
+    )
     .value =
-      "";
+    "";
 
 };
 
 </script>
+
 
 </body>
 
