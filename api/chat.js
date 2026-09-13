@@ -4,14 +4,9 @@ import OpenAI from "openai";
 ===========================================================
 ACI MODEL REGISTRY
 ===========================================================
-
-ACI does not expose these models to employees.
-
-The router chooses between approved models.
 */
 
 const MODELS = {
-
   gemini_flash: {
     provider: "google",
     id: "gemini-3.8-flash",
@@ -43,7 +38,6 @@ const MODELS = {
     inputPerMillion: 4.00,
     outputPerMillion: 20.00
   }
-
 };
 
 
@@ -54,7 +48,6 @@ TASK CLASSIFICATION
 */
 
 function classify(text) {
-
   const t = text.toLowerCase();
 
   if (
@@ -116,16 +109,17 @@ ACI INTELLIGENCE
 */
 
 function intelligence(text) {
-
   const taskType = classify(text);
 
   let complexity = 1;
 
-  if (text.length > 500)
+  if (text.length > 500) {
     complexity++;
+  }
 
-  if (text.length > 1500)
+  if (text.length > 1500) {
     complexity++;
+  }
 
   if (
     /analyze|analyse|investigate|compare|evaluate|reason|strategy|architecture|design/i
@@ -150,16 +144,12 @@ function intelligence(text) {
     /password|credential|secret|api key|token|salary|bank|credit card|medical|patient/i
       .test(text)
   ) {
-
     sensitivity = "High";
-
   } else if (
     /client|customer|employee|internal|company|business|contract|financial/i
       .test(text)
   ) {
-
     sensitivity = "Medium";
-
   }
 
 
@@ -178,7 +168,6 @@ function intelligence(text) {
     sensitivity,
     requiredQuality
   };
-
 }
 
 
@@ -187,79 +176,71 @@ function intelligence(text) {
 ACI ROUTER
 ===========================================================
 
-For now Gemini is the active fallback provider.
+For now Gemini is the active provider.
 
-This allows us to test ACI even while the OpenAI account
-has no remaining API credits.
+Once OpenAI credits are available, we can make this
+router compare Google vs OpenAI dynamically.
+===========================================================
 */
 
 function chooseModel(profile) {
 
-  /*
-  High complexity / production work
-
-  Use Gemini 3.8 Flash for now.
-  */
   if (
     profile.complexity >= 4 ||
     profile.taskType === "Production / Technical"
   ) {
-
     return {
       model: MODELS.gemini_flash,
       reason: "High-complexity task routed to Gemini"
     };
-
   }
 
-
-  /*
-  Medium complexity
-  */
 
   if (
     profile.complexity >= 3 ||
     profile.requiredQuality >= 88
   ) {
-
     return {
       model: MODELS.gemini_flash,
       reason: "Medium-complexity task routed to Gemini"
     };
-
   }
 
-
-  /*
-  Simple tasks
-  */
 
   return {
     model: MODELS.gemini_flash,
     reason: "Low-complexity task routed to Gemini"
   };
-
 }
 
 
 /*
 ===========================================================
-GEMINI
+GEMINI INTERACTIONS API
+===========================================================
+
+Google's current Interactions API returns generated text
+inside:
+
+steps[]
+  -> model_output
+     -> content[]
+        -> text
+
+Usage:
+
+total_input_tokens
+total_output_tokens
+total_tokens
 ===========================================================
 */
 
-async function callGemini(
-  model,
-  system,
-  prompt
-) {
+async function callGemini(model, system, prompt) {
 
   if (!process.env.GEMINI_API_KEY) {
-
     throw new Error(
       "GEMINI_API_KEY is not configured in Vercel."
     );
-
   }
 
 
@@ -274,15 +255,14 @@ async function callGemini(
       },
 
       body: JSON.stringify({
-
         model: model.id,
 
         system_instruction: system,
 
-        input: prompt
+        input: prompt,
 
+        store: false
       })
-
     }
   );
 
@@ -291,89 +271,85 @@ async function callGemini(
 
 
   if (!response.ok) {
-
     throw new Error(
       data?.error?.message ||
       "Gemini API request failed."
     );
-
   }
 
 
   /*
-  Gemini Interactions API returns output items.
-  Extract textual output.
+  -----------------------------------------
+  Extract model output
+  -----------------------------------------
   */
 
   let answer = "";
 
 
-  if (Array.isArray(data.output)) {
+  if (Array.isArray(data.steps)) {
 
-    answer = data.output
-      .filter(item =>
-        item.type === "text" ||
-        item.type === "message"
-      )
-      .map(item => {
+    for (const step of data.steps) {
 
-        if (typeof item.text === "string")
-          return item.text;
+      if (
+        step.type !== "model_output" ||
+        !Array.isArray(step.content)
+      ) {
+        continue;
+      }
 
-        if (Array.isArray(item.content)) {
 
-          return item.content
-            .map(part => part.text || "")
-            .join("");
+      for (const content of step.content) {
 
+        if (
+          content.type === "text" &&
+          typeof content.text === "string"
+        ) {
+          answer += content.text;
         }
 
-        return "";
-
-      })
-      .join("");
-
+      }
+    }
   }
 
 
   /*
-  Fallback for response shapes containing output_text.
+  -----------------------------------------
+  Fallback
+  -----------------------------------------
   */
 
-  if (!answer && data.output_text) {
-
+  if (
+    !answer &&
+    typeof data.output_text === "string"
+  ) {
     answer = data.output_text;
-
   }
 
+
+  /*
+  -----------------------------------------
+  Token usage
+  -----------------------------------------
+  */
 
   const usage = data.usage || {};
 
 
   return {
-
     answer,
 
     usage: {
-
       input_tokens:
-        usage.input_tokens ||
-        usage.prompt_tokens ||
-        0,
+        usage.total_input_tokens || 0,
 
       output_tokens:
-        usage.output_tokens ||
-        usage.candidates_tokens ||
-        0,
+        usage.total_output_tokens || 0,
 
       total_tokens:
-        usage.total_tokens ||
-        0
-
+        usage.total_tokens || 0
     }
-
   };
-
 }
 
 
@@ -383,18 +359,12 @@ OPENAI
 ===========================================================
 */
 
-async function callOpenAI(
-  model,
-  system,
-  prompt
-) {
+async function callOpenAI(model, system, prompt) {
 
   if (!process.env.OPENAI_API_KEY) {
-
     throw new Error(
       "OPENAI_API_KEY is not configured."
     );
-
   }
 
 
@@ -405,23 +375,16 @@ async function callOpenAI(
 
   const response =
     await client.responses.create({
-
       model: model.id,
-
       instructions: system,
-
       input: prompt
-
     });
 
 
   return {
-
-    answer:
-      response.output_text || "",
+    answer: response.output_text || "",
 
     usage: {
-
       input_tokens:
         response.usage?.input_tokens || 0,
 
@@ -430,11 +393,8 @@ async function callOpenAI(
 
       total_tokens:
         response.usage?.total_tokens || 0
-
     }
-
   };
-
 }
 
 
@@ -457,7 +417,6 @@ async function executeModel(
       system,
       prompt
     );
-
   }
 
 
@@ -468,14 +427,12 @@ async function executeModel(
       system,
       prompt
     );
-
   }
 
 
   throw new Error(
     `Unsupported provider: ${model.provider}`
   );
-
 }
 
 
@@ -485,10 +442,7 @@ COST CALCULATION
 ===========================================================
 */
 
-function calculateCost(
-  model,
-  usage
-) {
+function calculateCost(model, usage) {
 
   const inputTokens =
     usage?.input_tokens || 0;
@@ -510,7 +464,6 @@ function calculateCost(
   return Number(
     (inputCost + outputCost).toFixed(8)
   );
-
 }
 
 
@@ -537,7 +490,6 @@ async function saveLog(record) {
     );
 
     return;
-
   }
 
 
@@ -547,11 +499,9 @@ async function saveLog(record) {
       await fetch(
         `${url}/rest/v1/aci_requests`,
         {
-
           method: "POST",
 
           headers: {
-
             "Content-Type":
               "application/json",
 
@@ -563,12 +513,10 @@ async function saveLog(record) {
 
             "Prefer":
               "return=minimal"
-
           },
 
           body:
             JSON.stringify(record)
-
         }
       );
 
@@ -579,7 +527,6 @@ async function saveLog(record) {
         "Supabase logging failed:",
         await response.text()
       );
-
     }
 
   } catch (error) {
@@ -588,15 +535,13 @@ async function saveLog(record) {
       "Database logging failed:",
       error
     );
-
   }
-
 }
 
 
 /*
 ===========================================================
-MAIN API
+MAIN API HANDLER
 ===========================================================
 */
 
@@ -610,7 +555,6 @@ export default async function handler(
     return res.status(405).json({
       error: "POST only"
     });
-
   }
 
 
@@ -629,7 +573,6 @@ export default async function handler(
       return res.status(400).json({
         error: "A prompt is required."
       });
-
     }
 
 
@@ -645,7 +588,7 @@ export default async function handler(
 
     /*
     -----------------------------------------
-    Choose model
+    Route request
     -----------------------------------------
     */
 
@@ -680,7 +623,6 @@ export default async function handler(
     */
 
     const system = `
-
 You are ACI, an enterprise AI assistant.
 
 Return the user's requested result directly.
@@ -707,13 +649,12 @@ ${profile.sensitivity}
 
 Required quality target:
 ${profile.requiredQuality}%
-
 `;
 
 
     /*
     -----------------------------------------
-    Execute provider
+    Execute selected provider
     -----------------------------------------
     */
 
@@ -746,7 +687,19 @@ ${profile.requiredQuality}%
 
     /*
     -----------------------------------------
-    Trace
+    Outcome
+    -----------------------------------------
+    */
+
+    const outcome =
+      answer
+        ? "PASS"
+        : "FAIL";
+
+
+    /*
+    -----------------------------------------
+    Full internal trace
     -----------------------------------------
     */
 
@@ -792,17 +745,13 @@ ${profile.requiredQuality}%
       estimatedCostUSD:
         cost,
 
-      outcome:
-        answer
-          ? "PASS"
-          : "FAIL"
-
+      outcome
     };
 
 
     /*
     -----------------------------------------
-    Save to Supabase
+    Save request to Supabase
     -----------------------------------------
     */
 
@@ -853,10 +802,7 @@ ${profile.requiredQuality}%
       estimated_cost_usd:
         cost,
 
-      outcome:
-        answer
-          ? "PASS"
-          : "FAIL",
+      outcome,
 
       prompt:
         process.env.ACI_STORE_CONTENT === "true"
@@ -877,7 +823,13 @@ ${profile.requiredQuality}%
     -----------------------------------------
 
     IMPORTANT:
-    Model/provider/cost remain hidden.
+
+    Provider
+    Model
+    Cost
+    Routing reason
+
+    are intentionally NOT returned here.
     */
 
     return res.status(200).json({
@@ -911,10 +863,7 @@ ${profile.requiredQuality}%
         totalTokens:
           usage.total_tokens ?? 0,
 
-        outcome:
-          answer
-            ? "PASS"
-            : "FAIL"
+        outcome
 
       }
 
@@ -936,7 +885,5 @@ ${profile.requiredQuality}%
         "AI request failed."
 
     });
-
   }
-
 }
