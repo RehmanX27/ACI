@@ -2,18 +2,44 @@ import OpenAI from "openai";
 
 /*
 ===========================================================
-ACI MODEL REGISTRY
+ACI - AI CONSUMPTION INTELLIGENCE
+Multi-model routing + fallback + economics logging
 ===========================================================
 */
+
+/* =========================================================
+   MODEL REGISTRY
+   ========================================================= */
 
 const MODELS = {
   gemini_flash: {
     provider: "google",
     id: "gemini-3.8-flash",
-    tier: "efficient",
+    tier: "advanced",
     inputPerMillion: 0.75,
     outputPerMillion: 3.75
   },
+
+  gemini_balanced: {
+    provider: "google",
+    id: "gemini-3.7-flash",
+    tier: "balanced",
+    inputPerMillion: 0.75,
+    outputPerMillion: 3.75
+  },
+
+  gemini_efficient: {
+    provider: "google",
+    id: "gemini-3.5-flash-lite",
+    tier: "efficient",
+    inputPerMillion: 0.30,
+    outputPerMillion: 2.50
+  },
+
+  /*
+   * OpenAI models are retained for future multi-provider routing.
+   * They are NOT used by default while your OpenAI credits are exhausted.
+   */
 
   openai_luna: {
     provider: "openai",
@@ -41,11 +67,9 @@ const MODELS = {
 };
 
 
-/*
-===========================================================
-TASK CLASSIFICATION
-===========================================================
-*/
+/* =========================================================
+   TASK CLASSIFICATION
+   ========================================================= */
 
 function classify(text) {
   const t = text.toLowerCase();
@@ -102,11 +126,9 @@ function classify(text) {
 }
 
 
-/*
-===========================================================
-ACI INTELLIGENCE
-===========================================================
-*/
+/* =========================================================
+   REQUEST INTELLIGENCE
+   ========================================================= */
 
 function intelligence(text) {
   const taskType = classify(text);
@@ -122,15 +144,17 @@ function intelligence(text) {
   }
 
   if (
-    /analyze|analyse|investigate|compare|evaluate|reason|strategy|architecture|design/i
-      .test(text)
+    /analyze|analyse|investigate|compare|evaluate|reason|strategy|architecture|design/i.test(
+      text
+    )
   ) {
     complexity++;
   }
 
   if (
-    /production|incident|contract|legal|financial|security|critical/i
-      .test(text)
+    /production|incident|contract|legal|financial|security|critical/i.test(
+      text
+    )
   ) {
     complexity++;
   }
@@ -141,13 +165,15 @@ function intelligence(text) {
   let sensitivity = "Low";
 
   if (
-    /password|credential|secret|api key|token|salary|bank|credit card|medical|patient/i
-      .test(text)
+    /password|credential|secret|api key|token|salary|bank|credit card|medical|patient/i.test(
+      text
+    )
   ) {
     sensitivity = "High";
   } else if (
-    /client|customer|employee|internal|company|business|contract|financial/i
-      .test(text)
+    /client|customer|employee|internal|company|business|contract|financial/i.test(
+      text
+    )
   ) {
     sensitivity = "Medium";
   }
@@ -171,69 +197,58 @@ function intelligence(text) {
 }
 
 
-/*
-===========================================================
-ACI ROUTER
-===========================================================
-
-For now Gemini is the active provider.
-
-Once OpenAI credits are available, we can make this
-router compare Google vs OpenAI dynamically.
-===========================================================
-*/
+/* =========================================================
+   MODEL ROUTER
+   ========================================================= */
 
 function chooseModel(profile) {
 
+  /*
+   * Important:
+   *
+   * This is an initial routing policy.
+   * It does NOT claim that one model is objectively better.
+   *
+   * ACI will eventually replace these heuristics with
+   * measured quality, cost, latency and availability data.
+   */
+
+
+  // High complexity
   if (
     profile.complexity >= 4 ||
     profile.taskType === "Production / Technical"
   ) {
     return {
       model: MODELS.gemini_flash,
-      reason: "High-complexity task routed to Gemini"
+      reason: "High-complexity task routed to advanced Gemini model"
     };
   }
 
 
+  // Medium complexity
   if (
     profile.complexity >= 3 ||
     profile.requiredQuality >= 88
   ) {
     return {
-      model: MODELS.gemini_flash,
-      reason: "Medium-complexity task routed to Gemini"
+      model: MODELS.gemini_balanced,
+      reason: "Medium-complexity task routed to balanced Gemini model"
     };
   }
 
 
+  // Low complexity
   return {
-    model: MODELS.gemini_flash,
-    reason: "Low-complexity task routed to Gemini"
+    model: MODELS.gemini_efficient,
+    reason: "Low-complexity task routed to efficient Gemini model"
   };
 }
 
 
-/*
-===========================================================
-GEMINI INTERACTIONS API
-===========================================================
-
-Google's current Interactions API returns generated text
-inside:
-
-steps[]
-  -> model_output
-     -> content[]
-        -> text
-
-Usage:
-
-total_input_tokens
-total_output_tokens
-total_tokens
-===========================================================
-*/
+/* =========================================================
+   GEMINI API
+   ========================================================= */
 
 async function callGemini(model, system, prompt) {
 
@@ -261,6 +276,10 @@ async function callGemini(model, system, prompt) {
 
         input: prompt,
 
+        /*
+         * Do not retain the Gemini interaction itself.
+         * ACI controls its own optional logging separately.
+         */
         store: false
       })
     }
@@ -271,21 +290,26 @@ async function callGemini(model, system, prompt) {
 
 
   if (!response.ok) {
+
     throw new Error(
       data?.error?.message ||
-      "Gemini API request failed."
+      `Gemini API request failed with status ${response.status}.`
     );
   }
 
 
-  /*
-  -----------------------------------------
-  Extract model output
-  -----------------------------------------
-  */
-
   let answer = "";
 
+
+  /*
+   * Current Gemini Interactions API format:
+   *
+   * data.steps[]
+   *    -> type: model_output
+   *    -> content[]
+   *       -> type: text
+   *       -> text
+   */
 
   if (Array.isArray(data.steps)) {
 
@@ -307,17 +331,15 @@ async function callGemini(model, system, prompt) {
         ) {
           answer += content.text;
         }
-
       }
     }
   }
 
 
   /*
-  -----------------------------------------
-  Fallback
-  -----------------------------------------
-  */
+   * Compatibility fallback in case Google returns
+   * output_text in a different response format.
+   */
 
   if (
     !answer &&
@@ -327,19 +349,22 @@ async function callGemini(model, system, prompt) {
   }
 
 
-  /*
-  -----------------------------------------
-  Token usage
-  -----------------------------------------
-  */
+  if (!answer) {
+    throw new Error(
+      "Gemini returned no usable text output."
+    );
+  }
+
 
   const usage = data.usage || {};
 
 
   return {
+
     answer,
 
     usage: {
+
       input_tokens:
         usage.total_input_tokens || 0,
 
@@ -353,15 +378,123 @@ async function callGemini(model, system, prompt) {
 }
 
 
-/*
-===========================================================
-OPENAI
-===========================================================
-*/
+/* =========================================================
+   GEMINI FALLBACK ENGINE
+   ========================================================= */
 
-async function callOpenAI(model, system, prompt) {
+async function callGeminiWithFallback(
+  primaryModel,
+  system,
+  prompt
+) {
+
+  /*
+   * Primary model comes from the router.
+   *
+   * Fallback chain:
+   *
+   * Primary
+   * ↓
+   * Gemini 3.8 Flash
+   * ↓
+   * Gemini 3.7 Flash
+   * ↓
+   * Gemini 3.5 Flash-Lite
+   *
+   * Duplicate models are removed automatically.
+   */
+
+  const candidates = [
+
+    primaryModel,
+
+    MODELS.gemini_flash,
+
+    MODELS.gemini_balanced,
+
+    MODELS.gemini_efficient
+
+  ].filter(
+    (model, index, array) =>
+      array.findIndex(
+        x => x.id === model.id
+      ) === index
+  );
+
+
+  let lastError = null;
+
+
+  for (const model of candidates) {
+
+    try {
+
+      console.log(
+        `ACI attempting model: ${model.provider}/${model.id}`
+      );
+
+
+      const result = await callGemini(
+        model,
+        system,
+        prompt
+      );
+
+
+      const fallbackUsed =
+        model.id !== primaryModel.id;
+
+
+      if (fallbackUsed) {
+
+        console.log(
+          `ACI fallback succeeded: ${primaryModel.id} -> ${model.id}`
+        );
+      }
+
+
+      return {
+
+        ...result,
+
+        selectedModel: model,
+
+        fallbackUsed
+
+      };
+
+    } catch (error) {
+
+      lastError = error;
+
+
+      console.error(
+        `ACI model failed: ${model.id}`,
+        error?.message
+      );
+    }
+  }
+
+
+  throw new Error(
+    lastError?.message ||
+    "All approved Gemini models failed."
+  );
+}
+
+
+/* =========================================================
+   OPENAI API
+   ========================================================= */
+
+async function callOpenAI(
+  model,
+  system,
+  prompt
+) {
 
   if (!process.env.OPENAI_API_KEY) {
+
     throw new Error(
       "OPENAI_API_KEY is not configured."
     );
@@ -375,16 +508,23 @@ async function callOpenAI(model, system, prompt) {
 
   const response =
     await client.responses.create({
+
       model: model.id,
+
       instructions: system,
+
       input: prompt
+
     });
 
 
   return {
-    answer: response.output_text || "",
+
+    answer:
+      response.output_text || "",
 
     usage: {
+
       input_tokens:
         response.usage?.input_tokens || 0,
 
@@ -398,11 +538,9 @@ async function callOpenAI(model, system, prompt) {
 }
 
 
-/*
-===========================================================
-PROVIDER EXECUTION
-===========================================================
-*/
+/* =========================================================
+   MODEL EXECUTION
+   ========================================================= */
 
 async function executeModel(
   model,
@@ -410,9 +548,16 @@ async function executeModel(
   prompt
 ) {
 
+  /*
+   * Gemini is currently the active provider.
+   *
+   * OpenAI remains available in the registry for
+   * future multi-provider routing.
+   */
+
   if (model.provider === "google") {
 
-    return await callGemini(
+    return await callGeminiWithFallback(
       model,
       system,
       prompt
@@ -422,11 +567,23 @@ async function executeModel(
 
   if (model.provider === "openai") {
 
-    return await callOpenAI(
-      model,
-      system,
-      prompt
-    );
+    const result =
+      await callOpenAI(
+        model,
+        system,
+        prompt
+      );
+
+
+    return {
+
+      ...result,
+
+      selectedModel: model,
+
+      fallbackUsed: false
+
+    };
   }
 
 
@@ -436,13 +593,14 @@ async function executeModel(
 }
 
 
-/*
-===========================================================
-COST CALCULATION
-===========================================================
-*/
+/* =========================================================
+   COST CALCULATOR
+   ========================================================= */
 
-function calculateCost(model, usage) {
+function calculateCost(
+  model,
+  usage
+) {
 
   const inputTokens =
     usage?.input_tokens || 0;
@@ -467,16 +625,15 @@ function calculateCost(model, usage) {
 }
 
 
-/*
-===========================================================
-SUPABASE LOGGING
-===========================================================
-*/
+/* =========================================================
+   SUPABASE LOGGER
+   ========================================================= */
 
 async function saveLog(record) {
 
   const url =
     process.env.SUPABASE_URL;
+
 
   const key =
     process.env.SUPABASE_SECRET_KEY ||
@@ -499,9 +656,11 @@ async function saveLog(record) {
       await fetch(
         `${url}/rest/v1/aci_requests`,
         {
+
           method: "POST",
 
           headers: {
+
             "Content-Type":
               "application/json",
 
@@ -513,6 +672,7 @@ async function saveLog(record) {
 
             "Prefer":
               "return=minimal"
+
           },
 
           body:
@@ -539,11 +699,9 @@ async function saveLog(record) {
 }
 
 
-/*
-===========================================================
-MAIN API HANDLER
-===========================================================
-*/
+/* =========================================================
+   MAIN API HANDLER
+   ========================================================= */
 
 export default async function handler(
   req,
@@ -558,11 +716,25 @@ export default async function handler(
   }
 
 
+  let requestId = null;
+
+  let profile = null;
+
+  let routing = null;
+
+  let model = null;
+
+  let started = Date.now();
+
+
   try {
 
-    const {
-      prompt
-    } = req.body || {};
+    /* -----------------------------------------------------
+       READ REQUEST
+       ----------------------------------------------------- */
+
+    const { prompt } =
+      req.body || {};
 
 
     if (
@@ -576,51 +748,39 @@ export default async function handler(
     }
 
 
-    /*
-    -----------------------------------------
-    Analyze request
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       REQUEST ID
+       ----------------------------------------------------- */
 
-    const profile =
-      intelligence(prompt);
-
-
-    /*
-    -----------------------------------------
-    Route request
-    -----------------------------------------
-    */
-
-    const routing =
-      chooseModel(profile);
-
-
-    const model =
-      routing.model;
-
-
-    /*
-    -----------------------------------------
-    Request ID
-    -----------------------------------------
-    */
-
-    const requestId =
+    requestId =
       `ACI-${Date.now()}-${Math.random()
         .toString(36)
         .slice(2, 8)}`;
 
 
-    const started =
-      Date.now();
+    /* -----------------------------------------------------
+       INTELLIGENCE
+       ----------------------------------------------------- */
+
+    profile =
+      intelligence(prompt);
 
 
-    /*
-    -----------------------------------------
-    System instruction
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       ROUTING
+       ----------------------------------------------------- */
+
+    routing =
+      chooseModel(profile);
+
+
+    model =
+      routing.model;
+
+
+    /* -----------------------------------------------------
+       SYSTEM INSTRUCTION
+       ----------------------------------------------------- */
 
     const system = `
 You are ACI, an enterprise AI assistant.
@@ -652,11 +812,13 @@ ${profile.requiredQuality}%
 `;
 
 
-    /*
-    -----------------------------------------
-    Execute selected provider
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       EXECUTE
+       ----------------------------------------------------- */
+
+    started =
+      Date.now();
+
 
     const result =
       await executeModel(
@@ -666,9 +828,25 @@ ${profile.requiredQuality}%
       );
 
 
+    /* -----------------------------------------------------
+       ACTUAL MODEL
+       ----------------------------------------------------- */
+
+    const actualModel =
+      result.selectedModel || model;
+
+
+    /* -----------------------------------------------------
+       LATENCY
+       ----------------------------------------------------- */
+
     const latencyMs =
       Date.now() - started;
 
+
+    /* -----------------------------------------------------
+       RESPONSE
+       ----------------------------------------------------- */
 
     const answer =
       result.answer || "";
@@ -678,37 +856,34 @@ ${profile.requiredQuality}%
       result.usage || {};
 
 
+    /* -----------------------------------------------------
+       COST
+       ----------------------------------------------------- */
+
     const cost =
       calculateCost(
-        model,
+        actualModel,
         usage
       );
 
 
-    /*
-    -----------------------------------------
-    Outcome
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       OUTCOME
+       ----------------------------------------------------- */
 
     const outcome =
-      answer
+      answer.trim()
         ? "PASS"
         : "FAIL";
 
 
-    /*
-    -----------------------------------------
-    Full internal trace
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       TRACE
+       ----------------------------------------------------- */
 
     const trace = {
 
       requestId,
-
-      provider:
-        model.provider,
 
       taskType:
         profile.taskType,
@@ -723,13 +898,10 @@ ${profile.requiredQuality}%
         profile.requiredQuality,
 
       routingTier:
-        model.tier,
+        actualModel.tier,
 
       routingReason:
         routing.reason,
-
-      model:
-        model.id,
 
       latencyMs,
 
@@ -742,18 +914,14 @@ ${profile.requiredQuality}%
       totalTokens:
         usage.total_tokens ?? 0,
 
-      estimatedCostUSD:
-        cost,
-
       outcome
+
     };
 
 
-    /*
-    -----------------------------------------
-    Save request to Supabase
-    -----------------------------------------
-    */
+    /* -----------------------------------------------------
+       DATABASE LOG
+       ----------------------------------------------------- */
 
     await saveLog({
 
@@ -764,7 +932,7 @@ ${profile.requiredQuality}%
         new Date().toISOString(),
 
       provider:
-        model.provider,
+        actualModel.provider,
 
       task_type:
         profile.taskType,
@@ -779,13 +947,13 @@ ${profile.requiredQuality}%
         profile.requiredQuality,
 
       routing_tier:
-        model.tier,
+        actualModel.tier,
 
       routing_reason:
         routing.reason,
 
       model:
-        model.id,
+        actualModel.id,
 
       latency_ms:
         latencyMs,
@@ -804,6 +972,14 @@ ${profile.requiredQuality}%
 
       outcome,
 
+      fallback_used:
+        result.fallbackUsed || false,
+
+      /*
+       * Content storage remains controlled by
+       * ACI_STORE_CONTENT.
+       */
+
       prompt:
         process.env.ACI_STORE_CONTENT === "true"
           ? prompt
@@ -813,69 +989,129 @@ ${profile.requiredQuality}%
         process.env.ACI_STORE_CONTENT === "true"
           ? answer
           : null
-
     });
 
 
+    /* -----------------------------------------------------
+       EMPLOYEE RESPONSE
+       ----------------------------------------------------- */
+
     /*
-    -----------------------------------------
-    Employee response
-    -----------------------------------------
-
-    IMPORTANT:
-
-    Provider
-    Model
-    Cost
-    Routing reason
-
-    are intentionally NOT returned here.
-    */
+     * IMPORTANT:
+     *
+     * Model, provider and cost are deliberately NOT
+     * returned to the employee interface.
+     *
+     * They remain internal ACI economics data.
+     */
 
     return res.status(200).json({
 
       answer,
 
-      trace: {
-
-        requestId,
-
-        taskType:
-          profile.taskType,
-
-        complexity:
-          profile.complexity,
-
-        sensitivity:
-          profile.sensitivity,
-
-        requiredQuality:
-          profile.requiredQuality,
-
-        latencyMs,
-
-        inputTokens:
-          usage.input_tokens ?? 0,
-
-        outputTokens:
-          usage.output_tokens ?? 0,
-
-        totalTokens:
-          usage.total_tokens ?? 0,
-
-        outcome
-
-      }
+      trace
 
     });
 
 
   } catch (error) {
 
+    /* =====================================================
+       FAILURE HANDLING
+       ===================================================== */
+
     console.error(
       "ACI backend error:",
       error
     );
+
+
+    /*
+     * Record failed requests too.
+     *
+     * This is important for ACI because availability is
+     * itself an economic/operational metric.
+     */
+
+    if (requestId) {
+
+      const latencyMs =
+        Date.now() - started;
+
+
+      try {
+
+        await saveLog({
+
+          request_id:
+            requestId,
+
+          created_at:
+            new Date().toISOString(),
+
+          provider:
+            model?.provider || null,
+
+          task_type:
+            profile?.taskType || null,
+
+          complexity:
+            profile?.complexity || null,
+
+          sensitivity:
+            profile?.sensitivity || null,
+
+          required_quality:
+            profile?.requiredQuality || null,
+
+          routing_tier:
+            model?.tier || null,
+
+          routing_reason:
+            routing?.reason ||
+            null,
+
+          model:
+            model?.id || null,
+
+          latency_ms:
+            latencyMs,
+
+          input_tokens:
+            0,
+
+          output_tokens:
+            0,
+
+          total_tokens:
+            0,
+
+          estimated_cost_usd:
+            0,
+
+          outcome:
+            "FAIL",
+
+          fallback_used:
+            false,
+
+          prompt:
+            process.env.ACI_STORE_CONTENT === "true"
+              ? req.body?.prompt || null
+              : null,
+
+          output:
+            null
+        });
+
+      } catch (logError) {
+
+        console.error(
+          "Failed to record failed request:",
+          logError
+        );
+      }
+    }
 
 
     return res.status(500).json({
