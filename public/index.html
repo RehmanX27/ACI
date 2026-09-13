@@ -1,36 +1,48 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>ACI · AI Consumption Intelligence</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<title>ACI · Intelligence</title>
 
 <style>
 
 /* =========================================================
-   CORE THEME
+   ACI DESIGN SYSTEM
 ========================================================= */
 
 :root{
+
   --bg:#050505;
   --surface:#0b0b0b;
   --surface2:#111111;
-  --border:#252525;
+  --surface3:#171717;
 
-  --text:#f3f3f3;
-  --muted:#6d6d6d;
+  --border:#242424;
+  --border2:#303030;
+
+  --text:#f4f4f4;
+  --text2:#b3b3b3;
+  --muted:#666;
+  --muted2:#444;
 
   --accent:#ffffff;
-  --accentSoft:rgba(255,255,255,.08);
+  --accentSoft:rgba(255,255,255,.07);
 
-  --userBg:#f3f3f3;
+  --userBg:#f4f4f4;
   --userText:#050505;
 
-  --ok:#67f5a0;
-  --danger:#ef8585;
+  --green:#63e6a0;
+  --red:#ef8585;
 
-  --sidebar:292px;
+  --sidebar:285px;
 }
 
 
@@ -40,13 +52,18 @@
 
 body[data-theme="light"]{
 
-  --bg:#f4f4f1;
+  --bg:#f5f5f2;
   --surface:#ffffff;
-  --surface2:#ededeb;
+  --surface2:#eeeeeb;
+  --surface3:#e4e4e1;
+
   --border:#d9d9d5;
+  --border2:#c9c9c5;
 
   --text:#111111;
-  --muted:#6d6d6d;
+  --text2:#555555;
+  --muted:#777;
+  --muted2:#999;
 
   --accent:#111111;
   --accentSoft:rgba(0,0,0,.06);
@@ -61,8 +78,9 @@ body[data-theme="light"]{
 ========================================================= */
 
 body[data-accent="blue"]{
-  --accent:#5ea7ff;
-  --accentSoft:rgba(94,167,255,.12);
+
+  --accent:#5da7ff;
+  --accentSoft:rgba(93,167,255,.10);
 }
 
 body[data-theme="light"][data-accent="blue"]{
@@ -71,8 +89,9 @@ body[data-theme="light"][data-accent="blue"]{
 
 
 body[data-accent="violet"]{
+
   --accent:#a78bfa;
-  --accentSoft:rgba(167,139,250,.12);
+  --accentSoft:rgba(167,139,250,.10);
 }
 
 body[data-theme="light"][data-accent="violet"]{
@@ -81,8 +100,9 @@ body[data-theme="light"][data-accent="violet"]{
 
 
 body[data-accent="green"]{
+
   --accent:#55d99a;
-  --accentSoft:rgba(85,217,154,.12);
+  --accentSoft:rgba(85,217,154,.10);
 }
 
 body[data-theme="light"][data-accent="green"]{
@@ -91,8 +111,9 @@ body[data-theme="light"][data-accent="green"]{
 
 
 body[data-accent="orange"]{
+
   --accent:#ff9d52;
-  --accentSoft:rgba(255,157,82,.12);
+  --accentSoft:rgba(255,157,82,.10);
 }
 
 body[data-theme="light"][data-accent="orange"]{
@@ -101,8 +122,9 @@ body[data-theme="light"][data-accent="orange"]{
 
 
 body[data-accent="pink"]{
+
   --accent:#f472b6;
-  --accentSoft:rgba(244,114,182,.12);
+  --accentSoft:rgba(244,114,182,.10);
 }
 
 body[data-theme="light"][data-accent="pink"]{
@@ -121,12 +143,13 @@ body[data-theme="light"][data-accent="pink"]{
 html,
 body{
 
-  margin:0;
-
   width:100%;
   height:100%;
 
+  margin:0;
+
   background:var(--bg);
+
   color:var(--text);
 
   font-family:
@@ -137,6 +160,10 @@ body{
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 body{
@@ -159,9 +186,12 @@ button{
 
 .app{
 
+  width:100%;
   height:100vh;
 
   display:flex;
+
+  background:var(--bg);
 }
 
 
@@ -173,23 +203,25 @@ button{
 
   width:var(--sidebar);
 
+  height:100vh;
+
   flex-shrink:0;
 
-  height:100vh;
+  padding:
+    24px 21px 18px;
+
+  display:flex;
+
+  flex-direction:column;
 
   background:var(--surface);
 
   border-right:
     1px solid var(--border);
-
-  padding:
-    24px 22px 18px;
-
-  display:flex;
-
-  flex-direction:column;
 }
 
+
+/* BRAND */
 
 .brand{
 
@@ -199,97 +231,50 @@ button{
 
   gap:12px;
 
-  margin:
-    0 4px 26px;
+  padding-left:4px;
+
+  margin-bottom:27px;
 }
 
+.logo{
 
-.mark{
+  width:36px;
+  height:36px;
 
-  width:35px;
-  height:35px;
-
-  border-radius:10px;
+  border-radius:11px;
 
   background:
     radial-gradient(
       circle at 30% 25%,
       #fff,
-      #bbb 25%,
-      #666 55%,
+      #bbb 22%,
+      #666 52%,
       #111 100%
     );
 
   box-shadow:
-    0 0 0 1px #333;
+    0 0 0 1px #333,
+    inset 0 0 13px rgba(255,255,255,.25);
 }
 
-
-.brandName{
+.brandTitle{
 
   font-size:19px;
 
-  font-weight:800;
-
   line-height:1;
-}
 
+  font-weight:850;
+
+  letter-spacing:-.5px;
+}
 
 .brandSub{
 
-  font-size:8px;
-
-  letter-spacing:2px;
-
-  color:var(--muted);
-
   margin-top:4px;
-}
-
-
-.newChat{
-
-  height:49px;
-
-  border:0;
-
-  border-radius:12px;
-
-  background:var(--accent);
-
-  color:var(--bg);
-
-  font-weight:750;
-
-  text-align:left;
-
-  padding:
-    0 18px;
-}
-
-
-.history{
-
-  margin-top:34px;
-
-  flex:1;
-
-  min-height:0;
-
-  overflow:auto;
-}
-
-
-.historyLabel{
-
-  margin:
-    0 9px 13px;
 
   color:var(--muted);
 
-  font-size:9px;
-
-  font-weight:700;
+  font-size:8px;
 
   letter-spacing:2px;
 
@@ -297,9 +282,77 @@ button{
 }
 
 
-.historyItem{
+/* NEW CHAT */
 
-  display:block;
+.newChat{
+
+  height:48px;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:
+    0 17px;
+
+  background:var(--accent);
+
+  color:var(--bg);
+
+  font-size:15px;
+
+  font-weight:750;
+
+  text-align:left;
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
+}
+
+body[data-theme="light"] .newChat{
+  color:#fff;
+}
+
+.newChat:hover{
+
+  transform:
+    translateY(-1px);
+
+  opacity:.88;
+}
+
+
+/* HISTORY */
+
+.history{
+
+  flex:1;
+
+  min-height:0;
+
+  overflow:auto;
+
+  margin-top:34px;
+}
+
+.historyLabel{
+
+  margin:
+    0 9px 12px;
+
+  color:var(--muted);
+
+  font-size:9px;
+
+  font-weight:750;
+
+  letter-spacing:2px;
+
+  text-transform:uppercase;
+}
+
+.historyItem{
 
   width:100%;
 
@@ -307,7 +360,7 @@ button{
 
   background:transparent;
 
-  color:var(--muted);
+  color:var(--text2);
 
   padding:
     9px 10px;
@@ -325,7 +378,6 @@ button{
   text-overflow:ellipsis;
 }
 
-
 .historyItem:hover{
 
   background:var(--accentSoft);
@@ -333,43 +385,47 @@ button{
   color:var(--text);
 }
 
+.historyEmpty{
 
-.empty{
+  color:var(--muted2);
+
+  font-size:11px;
 
   padding:
     8px 10px;
-
-  color:#444;
-
-  font-size:11px;
 }
 
+
+/* STATUS */
 
 .status{
 
   border-top:
     1px solid var(--border);
 
-  padding-top:18px;
+  padding:
+    18px 3px 0;
 
   color:var(--muted);
 
   font-size:10px;
 }
 
-
-.dot{
+.statusDot{
 
   display:inline-block;
 
   width:7px;
   height:7px;
 
+  margin-right:7px;
+
   border-radius:50%;
 
-  background:var(--ok);
+  background:var(--green);
 
-  margin-right:7px;
+  box-shadow:
+    0 0 9px rgba(99,230,160,.45);
 }
 
 
@@ -399,12 +455,9 @@ button{
 
 .topbar{
 
-  height:70px;
+  height:69px;
 
   flex-shrink:0;
-
-  border-bottom:
-    1px solid var(--border);
 
   display:flex;
 
@@ -413,15 +466,17 @@ button{
   justify-content:space-between;
 
   padding:
-    0 26px 0 30px;
-}
+    0 25px 0 30px;
 
+  border-bottom:
+    1px solid var(--border);
+}
 
 .topLabel{
 
-  font-size:11px;
-
   color:var(--muted);
+
+  font-size:11px;
 }
 
 
@@ -430,51 +485,55 @@ button{
 ========================================================= */
 
 .themeWrap{
-
   position:relative;
 }
 
+.themeButton{
 
-.themeBtn{
-
-  height:35px;
+  height:36px;
 
   border:
     1px solid var(--border);
 
-  background:
-    var(--surface);
+  border-radius:10px;
 
-  color:
-    var(--text);
+  background:var(--surface);
 
-  border-radius:9px;
+  color:var(--text);
 
   padding:
-    0 11px;
+    0 12px;
 
   font-size:11px;
+
+  transition:
+    border-color .15s ease;
+}
+
+.themeButton:hover{
+
+  border-color:
+    var(--border2);
 }
 
 
 .themeMenu{
 
-  display:none;
-
   position:absolute;
 
-  z-index:100;
+  top:44px;
 
   right:0;
 
-  top:43px;
+  z-index:100;
 
-  width:230px;
+  width:235px;
 
-  padding:12px;
+  display:none;
 
-  background:
-    var(--surface);
+  padding:13px;
+
+  background:var(--surface);
 
   border:
     1px solid var(--border);
@@ -482,29 +541,26 @@ button{
   border-radius:13px;
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,.25);
+    0 25px 80px rgba(0,0,0,.28);
 }
-
 
 .themeMenu.open{
   display:block;
 }
 
-
 .menuTitle{
 
-  font-size:9px;
+  margin:
+    2px 5px 9px;
 
   color:var(--muted);
+
+  font-size:9px;
 
   letter-spacing:1.5px;
 
   text-transform:uppercase;
-
-  margin:
-    3px 5px 9px;
 }
-
 
 .themeChoices{
 
@@ -515,34 +571,30 @@ button{
 
   gap:6px;
 
-  margin-bottom:13px;
+  margin-bottom:14px;
 }
-
 
 .themeChoice{
 
   border:
     1px solid var(--border);
 
-  background:
-    var(--surface2);
-
-  color:
-    var(--text);
-
   border-radius:8px;
+
+  background:var(--surface2);
+
+  color:var(--text);
 
   padding:
     9px 8px;
 
-  text-align:left;
-
   font-size:10px;
+
+  text-align:left;
 }
 
-
-.themeChoice.active,
-.themeChoice:hover{
+.themeChoice:hover,
+.themeChoice.active{
 
   border-color:
     var(--accent);
@@ -551,7 +603,6 @@ button{
     var(--accentSoft);
 }
 
-
 .accents{
 
   display:flex;
@@ -559,16 +610,14 @@ button{
   gap:8px;
 
   padding:
-    2px 4px 4px;
+    2px 4px 3px;
 
   flex-wrap:wrap;
 }
 
-
 .accent{
 
   width:25px;
-
   height:25px;
 
   border-radius:50%;
@@ -579,20 +628,35 @@ button{
   padding:0;
 }
 
-
 .accent.active{
 
   border-color:
     var(--text);
 }
 
+.neutral{
+  background:#999;
+}
 
-.neutral{background:#999}
-.blue{background:#5ea7ff}
-.violet{background:#a78bfa}
-.green{background:#55d99a}
-.orange{background:#ff9d52}
-.pink{background:#f472b6}
+.blue{
+  background:#5da7ff;
+}
+
+.violet{
+  background:#a78bfa;
+}
+
+.green{
+  background:#55d99a;
+}
+
+.orange{
+  background:#ff9d52;
+}
+
+.pink{
+  background:#f472b6;
+}
 
 
 /* =========================================================
@@ -607,7 +671,6 @@ button{
 
   overflow:hidden;
 }
-
 
 .workspaceInner{
 
@@ -628,87 +691,153 @@ button{
 
 
 /* =========================================================
-   SIGNAL
+   DYNAMIC HERO
 ========================================================= */
 
-.signal{
+.hero{
 
   flex-shrink:0;
 
   padding:
-    40px 0 20px;
+    48px 0 27px;
+
+  transition:
+    padding .55s cubic-bezier(.2,.8,.2,1);
 }
 
 
-.kicker{
+/* After conversation begins */
+
+.workspace.started .hero{
+
+  padding:
+    15px 0 12px;
+}
+
+
+.signalHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin-bottom:15px;
+
+  color:var(--muted);
 
   font-size:10px;
 
-  font-weight:700;
+  font-weight:750;
 
   letter-spacing:1.6px;
 
   text-transform:uppercase;
 
-  color:var(--muted);
-
-  margin-bottom:13px;
+  transition:
+    margin .4s ease;
 }
 
+.workspace.started .signalHeader{
 
-.kicker::before{
+  margin-bottom:7px;
+}
 
-  content:"";
-
-  display:inline-block;
+.signalDot{
 
   width:6px;
   height:6px;
+
+  flex-shrink:0;
 
   border-radius:50%;
 
   background:var(--accent);
 
   box-shadow:
-    0 0 9px var(--accent);
-
-  margin-right:9px;
+    0 0 10px var(--accent);
 }
 
 
+/*
+  This is deliberately dynamic.
+  It comes from /api/insight.
+*/
+
 .signalText{
 
-  max-width:900px;
+  max-width:950px;
 
   margin:0;
+
+  color:var(--text);
 
   font-size:
     clamp(
       30px,
-      3.5vw,
-      51px
+      3.3vw,
+      50px
     );
 
-  line-height:1.02;
-
-  letter-spacing:-2.3px;
+  line-height:1.03;
 
   font-weight:850;
+
+  letter-spacing:-2.4px;
+
+  text-wrap:balance;
+
+  transition:
+    font-size .55s cubic-bezier(.2,.8,.2,1),
+    letter-spacing .55s ease,
+    opacity .25s ease;
+}
+
+
+/*
+  Once chatting starts, the signal becomes
+  a small editorial strip instead of dominating.
+*/
+
+.workspace.started .signalText{
+
+  max-width:760px;
+
+  font-size:16px;
+
+  line-height:1.3;
+
+  letter-spacing:-.2px;
+
+  font-weight:650;
+
+  color:var(--text2);
 }
 
 
 .signalMeta{
 
-  font-size:10px;
+  margin-top:11px;
 
-  color:#555;
+  color:var(--muted2);
 
-  margin-top:12px;
+  font-size:9px;
+
+  transition:
+    opacity .3s ease;
+}
+
+.workspace.started .signalMeta{
+
+  margin-top:5px;
+
+  opacity:.6;
 }
 
 
 /* =========================================================
-   CHAT SCROLL
+   CONVERSATION
 ========================================================= */
 
 .chatScroll{
@@ -722,9 +851,25 @@ button{
   padding:
     8px 0 20px;
 
-  scrollbar-width:thin;
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    var(--border)
+    transparent;
 }
 
+.chatScroll::-webkit-scrollbar{
+  width:5px;
+}
+
+.chatScroll::-webkit-scrollbar-thumb{
+
+  background:
+    var(--border);
+
+  border-radius:20px;
+}
 
 .messages{
 
@@ -732,55 +877,72 @@ button{
 
   flex-direction:column;
 
-  gap:22px;
-
-  padding-right:3px;
+  gap:24px;
 }
 
+
+/* =========================================================
+   MESSAGE
+========================================================= */
 
 .message{
 
   display:flex;
 
   width:100%;
+
+  animation:
+    messageIn .25s ease;
 }
 
+@keyframes messageIn{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(7px);
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0);
+  }
+}
 
 .message.user{
-
   justify-content:flex-end;
 }
 
-
 .message.ai{
-
   justify-content:flex-start;
 }
-
 
 .messageInner{
 
   max-width:
     min(
-      800px,
+      820px,
       88%
     );
 }
 
-
 .label{
+
+  margin-bottom:7px;
+
+  color:var(--muted);
 
   font-size:9px;
 
   letter-spacing:1.3px;
 
   text-transform:uppercase;
-
-  color:var(--muted);
-
-  margin-bottom:7px;
 }
-
 
 .bubble{
 
@@ -796,7 +958,6 @@ button{
   word-break:break-word;
 }
 
-
 .user .bubble{
 
   background:
@@ -807,7 +968,6 @@ button{
 
   border-bottom-right-radius:4px;
 }
-
 
 .ai .bubble{
 
@@ -831,55 +991,142 @@ button{
 .markdown p{
 
   margin:
-    0 0 11px;
+    0 0 12px;
 }
 
-
 .markdown p:last-child{
-
   margin-bottom:0;
 }
 
-
 .markdown strong{
-
   font-weight:750;
 }
-
 
 .markdown ul{
 
   margin:
     8px 0;
 
-  padding-left:20px;
+  padding-left:21px;
 }
-
 
 .markdown li{
-
-  margin:
-    4px 0;
+  margin:5px 0;
 }
 
-
 .markdown code{
-
-  background:
-    var(--surface2);
-
-  border:
-    1px solid var(--border);
 
   padding:
     2px 5px;
 
+  border:
+    1px solid var(--border);
+
   border-radius:5px;
 
+  background:
+    var(--surface2);
+
   font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
     monospace;
 
   font-size:12px;
+}
+
+
+/* =========================================================
+   AI DECISION
+========================================================= */
+
+/*
+  Internal intelligence is hidden by default.
+
+  Employees see a tiny product signal.
+  Admins can still inspect the routing data.
+*/
+
+.decision{
+
+  display:none;
+
+  margin-top:8px;
+}
+
+.decision.show{
+  display:block;
+}
+
+.decisionButton{
+
+  border:0;
+
+  background:transparent;
+
+  color:var(--muted);
+
+  padding:
+    4px 0;
+
+  font-size:9px;
+
+  letter-spacing:.2px;
+}
+
+.decisionButton:hover{
+  color:var(--text2);
+}
+
+.decisionDetails{
+
+  display:none;
+
+  margin-top:7px;
+
+  padding:
+    10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:10px;
+
+  background:
+    var(--surface2);
+}
+
+.decisionDetails.open{
+  display:block;
+}
+
+.decisionGrid{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:6px;
+}
+
+.decisionPill{
+
+  border:
+    1px solid var(--border);
+
+  border-radius:6px;
+
+  padding:
+    5px 7px;
+
+  color:var(--muted);
+
+  font-size:9px;
+}
+
+.decisionPill b{
+  color:var(--text2);
 }
 
 
@@ -894,11 +1141,9 @@ button{
   gap:4px;
 }
 
-
 .typing span{
 
   width:4px;
-
   height:4px;
 
   border-radius:50%;
@@ -909,16 +1154,13 @@ button{
     blink 1s infinite;
 }
 
-
 .typing span:nth-child(2){
   animation-delay:.15s;
 }
 
-
 .typing span:nth-child(3){
   animation-delay:.3s;
 }
-
 
 @keyframes blink{
 
@@ -933,70 +1175,6 @@ button{
 
 
 /* =========================================================
-   TRACE
-========================================================= */
-
-.trace{
-
-  display:none;
-
-  margin:
-    5px 0 15px;
-
-  border:
-    1px solid var(--border);
-
-  background:
-    var(--surface);
-
-  border-radius:12px;
-
-  padding:
-    12px 14px;
-}
-
-
-.trace.show{
-  display:block;
-}
-
-
-.traceGrid{
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:7px;
-}
-
-
-.pill{
-
-  border:
-    1px solid var(--border);
-
-  background:
-    var(--surface2);
-
-  padding:
-    6px 8px;
-
-  border-radius:7px;
-
-  font-size:10px;
-
-  color:var(--muted);
-}
-
-
-.pill b{
-
-  color:var(--text);
-}
-
-
-/* =========================================================
    SUGGESTIONS
 ========================================================= */
 
@@ -1006,14 +1184,13 @@ button{
 
   display:flex;
 
-  gap:8px;
-
   flex-wrap:wrap;
 
-  padding:
-    7px 0 11px;
-}
+  gap:8px;
 
+  padding:
+    6px 0 11px;
+}
 
 .suggestion{
 
@@ -1026,14 +1203,19 @@ button{
   color:
     var(--muted);
 
-  border-radius:999px;
+  border-radius:
+    999px;
 
   padding:
     8px 12px;
 
   font-size:10px;
-}
 
+  transition:
+    color .15s ease,
+    border-color .15s ease,
+    background .15s ease;
+}
 
 .suggestion:hover{
 
@@ -1056,12 +1238,14 @@ button{
   flex-shrink:0;
 
   padding:
-    5px 0 21px;
+    5px 0 20px;
 
   background:
     var(--bg);
 }
 
+
+/* FILE CHIP */
 
 .attachment{
 
@@ -1077,33 +1261,30 @@ button{
 
   margin-bottom:8px;
 
+  padding:
+    7px 10px;
+
   border:
     1px solid var(--border);
+
+  border-radius:9px;
 
   background:
     var(--surface);
 
   color:
-    var(--text);
-
-  border-radius:9px;
-
-  padding:
-    7px 10px;
+    var(--text2);
 
   font-size:10px;
 }
 
-
 .attachment.show{
-
   display:flex;
 }
 
-
 .fileName{
 
-  max-width:320px;
+  max-width:340px;
 
   overflow:hidden;
 
@@ -1112,8 +1293,7 @@ button{
   white-space:nowrap;
 }
 
-
-.remove{
+.removeFile{
 
   border:0;
 
@@ -1124,25 +1304,39 @@ button{
   font-size:14px;
 }
 
+.removeFile:hover{
+  color:var(--text);
+}
+
+
+/* COMPOSER */
 
 .composer{
 
   border:
-    1px solid var(--border);
+    1px solid var(--border2);
 
   background:
     var(--surface);
 
   border-radius:17px;
-}
 
+  box-shadow:
+    0 15px 50px rgba(0,0,0,.16);
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
 
 .composer:focus-within{
 
   border-color:
     var(--accent);
-}
 
+  box-shadow:
+    0 15px 60px rgba(0,0,0,.23);
+}
 
 textarea{
 
@@ -1172,12 +1366,9 @@ textarea{
   line-height:1.5;
 }
 
-
 textarea::placeholder{
-
   color:var(--muted);
 }
-
 
 .composerBottom{
 
@@ -1191,11 +1382,9 @@ textarea::placeholder{
     6px 9px 9px 12px;
 }
 
-
-.icon{
+.attachButton{
 
   width:34px;
-
   height:34px;
 
   border:
@@ -1210,25 +1399,22 @@ textarea::placeholder{
   font-size:17px;
 }
 
-
-.icon:hover{
+.attachButton:hover{
 
   background:
     var(--surface2);
 
-  color:
-    var(--text);
-
   border-color:
     var(--border);
+
+  color:
+    var(--text);
 }
 
+.sendButton{
 
-.send{
-
-  width:38px;
-
-  height:38px;
+  width:39px;
+  height:39px;
 
   border:0;
 
@@ -1240,41 +1426,59 @@ textarea::placeholder{
   color:
     var(--bg);
 
-  font-weight:800;
-
   font-size:17px;
+
+  font-weight:850;
+
+  transition:
+    transform .15s ease,
+    opacity .15s ease;
 }
 
+body[data-theme="light"] .sendButton{
+  color:#fff;
+}
 
-.send:disabled{
+.sendButton:hover{
 
-  opacity:.35;
+  transform:
+    translateY(-1px);
+
+  opacity:.87;
+}
+
+.sendButton:disabled{
+
+  opacity:.3;
 
   cursor:not-allowed;
+
+  transform:none;
 }
 
+.composerNote{
 
-.note{
+  margin-top:7px;
 
   text-align:center;
 
-  color:#444;
+  color:var(--muted2);
 
   font-size:9px;
-
-  margin-top:7px;
 }
-
 
 #fileInput{
   display:none;
 }
 
 
+/* =========================================================
+   ERROR
+========================================================= */
+
 .error{
 
-  color:
-    var(--danger);
+  color:var(--red);
 
   border:
     1px solid rgba(239,133,133,.25);
@@ -1315,7 +1519,7 @@ textarea::placeholder{
       calc(100% - 28px);
   }
 
-  .signal{
+  .hero{
 
     padding:
       30px 0 18px;
@@ -1323,38 +1527,47 @@ textarea::placeholder{
 
   .signalText{
 
-    font-size:31px;
+    font-size:
+      30px;
 
-    letter-spacing:-1.6px;
+    letter-spacing:
+      -1.7px;
+  }
+
+  .workspace.started .signalText{
+
+    font-size:
+      15px;
+
+    letter-spacing:
+      -.1px;
   }
 
   .messageInner{
-
     max-width:94%;
   }
 
   .suggestions{
 
-    overflow-x:auto;
-
     flex-wrap:nowrap;
+
+    overflow-x:auto;
 
     scrollbar-width:none;
   }
 
-  .suggestion{
-
-    white-space:nowrap;
+  .suggestions::-webkit-scrollbar{
+    display:none;
   }
 
-  .composerWrap{
-
-    padding-bottom:13px;
+  .suggestion{
+    white-space:nowrap;
   }
 
 }
 
 </style>
+
 </head>
 
 
@@ -1367,336 +1580,353 @@ textarea::placeholder{
 <div class="app">
 
 
-  <!-- SIDEBAR -->
+<!-- =======================================================
+     SIDEBAR
+======================================================== -->
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <div class="brand">
 
-      <div class="mark"></div>
+  <div class="brand">
 
-      <div>
+    <div class="logo"></div>
 
-        <div class="brandName">
-          ACI
+    <div>
+
+      <div class="brandTitle">
+        ACI
+      </div>
+
+      <div class="brandSub">
+        Intelligence
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="newChat"
+    id="newChat"
+    type="button"
+  >
+    + New chat
+  </button>
+
+
+  <div class="history">
+
+    <div class="historyLabel">
+      Today
+    </div>
+
+    <div id="historyList">
+
+      <div class="historyEmpty">
+        No conversations yet.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="status">
+
+    <span class="statusDot"></span>
+
+    ACI systems operational
+
+  </div>
+
+
+</aside>
+
+
+
+<!-- =======================================================
+     MAIN
+======================================================== -->
+
+<main class="main">
+
+
+  <!-- TOP BAR -->
+
+  <header class="topbar">
+
+    <div class="topLabel">
+      Enterprise AI workspace
+    </div>
+
+
+    <!-- APPEARANCE -->
+
+    <div class="themeWrap">
+
+      <button
+        class="themeButton"
+        id="themeButton"
+        type="button"
+      >
+        ◐ Appearance
+      </button>
+
+
+      <div
+        class="themeMenu"
+        id="themeMenu"
+      >
+
+        <div class="menuTitle">
+          Appearance
         </div>
 
-        <div class="brandSub">
-          Intelligence
+
+        <div class="themeChoices">
+
+          <button
+            class="themeChoice"
+            data-theme="dark"
+            type="button"
+          >
+            🌑 Dark
+          </button>
+
+          <button
+            class="themeChoice"
+            data-theme="light"
+            type="button"
+          >
+            ☀️ Light
+          </button>
+
+        </div>
+
+
+        <div class="menuTitle">
+          Accent
+        </div>
+
+
+        <div class="accents">
+
+          <button
+            class="accent neutral"
+            data-accent="neutral"
+            type="button"
+            title="Neutral"
+          ></button>
+
+          <button
+            class="accent blue"
+            data-accent="blue"
+            type="button"
+            title="Blue"
+          ></button>
+
+          <button
+            class="accent violet"
+            data-accent="violet"
+            type="button"
+            title="Violet"
+          ></button>
+
+          <button
+            class="accent green"
+            data-accent="green"
+            type="button"
+            title="Green"
+          ></button>
+
+          <button
+            class="accent orange"
+            data-accent="orange"
+            type="button"
+            title="Orange"
+          ></button>
+
+          <button
+            class="accent pink"
+            data-accent="pink"
+            type="button"
+            title="Pink"
+          ></button>
+
         </div>
 
       </div>
 
     </div>
 
-
-    <button
-      class="newChat"
-      id="newChat"
-      type="button"
-    >
-      + New chat
-    </button>
-
-
-    <div class="history">
-
-      <div class="historyLabel">
-        Today
-      </div>
-
-      <div id="historyList">
-
-        <div class="empty">
-          No conversations yet.
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="status">
-
-      <span class="dot"></span>
-
-      ACI systems operational
-
-    </div>
-
-  </aside>
+  </header>
 
 
 
-  <!-- MAIN -->
+  <!-- =====================================================
+       WORKSPACE
+  ====================================================== -->
 
-  <main class="main">
+  <section class="workspace" id="workspace">
 
-
-    <!-- TOPBAR -->
-
-    <header class="topbar">
-
-      <div class="topLabel">
-        Enterprise AI workspace
-      </div>
+    <div class="workspaceInner">
 
 
-      <!-- APPEARANCE -->
+      <!-- =================================================
+           DYNAMIC SIGNAL
+      ================================================== -->
 
-      <div class="themeWrap">
-
-        <button
-          class="themeBtn"
-          id="themeBtn"
-          type="button"
-        >
-          ◐ Appearance
-        </button>
+      <section class="hero">
 
 
-        <div
-          class="themeMenu"
-          id="themeMenu"
-        >
+        <div class="signalHeader">
 
-          <div class="menuTitle">
-            Appearance
-          </div>
+          <span class="signalDot"></span>
 
-
-          <div class="themeChoices">
-
-            <button
-              class="themeChoice"
-              data-theme="dark"
-              type="button"
-            >
-              🌑 Dark
-            </button>
-
-
-            <button
-              class="themeChoice"
-              data-theme="light"
-              type="button"
-            >
-              ☀️ Light
-            </button>
-
-          </div>
-
-
-          <div class="menuTitle">
-            Accent
-          </div>
-
-
-          <div class="accents">
-
-            <button
-              class="accent neutral"
-              data-accent="neutral"
-              type="button"
-              title="Neutral"
-            ></button>
-
-
-            <button
-              class="accent blue"
-              data-accent="blue"
-              type="button"
-              title="Blue"
-            ></button>
-
-
-            <button
-              class="accent violet"
-              data-accent="violet"
-              type="button"
-              title="Violet"
-            ></button>
-
-
-            <button
-              class="accent green"
-              data-accent="green"
-              type="button"
-              title="Green"
-            ></button>
-
-
-            <button
-              class="accent orange"
-              data-accent="orange"
-              type="button"
-              title="Orange"
-            ></button>
-
-
-            <button
-              class="accent pink"
-              data-accent="pink"
-              type="button"
-              title="Pink"
-            ></button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </header>
-
-
-
-    <!-- WORKSPACE -->
-
-    <section class="workspace">
-
-      <div class="workspaceInner">
-
-
-        <!-- SIGNAL -->
-
-        <section class="signal">
-
-          <div class="kicker">
+          <span>
             AI / Technology signal
-          </div>
+          </span>
+
+        </div>
 
 
-          <h1
-            class="signalText"
-            id="signalText"
-          >
-            AI is becoming infrastructure, not just software.
-          </h1>
-
-
-          <div
-            class="signalMeta"
-            id="signalMeta"
-          >
-            Fresh intelligence signal
-          </div>
-
-        </section>
-
-
-
-        <!-- CHAT -->
-
-        <section
-          class="chatScroll"
-          id="chatScroll"
+        <h1
+          class="signalText"
+          id="signalText"
         >
+          Loading today's AI signal...
+        </h1>
 
-          <div
-            class="messages"
-            id="messages"
-          ></div>
-
-
-          <div
-            class="trace"
-            id="trace"
-          >
-
-            <div
-              class="traceGrid"
-              id="traceGrid"
-            ></div>
-
-          </div>
-
-        </section>
-
-
-
-        <!-- SUGGESTIONS -->
 
         <div
-          class="suggestions"
-          id="suggestions"
+          class="signalMeta"
+          id="signalMeta"
+        >
+          Connecting to live intelligence
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =================================================
+           CHAT
+      ================================================== -->
+
+      <section
+        class="chatScroll"
+        id="chatScroll"
+      >
+
+        <div
+          class="messages"
+          id="messages"
         ></div>
 
 
-
-        <!-- COMPOSER -->
-
-        <div class="composerWrap">
+      </section>
 
 
-          <div
-            class="attachment"
-            id="attachment"
+
+      <!-- =================================================
+           SUGGESTIONS
+      ================================================== -->
+
+      <div
+        class="suggestions"
+        id="suggestions"
+      ></div>
+
+
+
+      <!-- =================================================
+           COMPOSER
+      ================================================== -->
+
+      <div class="composerWrap">
+
+
+        <!-- FILE -->
+
+        <div
+          class="attachment"
+          id="attachment"
+        >
+
+          <span>📎</span>
+
+          <span
+            class="fileName"
+            id="fileName"
+          ></span>
+
+          <button
+            class="removeFile"
+            id="removeFile"
+            type="button"
           >
+            ×
+          </button>
 
-            <span>📎</span>
+        </div>
 
-            <span
-              class="fileName"
-              id="fileName"
-            ></span>
+
+        <!-- INPUT -->
+
+        <div class="composer">
+
+
+          <textarea
+            id="prompt"
+            rows="1"
+            placeholder="Ask ACI anything..."
+            autocomplete="off"
+          ></textarea>
+
+
+          <div class="composerBottom">
+
 
             <button
-              class="remove"
-              id="removeFile"
+              class="attachButton"
+              id="attachButton"
               type="button"
+              title="Attach a file"
             >
-              ×
+              +
             </button>
 
-          </div>
+
+            <button
+              class="sendButton"
+              id="sendButton"
+              type="button"
+              title="Send"
+            >
+              ↑
+            </button>
 
 
-          <div class="composer">
-
-            <textarea
-              id="prompt"
-              rows="1"
-              placeholder="Ask ACI anything..."
-            ></textarea>
-
-
-            <div class="composerBottom">
-
-              <button
-                class="icon"
-                id="attach"
-                type="button"
-                title="Attach file"
-              >
-                +
-              </button>
-
-
-              <button
-                class="send"
-                id="send"
-                type="button"
-              >
-                ↑
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <div class="note">
-            ACI automatically selects the appropriate approved AI model.
           </div>
 
         </div>
 
+
+        <div class="composerNote">
+          ACI chooses the appropriate approved AI model automatically.
+        </div>
+
+
       </div>
 
-    </section>
 
-  </main>
+    </div>
+
+  </section>
+
+</main>
 
 </div>
 
@@ -1705,37 +1935,50 @@ textarea::placeholder{
   id="fileInput"
   type="file"
   accept=".pdf,.txt,.md,.csv,.json,.js,.jsx,.ts,.tsx,.py,.java,.sql,.html,.css,.xml,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*"
-/>
+>
 
 
 
 <script>
 
-/* ============================================================
-   ELEMENTS
-============================================================ */
+/* =========================================================
+   ELEMENT HELPER
+========================================================= */
 
 const $ = id =>
   document.getElementById(id);
 
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const body =
   document.body;
+
+const workspace =
+  $("workspace");
 
 const prompt =
   $("prompt");
 
-const send =
-  $("send");
-
-const messages =
-  $("messages");
+const sendButton =
+  $("sendButton");
 
 const chatScroll =
   $("chatScroll");
 
+const messages =
+  $("messages");
+
 const suggestions =
   $("suggestions");
+
+const signalText =
+  $("signalText");
+
+const signalMeta =
+  $("signalMeta");
 
 const attachment =
   $("attachment");
@@ -1746,32 +1989,23 @@ const fileName =
 const fileInput =
   $("fileInput");
 
-const trace =
-  $("trace");
+const themeButton =
+  $("themeButton");
 
-const traceGrid =
-  $("traceGrid");
-
-const historyList =
-  $("historyList");
-
-const signalText =
-  $("signalText");
-
-const signalMeta =
-  $("signalMeta");
+const themeMenu =
+  $("themeMenu");
 
 
 let selectedFile =
   null;
 
-let isSending =
+let sending =
   false;
 
 
-/* ============================================================
+/* =========================================================
    THEME
-============================================================ */
+========================================================= */
 
 function applyTheme(){
 
@@ -1779,7 +2013,6 @@ function applyTheme(){
     localStorage.getItem(
       "aci_theme"
     ) || "dark";
-
 
   const accent =
     localStorage.getItem(
@@ -1796,7 +2029,7 @@ function applyTheme(){
 
   document
     .querySelectorAll(
-      "[data-theme]"
+      ".themeChoice"
     )
     .forEach(button => {
 
@@ -1810,7 +2043,7 @@ function applyTheme(){
 
   document
     .querySelectorAll(
-      "[data-accent]"
+      ".accent"
     )
     .forEach(button => {
 
@@ -1824,15 +2057,18 @@ function applyTheme(){
 }
 
 
-$("themeBtn").addEventListener(
+applyTheme();
+
+
+themeButton.addEventListener(
   "click",
   event => {
 
     event.stopPropagation();
 
-    $("themeMenu")
-      .classList
-      .toggle("open");
+    themeMenu.classList.toggle(
+      "open"
+    );
 
   }
 );
@@ -1842,19 +2078,16 @@ document.addEventListener(
   "click",
   event => {
 
-    const menu =
-      $("themeMenu");
-
-    const button =
-      $("themeBtn");
-
-
     if (
-      !menu.contains(event.target) &&
-      !button.contains(event.target)
+      !themeMenu.contains(
+        event.target
+      ) &&
+      !themeButton.contains(
+        event.target
+      )
     ){
 
-      menu.classList.remove(
+      themeMenu.classList.remove(
         "open"
       );
 
@@ -1866,7 +2099,7 @@ document.addEventListener(
 
 document
   .querySelectorAll(
-    "[data-theme]"
+    ".themeChoice"
   )
   .forEach(button => {
 
@@ -1889,7 +2122,7 @@ document
 
 document
   .querySelectorAll(
-    "[data-accent]"
+    ".accent"
   )
   .forEach(button => {
 
@@ -1910,38 +2143,35 @@ document
   });
 
 
-applyTheme();
-
-
-/* ============================================================
+/* =========================================================
    SUGGESTIONS
-============================================================ */
+========================================================= */
 
-const suggestionLibrary = [
+const suggestionsLibrary = [
 
   "Analyze this business idea.",
 
   "Summarize this document.",
 
-  "Explain this error.",
-
-  "Draft an email to my manager.",
-
-  "Compare two technology approaches.",
-
   "Review this code.",
 
-  "Create a project plan.",
+  "Explain this error.",
 
-  "Analyze this market.",
+  "Draft an executive email.",
 
-  "Explain this concept simply.",
+  "Compare these two approaches.",
 
   "Find the key risks.",
 
+  "Analyze this market.",
+
+  "Create a project plan.",
+
   "Turn this into an executive summary.",
 
-  "Review this proposal."
+  "Review this proposal.",
+
+  "Prepare meeting action items."
 
 ];
 
@@ -1952,74 +2182,80 @@ function renderSuggestions(){
     "";
 
 
-  const selected =
-    [...suggestionLibrary]
-      .sort(
-        () =>
-          Math.random() - 0.5
-      )
-      .slice(0,5);
+  [...suggestionsLibrary]
+    .sort(
+      () =>
+        Math.random() - .5
+    )
+    .slice(0,5)
+    .forEach(text => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
 
 
-  selected.forEach(text => {
+      button.className =
+        "suggestion";
 
-    const button =
-      document.createElement(
-        "button"
+      button.type =
+        "button";
+
+      button.textContent =
+        text;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          prompt.value =
+            text;
+
+          resizePrompt();
+
+          prompt.focus();
+
+        }
       );
 
 
-    button.type =
-      "button";
+      suggestions.appendChild(
+        button
+      );
 
-
-    button.className =
-      "suggestion";
-
-
-    button.textContent =
-      text;
-
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        prompt.value =
-          text;
-
-        resizePrompt();
-
-        prompt.focus();
-
-      }
-    );
-
-
-    suggestions.appendChild(
-      button
-    );
-
-  });
+    });
 
 }
 
 
-/* ============================================================
-   AI SIGNAL
-============================================================ */
+/* =========================================================
+   LIVE SIGNAL
+========================================================= */
 
-function tenWords(text){
+/*
+  IMPORTANT:
+
+  The line is NOT hard-coded as the normal experience.
+
+  /api/insight supplies the signal.
+
+  We only use a tiny generic fallback if the endpoint
+  is unavailable.
+*/
+
+function limitWords(text){
 
   if (!text){
 
-    return "AI is becoming infrastructure, not just software.";
+    return "Today's AI signal is loading.";
 
   }
 
 
   const words =
-    text
+    String(text)
       .trim()
       .split(/\s+/)
       .slice(0,10);
@@ -2043,7 +2279,11 @@ function tenWords(text){
 }
 
 
-async function loadInsight(){
+async function loadSignal(){
+
+  signalText.style.opacity =
+    ".35";
+
 
   try{
 
@@ -2051,8 +2291,8 @@ async function loadInsight(){
       await fetch(
         "/api/insight",
         {
-          cache:
-            "no-store"
+          method:"GET",
+          cache:"no-store"
         }
       );
 
@@ -2060,7 +2300,7 @@ async function loadInsight(){
     if (!response.ok){
 
       throw new Error(
-        "Insight unavailable"
+        "Signal unavailable"
       );
 
     }
@@ -2070,68 +2310,69 @@ async function loadInsight(){
       await response.json();
 
 
+    const text =
+      data.text ||
+      data.insight ||
+      data.headline;
+
+
     signalText.textContent =
-      tenWords(
-        data.text ||
-        data.insight ||
-        data.headline
-      );
+      limitWords(text);
 
 
     signalMeta.textContent =
-      "Fresh intelligence signal · " +
+      "Live intelligence · " +
       new Date()
         .toLocaleTimeString(
           [],
           {
-            hour:
-              "2-digit",
-
-            minute:
-              "2-digit"
+            hour:"2-digit",
+            minute:"2-digit"
           }
         );
 
 
   }catch{
 
-    const fallback = [
-
-      "AI is becoming infrastructure, not just software.",
-
-      "Model choice is becoming an economic decision.",
-
-      "AI agents are moving deeper into workflows.",
-
-      "The next AI advantage may come from routing.",
-
-      "Enterprise AI is moving from pilots to production."
-
-    ];
-
+    /*
+      This is intentionally NOT
+      the old static sentence.
+    */
 
     signalText.textContent =
-      tenWords(
-        fallback[
-          Math.floor(
-            Math.random() *
-            fallback.length
-          )
-        ]
-      );
+      "Live AI intelligence is temporarily unavailable.";
 
 
     signalMeta.textContent =
-      "ACI intelligence signal";
+      "ACI intelligence service";
+
+
+  }finally{
+
+    signalText.style.opacity =
+      "1";
 
   }
 
 }
 
 
-/* ============================================================
+/* =========================================================
+   STARTED STATE
+========================================================= */
+
+function startWorkspace(){
+
+  workspace.classList.add(
+    "started"
+  );
+
+}
+
+
+/* =========================================================
    TEXTAREA
-============================================================ */
+========================================================= */
 
 function resizePrompt(){
 
@@ -2173,11 +2414,11 @@ prompt.addEventListener(
 );
 
 
-/* ============================================================
-   FILE ATTACHMENT
-============================================================ */
+/* =========================================================
+   FILE
+========================================================= */
 
-$("attach").addEventListener(
+$("attachButton").addEventListener(
   "click",
   () => {
 
@@ -2197,9 +2438,7 @@ fileInput.addEventListener(
 
 
     if (!selectedFile){
-
       return;
-
     }
 
 
@@ -2239,9 +2478,9 @@ function clearFile(){
 }
 
 
-/* ============================================================
-   FILE PROCESSING
-============================================================ */
+/* =========================================================
+   FILE READING
+========================================================= */
 
 function readBase64(file){
 
@@ -2281,7 +2520,7 @@ function readBase64(file){
 
           reject(
             new Error(
-              "Could not process the attachment."
+              "Could not process the file."
             )
           );
 
@@ -2341,18 +2580,19 @@ function readText(file){
 }
 
 
+/* =========================================================
+   PREPARE FILE
+========================================================= */
+
 async function prepareFile(file){
 
   if (!file){
-
     return null;
-
   }
 
 
   /*
-    Conservative browser → Vercel
-    JSON payload limit.
+    Conservative limit for browser → Vercel JSON.
   */
 
   if (
@@ -2361,7 +2601,7 @@ async function prepareFile(file){
   ){
 
     throw new Error(
-      "For now, attachments must be smaller than 2.8 MB."
+      "Attachments are currently limited to 2.8 MB."
     );
 
   }
@@ -2369,6 +2609,8 @@ async function prepareFile(file){
 
   /*
     PDF
+
+    Native Gemini document processing.
   */
 
   if (
@@ -2450,14 +2692,14 @@ async function prepareFile(file){
 }
 
 
-/* ============================================================
-   SAFE MARKDOWN
-============================================================ */
+/* =========================================================
+   MARKDOWN
+========================================================= */
 
-function escapeHtml(value){
+function escapeHTML(text){
 
   return String(
-    value || ""
+    text || ""
   )
 
     .replace(
@@ -2488,10 +2730,10 @@ function escapeHtml(value){
 }
 
 
-function renderMarkdown(text){
+function markdown(text){
 
   let html =
-    escapeHtml(
+    escapeHTML(
       text
     );
 
@@ -2517,7 +2759,7 @@ function renderMarkdown(text){
   let output =
     "";
 
-  let inList =
+  let list =
     false;
 
 
@@ -2531,12 +2773,12 @@ function renderMarkdown(text){
       )
     ){
 
-      if (!inList){
+      if (!list){
 
         output +=
           "<ul>";
 
-        inList =
+        list =
           true;
 
       }
@@ -2552,12 +2794,12 @@ function renderMarkdown(text){
 
     }else{
 
-      if (inList){
+      if (list){
 
         output +=
           "</ul>";
 
-        inList =
+        list =
           false;
 
       }
@@ -2577,11 +2819,8 @@ function renderMarkdown(text){
   }
 
 
-  if (inList){
-
-    output +=
-      "</ul>";
-
+  if (list){
+    output += "</ul>";
   }
 
 
@@ -2590,9 +2829,9 @@ function renderMarkdown(text){
 }
 
 
-/* ============================================================
+/* =========================================================
    MESSAGE
-============================================================ */
+========================================================= */
 
 function addMessage(
   role,
@@ -2650,24 +2889,24 @@ function addMessage(
     role === "ai"
   ){
 
-    const markdown =
+    const content =
       document.createElement(
         "div"
       );
 
 
-    markdown.className =
+    content.className =
       "markdown";
 
 
-    markdown.innerHTML =
-      renderMarkdown(
+    content.innerHTML =
+      markdown(
         text
       );
 
 
     bubble.appendChild(
-      markdown
+      content
     );
 
   }else{
@@ -2699,9 +2938,9 @@ function addMessage(
 }
 
 
-/* ============================================================
+/* =========================================================
    TYPING
-============================================================ */
+========================================================= */
 
 function addTyping(){
 
@@ -2749,14 +2988,13 @@ function addTyping(){
     "bubble";
 
 
-  bubble.innerHTML =
-    `
-      <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    `;
+  bubble.innerHTML = `
+    <div class="typing">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
 
 
   inner.append(
@@ -2783,9 +3021,230 @@ function addTyping(){
 }
 
 
-/* ============================================================
+/* =========================================================
+   DECISION DETAILS
+========================================================= */
+
+function addDecision(
+  container,
+  traceData
+){
+
+  if (!traceData){
+    return;
+  }
+
+
+  const decision =
+    document.createElement(
+      "div"
+    );
+
+
+  decision.className =
+    "decision show";
+
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+
+  button.className =
+    "decisionButton";
+
+  button.type =
+    "button";
+
+  button.textContent =
+    "ACI decision · View details";
+
+
+  const details =
+    document.createElement(
+      "div"
+    );
+
+
+  details.className =
+    "decisionDetails";
+
+
+  const grid =
+    document.createElement(
+      "div"
+    );
+
+
+  grid.className =
+    "decisionGrid";
+
+
+  const items = [
+
+    [
+      "Task",
+      traceData.taskType
+    ],
+
+    [
+      "Complexity",
+      traceData.complexity != null
+        ? traceData.complexity + "/5"
+        : "-"
+    ],
+
+    [
+      "Sensitivity",
+      traceData.sensitivity
+    ],
+
+    [
+      "Quality",
+      traceData.requiredQuality != null
+        ? traceData.requiredQuality + "%"
+        : "-"
+    ],
+
+    [
+      "Model",
+      traceData.model
+    ],
+
+    [
+      "Provider",
+      traceData.provider
+    ],
+
+    [
+      "Tier",
+      traceData.routingTier
+    ],
+
+    [
+      "Tokens",
+      traceData.totalTokens
+    ],
+
+    [
+      "Latency",
+      traceData.latencyMs != null
+        ? traceData.latencyMs + "ms"
+        : "-"
+    ],
+
+    [
+      "Outcome",
+      traceData.outcome
+    ],
+
+    [
+      "Fallback",
+      traceData.fallbackUsed
+        ? "YES"
+        : "NO"
+    ]
+
+  ];
+
+
+  items.forEach(
+    ([key,value]) => {
+
+      if (
+        value === undefined ||
+        value === null
+      ){
+        return;
+      }
+
+
+      const pill =
+        document.createElement(
+          "div"
+        );
+
+
+      pill.className =
+        "decisionPill";
+
+
+      const b =
+        document.createElement(
+          "b"
+        );
+
+
+      b.textContent =
+        key + ": ";
+
+
+      const span =
+        document.createElement(
+          "span"
+        );
+
+
+      span.textContent =
+        String(value);
+
+
+      pill.append(
+        b,
+        span
+      );
+
+
+      grid.appendChild(
+        pill
+      );
+
+    }
+  );
+
+
+  details.appendChild(
+    grid
+  );
+
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      details.classList.toggle(
+        "open"
+      );
+
+
+      button.textContent =
+        details.classList.contains(
+          "open"
+        )
+          ? "ACI decision · Hide details"
+          : "ACI decision · View details";
+
+    }
+  );
+
+
+  decision.append(
+    button,
+    details
+  );
+
+
+  container.appendChild(
+    decision
+  );
+
+}
+
+
+/* =========================================================
    ERROR
-============================================================ */
+========================================================= */
 
 function addError(text){
 
@@ -2843,165 +3302,323 @@ function addError(text){
 }
 
 
-/* ============================================================
-   TRACE
-============================================================ */
+/* =========================================================
+   SEND
+========================================================= */
 
-function renderTrace(data){
+async function sendPrompt(){
 
-  traceGrid.innerHTML =
-    "";
+  if (sending){
+    return;
+  }
 
 
-  if (!data){
+  const typed =
+    prompt.value.trim();
 
-    trace.classList.remove(
-      "show"
+
+  const requestPrompt =
+    typed ||
+    (
+      selectedFile
+        ? "Analyze the attached file and provide the most useful summary or insights."
+        : ""
     );
+
+
+  if (!requestPrompt){
+
+    prompt.focus();
 
     return;
 
   }
 
 
-  const values = [
+  sending =
+    true;
 
-    [
-      "Task",
-      data.taskType
-    ],
-
-    [
-      "Complexity",
-      data.complexity != null
-        ? data.complexity + "/5"
-        : "-"
-    ],
-
-    [
-      "Sensitivity",
-      data.sensitivity
-    ],
-
-    [
-      "Quality",
-      data.requiredQuality != null
-        ? data.requiredQuality + "%"
-        : "-"
-    ],
-
-    [
-      "Model",
-      data.model
-    ],
-
-    [
-      "Provider",
-      data.provider
-    ],
-
-    [
-      "Tier",
-      data.routingTier
-    ],
-
-    [
-      "Tokens",
-      data.totalTokens
-    ],
-
-    [
-      "Latency",
-      data.latencyMs != null
-        ? data.latencyMs + "ms"
-        : "-"
-    ],
-
-    [
-      "Outcome",
-      data.outcome
-    ],
-
-    [
-      "Fallback",
-      data.fallbackUsed
-        ? "YES"
-        : "NO"
-    ]
-
-  ];
+  sendButton.disabled =
+    true;
 
 
-  values.forEach(
-    ([key,value]) => {
+  /*
+    Move hero into compact mode.
+  */
 
-      if (
-        value === undefined ||
-        value === null
-      ){
-
-        return;
-
-      }
+  startWorkspace();
 
 
-      const pill =
-        document.createElement(
-          "div"
-        );
+  suggestions.style.display =
+    "none";
 
 
-      pill.className =
-        "pill";
+  let display =
+    requestPrompt;
 
 
-      const bold =
-        document.createElement(
-          "b"
-        );
+  if (selectedFile){
+
+    display +=
+      "\n\n📎 " +
+      selectedFile.name;
+
+  }
 
 
-      bold.textContent =
-        key + ": ";
+  addMessage(
+    "user",
+    display
+  );
 
 
-      const span =
-        document.createElement(
-          "span"
-        );
+  prompt.value =
+    "";
+
+  resizePrompt();
 
 
-      span.textContent =
-        String(value);
+  let filePayload =
+    null;
 
 
-      pill.append(
-        bold,
-        span
+  try{
+
+    filePayload =
+      await prepareFile(
+        selectedFile
+      );
+
+  }catch(error){
+
+    addError(
+      error.message
+    );
+
+    sending =
+      false;
+
+    sendButton.disabled =
+      false;
+
+    return;
+
+  }
+
+
+  const typing =
+    addTyping();
+
+
+  clearFile();
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+
+          method:
+            "POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+
+              prompt:
+                requestPrompt,
+
+              file:
+                filePayload
+
+            })
+
+        }
       );
 
 
-      traceGrid.appendChild(
-        pill
+    const contentType =
+      response.headers.get(
+        "content-type"
+      ) || "";
+
+
+    let data;
+
+
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ){
+
+      data =
+        await response.json();
+
+    }else{
+
+      await response.text();
+
+      throw new Error(
+        "ACI returned an invalid server response."
       );
 
     }
-  );
 
 
-  trace.classList.add(
-    "show"
-  );
+    if (!response.ok){
+
+      throw new Error(
+        data?.error ||
+        "ACI request failed."
+      );
+
+    }
 
 
-  scrollBottom();
+    typing.remove();
+
+
+    /*
+      Add response.
+    */
+
+    const message =
+      document.createElement(
+        "div"
+      );
+
+
+    message.className =
+      "message ai";
+
+
+    const inner =
+      document.createElement(
+        "div"
+      );
+
+
+    inner.className =
+      "messageInner";
+
+
+    const label =
+      document.createElement(
+        "div"
+      );
+
+
+    label.className =
+      "label";
+
+
+    label.textContent =
+      "ACI";
+
+
+    const bubble =
+      document.createElement(
+        "div"
+      );
+
+
+    bubble.className =
+      "bubble";
+
+
+    const content =
+      document.createElement(
+        "div"
+      );
+
+
+    content.className =
+      "markdown";
+
+
+    content.innerHTML =
+      markdown(
+        data.answer ||
+        "ACI returned an empty response."
+      );
+
+
+    bubble.appendChild(
+      content
+    );
+
+
+    inner.append(
+      label,
+      bubble
+    );
+
+
+    /*
+      Decision information is now
+      deliberately secondary.
+    */
+
+    addDecision(
+      inner,
+      data.trace
+    );
+
+
+    message.appendChild(
+      inner
+    );
+
+
+    messages.appendChild(
+      message
+    );
+
+
+    scrollBottom();
+
+
+    saveHistory(
+      requestPrompt
+    );
+
+
+  }catch(error){
+
+    typing.remove();
+
+
+    addError(
+      error.message ||
+      "Something went wrong while contacting ACI."
+    );
+
+
+  }finally{
+
+    sending =
+      false;
+
+    sendButton.disabled =
+      false;
+
+    prompt.focus();
+
+  }
 
 }
 
 
-/* ============================================================
+/* =========================================================
    SCROLL
-============================================================ */
+========================================================= */
 
 function scrollBottom(){
 
@@ -3024,93 +3641,25 @@ function scrollBottom(){
 }
 
 
-/* ============================================================
+/* =========================================================
    HISTORY
-============================================================ */
+========================================================= */
 
-function renderHistory(){
-
-  historyList.innerHTML =
-    "";
-
-
-  let history =
-    [];
-
+function getHistory(){
 
   try{
 
-    history =
-      JSON.parse(
-        localStorage.getItem(
-          "aci_history"
-        ) || "[]"
-      );
+    return JSON.parse(
+      localStorage.getItem(
+        "aci_history"
+      ) || "[]"
+    );
 
   }catch{
 
-    history =
-      [];
+    return [];
 
   }
-
-
-  if (!history.length){
-
-    historyList.innerHTML =
-      `
-        <div class="empty">
-          No conversations yet.
-        </div>
-      `;
-
-    return;
-
-  }
-
-
-  history.forEach(
-    item => {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "historyItem";
-
-
-      button.textContent =
-        item.title;
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          prompt.value =
-            item.title;
-
-          resizePrompt();
-
-          prompt.focus();
-
-        }
-      );
-
-
-      historyList.appendChild(
-        button
-      );
-
-    }
-  );
 
 }
 
@@ -3131,31 +3680,12 @@ function saveHistory(title){
 
 
   if (!clean){
-
     return;
-
   }
 
 
   let history =
-    [];
-
-
-  try{
-
-    history =
-      JSON.parse(
-        localStorage.getItem(
-          "aci_history"
-        ) || "[]"
-      );
-
-  }catch{
-
-    history =
-      [];
-
-  }
+    getHistory();
 
 
   if (
@@ -3195,35 +3725,105 @@ function saveHistory(title){
 }
 
 
-/* ============================================================
+function renderHistory(){
+
+  const history =
+    getHistory();
+
+
+  historyList.innerHTML =
+    "";
+
+
+  if (!history.length){
+
+    historyList.innerHTML =
+      `
+        <div class="historyEmpty">
+          No conversations yet.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  history.forEach(
+    item => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "historyItem";
+
+      button.type =
+        "button";
+
+      button.textContent =
+        item.title;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          prompt.value =
+            item.title;
+
+          resizePrompt();
+
+          prompt.focus();
+
+        }
+      );
+
+
+      historyList.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
    NEW CHAT
-============================================================ */
+========================================================= */
 
 function newChat(){
 
   messages.innerHTML =
     "";
 
-  trace.classList.remove(
-    "show"
-  );
-
-  traceGrid.innerHTML =
-    "";
-
-  prompt.value =
-    "";
-
-  clearFile();
-
   suggestions.style.display =
     "flex";
 
   renderSuggestions();
 
-  loadInsight();
+
+  workspace.classList.remove(
+    "started"
+  );
+
+
+  clearFile();
+
+
+  prompt.value =
+    "";
 
   resizePrompt();
+
+
+  loadSignal();
+
 
   prompt.focus();
 
@@ -3236,255 +3836,27 @@ $("newChat").addEventListener(
 );
 
 
-/* ============================================================
-   SEND TO ACI
-============================================================ */
-
-async function sendPrompt(){
-
-  if (isSending){
-
-    return;
-
-  }
-
-
-  const typed =
-    prompt.value.trim();
-
-
-  const requestPrompt =
-    typed ||
-    (
-      selectedFile
-        ? "Analyze the attached file and provide the most useful summary or insights."
-        : ""
-    );
-
-
-  if (!requestPrompt){
-
-    prompt.focus();
-
-    return;
-
-  }
-
-
-  isSending =
-    true;
-
-  send.disabled =
-    true;
-
-
-  suggestions.style.display =
-    "none";
-
-
-  let displayPrompt =
-    requestPrompt;
-
-
-  if (selectedFile){
-
-    displayPrompt +=
-      "\n\n📎 " +
-      selectedFile.name;
-
-  }
-
-
-  addMessage(
-    "user",
-    displayPrompt
-  );
-
-
-  prompt.value =
-    "";
-
-  resizePrompt();
-
-
-  let payload =
-    null;
-
-
-  try{
-
-    payload =
-      await prepareFile(
-        selectedFile
-      );
-
-  }catch(error){
-
-    addError(
-      error.message
-    );
-
-    isSending =
-      false;
-
-    send.disabled =
-      false;
-
-    return;
-
-  }
-
-
-  const typing =
-    addTyping();
-
-
-  clearFile();
-
-
-  trace.classList.remove(
-    "show"
-  );
-
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/chat",
-        {
-
-          method:
-            "POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              prompt:
-                requestPrompt,
-
-              file:
-                payload
-
-            })
-
-        }
-      );
-
-
-    const contentType =
-      response.headers.get(
-        "content-type"
-      ) || "";
-
-
-    let data;
-
-
-    if (
-      contentType.includes(
-        "application/json"
-      )
-    ){
-
-      data =
-        await response.json();
-
-    }else{
-
-      await response.text();
-
-      throw new Error(
-        "ACI server returned a non-JSON response. Check the Vercel deployment."
-      );
-
-    }
-
-
-    if (!response.ok){
-
-      throw new Error(
-        data?.error ||
-        "AI request failed."
-      );
-
-    }
-
-
-    typing.remove();
-
-
-    addMessage(
-      "ai",
-      data.answer ||
-      "ACI returned an empty response."
-    );
-
-
-    renderTrace(
-      data.trace
-    );
-
-
-    saveHistory(
-      requestPrompt
-    );
-
-
-  }catch(error){
-
-    typing.remove();
-
-
-    addError(
-      error.message ||
-      "Something went wrong while contacting ACI."
-    );
-
-
-  }finally{
-
-    isSending =
-      false;
-
-    send.disabled =
-      false;
-
-    prompt.focus();
-
-  }
-
-}
-
-
-send.addEventListener(
-  "click",
-  sendPrompt
-);
-
-
-/* ============================================================
+/* =========================================================
    INITIALIZE
-============================================================ */
+========================================================= */
 
 renderSuggestions();
 
 renderHistory();
 
-loadInsight();
-
 resizePrompt();
+
+loadSignal();
 
 prompt.focus();
 
 
+/*
+  New live signal every 10 minutes.
+*/
+
 setInterval(
-  loadInsight,
+  loadSignal,
   10 * 60 * 1000
 );
 
